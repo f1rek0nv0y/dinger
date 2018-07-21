@@ -12,6 +12,9 @@
 
     <string name="app_label" translatable="false">dinger</string>
     <string name="no_intent_handlers">No handlers found for %s, ignored</string>
+    <string name="preference_category_general">General</string>
+    <string name="preference_key_bypass_doze">bypass_doze</string>
+    <string name="preference_title_bypass_doze">Bypass Doze</string>
 
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="colorAccent">@color/accent</item>
