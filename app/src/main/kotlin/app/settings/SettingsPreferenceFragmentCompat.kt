@@ -19,6 +19,7 @@ internal class SettingsPreferenceFragmentCompat : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.prefs_settings, rootKey)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            setBypassDozePreference()
             initializeBypassDozePreference()
         }
         initializeSharePreference()
