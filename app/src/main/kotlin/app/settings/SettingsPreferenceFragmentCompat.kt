@@ -35,7 +35,8 @@ internal class SettingsPreferenceFragmentCompat : PreferenceFragmentCompat() {
                 Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
             } else {
                 Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
-            }.setData(Uri.parse("package:$packageName"))
+                        .setData(Uri.parse("package:$packageName"))
+            }
             context?.startIntent(intent)
             true
         }
