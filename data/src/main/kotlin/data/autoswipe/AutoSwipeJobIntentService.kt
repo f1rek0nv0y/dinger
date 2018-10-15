@@ -171,11 +171,10 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
     private fun scheduleBecauseError(error: Throwable? = null) {
         if (error != null) {
             crashReporter.report(error)
+            reportHandler.show(this, AutoSwipeReportHandler.RESULT_ERROR)
         }
         FromErrorPostAutoSwipeAction().apply {
             ongoingActions += this
-            reportHandler.show(
-                    this@AutoSwipeJobIntentService, AutoSwipeReportHandler.RESULT_ERROR)
             execute(this@AutoSwipeJobIntentService, Unit)
             reScheduled = true
         }
