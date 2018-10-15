@@ -16,6 +16,7 @@ apply plugin: "kotlin-kapt"
 apply plugin: "org.jmailen.kotlinter"
 
 android {
+    buildToolsVersion project.ext.buildToolsVersion
     compileSdkVersion project.ext.androidCompileSdkVersion
     defaultConfig {
         versionCode project.ext.androidVersionCode

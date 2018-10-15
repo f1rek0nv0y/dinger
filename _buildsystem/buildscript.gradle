@@ -10,4 +10,4 @@ project.ext.classpathDependencies = {
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinPluginVersion"
     classpath "gradle.plugin.org.jmailen.gradle:kotlinter-gradle:$kotlinterPluginVersion"
 }
-
+project.ext.buildToolsVersion = "28.0.3"
