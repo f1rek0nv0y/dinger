@@ -28,6 +28,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
     lateinit var reportHandler: AutoSwipeReportHandler
     private var reScheduled = false
     private var ongoingActions = emptySet<Action<*>>()
+    private val likeBatchTracker = LikeBatchTracker(this, defaultSharedPreferences)
 
     init {
         AutoSwipeComponentHolder.autoSwipeComponent.inject(this)
@@ -35,7 +36,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
 
     override fun onHandleWork(intent: Intent) {
         if (defaultSharedPreferences.getBoolean(
-                getString(R.string.preference_key_autoswipe_enabled), true)) {
+                        getString(R.string.preference_key_autoswipe_enabled), true)) {
             try {
                 startAutoSwipe()
             } catch (e: Exception) {
@@ -51,7 +52,9 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
     override fun onDestroy() {
         super.onDestroy()
         releaseResources()
-        if (!reScheduled) { scheduleBecauseError() }
+        if (!reScheduled) {
+            scheduleBecauseError()
+        }
     }
 
     abstract class Action<in Callback> {
@@ -96,6 +99,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
 
     private fun processRecommendations(recommendations: List<DomainRecommendationUser>) {
         recommendations.forEach {
+            likeBatchTracker.addLike()
             processRecommendationActionFactory.delegate(it).apply {
                 ongoingActions += (this)
                 execute(this@AutoSwipeJobIntentService,
@@ -118,7 +122,11 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
                         })
             }
         }
-        scheduleBecauseMoreAvailable()
+        if (likeBatchTracker.isBatchOpen()) {
+            scheduleBecauseMoreAvailable()
+        } else {
+            scheduleBecauseError()
+        }
     }
 
     private fun saveRecommendationToDatabase(
@@ -158,17 +166,20 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
         reScheduled = true
     }
 
-    private fun scheduleBecauseLimited(notBeforeMillis: Long) =
-            FromRateLimitedPostAutoSwipeAction(notBeforeMillis).apply {
-                ongoingActions += this
-                reportHandler.show(
-                        this@AutoSwipeJobIntentService,
-                        AutoSwipeReportHandler.RESULT_RATE_LIMITED)
-                execute(this@AutoSwipeJobIntentService, Unit)
-                reScheduled = true
+    private fun scheduleBecauseLimited(notBeforeMillis: Long) {
+        likeBatchTracker.closeBatch()
+        FromRateLimitedPostAutoSwipeAction(notBeforeMillis).apply {
+            ongoingActions += this
+            reportHandler.show(
+                    this@AutoSwipeJobIntentService,
+                    AutoSwipeReportHandler.RESULT_RATE_LIMITED)
+            execute(this@AutoSwipeJobIntentService, Unit)
+            reScheduled = true
+        }
     }
 
     private fun scheduleBecauseError(error: Throwable? = null) {
+        likeBatchTracker.closeBatch()
         if (error != null) {
             crashReporter.report(error)
             reportHandler.show(this, AutoSwipeReportHandler.RESULT_ERROR)
