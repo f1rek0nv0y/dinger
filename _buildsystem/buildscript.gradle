@@ -1,6 +1,6 @@
 final def androidPluginVersion = "3.2.1"
 project.ext.kotlinVersion = "1.2.71"
-final def kotlinterPluginVersion = "1.14.0"
+final def kotlinterPluginVersion = "1.20.1"
 project.ext.classpathRepositories = {
     google()
     maven { url "https://plugins.gradle.org/m2/" }
