@@ -22,7 +22,7 @@ internal class LogoutCoordinator(
                             "The app reacted to a logout. The app should always close on logout. ")
                 }
 
-                override fun onError(e: Throwable?) {
+                override fun onError(e: Throwable) {
                     throw IllegalStateException("Logging out should always succeed, but failed", e)
                 }
             })

@@ -1,5 +1,5 @@
 final def androidPluginVersion = "3.2.1"
-final def kotlinPluginVersion = "1.2.71"
+project.ext.kotlinVersion = "1.2.71"
 final def kotlinterPluginVersion = "1.14.0"
 project.ext.classpathRepositories = {
     google()
@@ -7,7 +7,7 @@ project.ext.classpathRepositories = {
 }
 project.ext.classpathDependencies = {
     classpath "com.android.tools.build:gradle:$androidPluginVersion"
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinPluginVersion"
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$project.ext.kotlinVersion"
     classpath "gradle.plugin.org.jmailen.gradle:kotlinter-gradle:$kotlinterPluginVersion"
 }
 project.ext.buildToolsVersion = "28.0.3"

@@ -56,7 +56,7 @@ internal class InitializationContentProvider : ContentProvider() {
     lateinit var autoswipeServiceDestructor: AutoSwipeServiceDestructor
 
     override fun onCreate(): Boolean {
-        val rootModule = RootModule(context)
+        val rootModule = RootModule(context!!)
         val accountModule = AccountModule()
         AccountComponentHolder.accountComponent = DaggerAccountComponent.builder()
                 .rootModule(rootModule)

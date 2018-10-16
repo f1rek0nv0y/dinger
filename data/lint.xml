@@ -4,4 +4,6 @@
         <!-- False positive -->
         <ignore regexp="ic_notification" />
     </issue>
+    <!-- Synthetic accessors could only ever have a real impact on lists -->
+    <issue id="SyntheticAccessor" severity="ignore" />
 </lint>

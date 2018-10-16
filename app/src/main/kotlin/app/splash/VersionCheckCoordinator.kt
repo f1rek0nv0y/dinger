@@ -1,8 +1,8 @@
 package app.splash
 
 import android.app.Activity
-import android.content.startIntent
 import android.content.Intent
+import android.content.startIntent
 import android.content.versionCode
 import android.net.Uri
 import android.support.v7.app.AlertDialog
@@ -36,7 +36,7 @@ internal class VersionCheckCoordinator(
                     }
                 }
 
-                override fun onError(e: Throwable?) {
+                override fun onError(e: Throwable) {
                     resultCallbackWeakRef.get()?.onVersionCheckCompleted()
                 }
             })
