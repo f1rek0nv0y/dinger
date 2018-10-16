@@ -8,6 +8,6 @@ project.ext.classpathRepositories = {
 project.ext.classpathDependencies = {
     classpath "com.android.tools.build:gradle:$androidPluginVersion"
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$project.ext.kotlinVersion"
-    classpath "gradle.plugin.org.jmailen.gradle:kotlinter-gradle:$kotlinterPluginVersion"
+    classpath "org.jmailen.gradle:kotlinter-gradle:$kotlinterPluginVersion"
 }
 project.ext.buildToolsVersion = "28.0.3"
