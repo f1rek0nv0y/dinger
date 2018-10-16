@@ -6,7 +6,7 @@ import android.net.Uri
 
 internal class InitializationContentProvider : ContentProvider() {
     override fun onCreate(): Boolean {
-        EventTrackerImpl.Void.init(context.applicationContext)
+        EventTrackerImpl.Void.init(context!!.applicationContext)
         return true
     }
 

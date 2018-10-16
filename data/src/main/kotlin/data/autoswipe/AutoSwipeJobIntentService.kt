@@ -26,9 +26,10 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
     lateinit var recommendationResolver: RecommendationUserResolver
     @Inject
     lateinit var reportHandler: AutoSwipeReportHandler
+    @Inject
+    lateinit var likeBatchTracker: LikeBatchTracker
     private var reScheduled = false
     private var ongoingActions = emptySet<Action<*>>()
-    private val likeBatchTracker = LikeBatchTracker(this, defaultSharedPreferences)
 
     init {
         AutoSwipeComponentHolder.autoSwipeComponent.inject(this)
@@ -98,27 +99,30 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
     }
 
     private fun processRecommendations(recommendations: List<DomainRecommendationUser>) {
-        recommendations.forEach {
+        recommendations.forEach { recommendation ->
             likeBatchTracker.addLike()
-            processRecommendationActionFactory.delegate(it).apply {
+            processRecommendationActionFactory.delegate(recommendation).apply {
                 ongoingActions += (this)
                 execute(this@AutoSwipeJobIntentService,
                         object : ProcessRecommendationAction.Callback {
                             override fun onRecommendationProcessed(
                                     answer: DomainLikedRecommendationAnswer) =
                                     saveRecommendationToDatabase(
-                                            recommendation = it,
+                                            recommendation = recommendation,
                                             liked = answer.rateLimitedUntilMillis != null,
                                             matched = answer.matched).also {
                                         reportHandler.addLikeAnswer(answer)
-                                        answer.rateLimitedUntilMillis?.let {
-                                            scheduleBecauseLimited(it)
+                                        answer.rateLimitedUntilMillis?.let { limitedUntil ->
+                                            scheduleBecauseLimited(limitedUntil)
                                             return
                                         }
                                     }
 
                             override fun onRecommendationProcessingFailed() =
-                                    saveRecommendationToDatabase(it, liked = false, matched = false)
+                                    saveRecommendationToDatabase(
+                                            recommendation,
+                                            liked = false,
+                                            matched = false)
                         })
             }
         }

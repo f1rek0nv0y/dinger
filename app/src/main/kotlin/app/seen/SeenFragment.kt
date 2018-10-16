@@ -12,7 +12,7 @@ internal class SeenFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?) =
-            FrameLayout(context).also {
+            FrameLayout(context!!).also {
                 it.background = ColorDrawable(Color.GREEN)
             }
 
