@@ -10,7 +10,7 @@ import javax.inject.Singleton
 internal class NotificationManagerModule {
     @Provides
     @Singleton
-    fun notificationID(): NotificationID = NotificationIDImpl()
+    fun notificationID(): NotificationID = NotificationIDImplSingleNotification()
 
     @Provides
     @Singleton
