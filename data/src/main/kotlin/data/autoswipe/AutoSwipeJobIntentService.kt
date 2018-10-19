@@ -11,6 +11,7 @@ import domain.recommendation.DomainRecommendationUser
 import org.stoyicker.dinger.data.R
 import reporter.CrashReporter
 import retrofit2.HttpException
+import java.util.concurrent.CountDownLatch
 import javax.inject.Inject
 
 internal class AutoSwipeJobIntentService : JobIntentService() {
@@ -99,6 +100,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
     }
 
     private fun processRecommendations(recommendations: List<DomainRecommendationUser>) {
+        val latch = CountDownLatch(recommendations.size)
         recommendations.forEach { recommendation ->
             likeBatchTracker.addLike()
             processRecommendationActionFactory.delegate(recommendation).apply {
@@ -112,6 +114,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
                                             liked = answer.rateLimitedUntilMillis != null,
                                             matched = answer.matched).also {
                                         reportHandler.addLikeAnswer(answer)
+                                        latch.countDown()
                                         answer.rateLimitedUntilMillis?.let { limitedUntil ->
                                             scheduleBecauseLimited(limitedUntil)
                                             return
@@ -122,10 +125,13 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
                                     saveRecommendationToDatabase(
                                             recommendation,
                                             liked = false,
-                                            matched = false)
+                                            matched = false).also {
+                                        latch.countDown()
+                                    }
                         })
             }
         }
+        latch.await()
         if (likeBatchTracker.isBatchOpen()) {
             scheduleBecauseMoreAvailable()
         } else {
