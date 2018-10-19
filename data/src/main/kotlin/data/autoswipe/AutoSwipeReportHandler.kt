@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.support.annotation.IntDef
+import data.autoswipe.AutoSwipeReportHandler.Companion.RESULT_BATCH_CLOSED
 import data.autoswipe.AutoSwipeReportHandler.Companion.RESULT_ERROR
 import data.autoswipe.AutoSwipeReportHandler.Companion.RESULT_MORE_AVAILABLE
 import data.autoswipe.AutoSwipeReportHandler.Companion.RESULT_RATE_LIMITED
@@ -51,11 +52,12 @@ internal class AutoSwipeReportHandler(
         const val RESULT_RATE_LIMITED = 1
         const val RESULT_MORE_AVAILABLE = 2
         const val RESULT_ERROR = 3
+        const val RESULT_BATCH_CLOSED = 4
     }
 }
 
 @Retention(AnnotationRetention.SOURCE)
-@IntDef(RESULT_RATE_LIMITED, RESULT_MORE_AVAILABLE, RESULT_ERROR)
+@IntDef(RESULT_RATE_LIMITED, RESULT_MORE_AVAILABLE, RESULT_ERROR, RESULT_BATCH_CLOSED)
 internal annotation class AutoSwipeResult
 
 private fun generateTitle(context: Context, likes: Int, matches: Int) = StringBuilder().apply {
@@ -71,6 +73,7 @@ private fun generateBody(
     RESULT_RATE_LIMITED -> context.getString(R.string.autoswipe_notification_body_capped)
     RESULT_MORE_AVAILABLE -> context.getString(R.string.autoswipe_notification_body_more_available)
     RESULT_ERROR -> context.getString(R.string.autoswipe_notification_body_error)
+    RESULT_BATCH_CLOSED -> context.getString(R.string.autoswipe_notification_body_batch_closed)
     else -> throw IllegalStateException("Unexpected result $result in the autoswipe report.")
 }
 

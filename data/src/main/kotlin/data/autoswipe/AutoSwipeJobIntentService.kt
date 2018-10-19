@@ -129,7 +129,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
         if (likeBatchTracker.isBatchOpen()) {
             scheduleBecauseMoreAvailable()
         } else {
-            scheduleBecauseError()
+            scheduleBecauseBatchClosed()
         }
     }
 
@@ -177,6 +177,19 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
             reportHandler.show(
                     this@AutoSwipeJobIntentService,
                     AutoSwipeReportHandler.RESULT_RATE_LIMITED)
+            execute(this@AutoSwipeJobIntentService, Unit)
+            reScheduled = true
+        }
+    }
+
+    private fun scheduleBecauseBatchClosed() {
+        val notBeforeMillis = System.currentTimeMillis() + 1000 * 60 * 60 * 2L //2h from now
+        likeBatchTracker.closeBatch()
+        FromRateLimitedPostAutoSwipeAction(notBeforeMillis).apply {
+            ongoingActions += this
+            reportHandler.show(
+                    this@AutoSwipeJobIntentService,
+                    AutoSwipeReportHandler.RESULT_BATCH_CLOSED)
             execute(this@AutoSwipeJobIntentService, Unit)
             reScheduled = true
         }
