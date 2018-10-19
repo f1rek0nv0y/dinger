@@ -215,6 +215,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
     }
 
     private fun releaseResources() {
+        likeBatchTracker.closeBatch()
         ongoingActions.forEach { it.dispose() }
         ongoingActions = emptySet()
     }
