@@ -21,7 +21,7 @@ Once you have the app installed, and you have an account registered in Tinder us
 
 ## Distribution
 
-If you have F-Droid, this app can be updated by it. In addition, In any case, whenever you open the app, you will get notified if newer versions are available and can download them via the [website](https://stoyicker.github.io/dinger/#download "Dinger APK download").
+The first time, you need to install the apk manually. In addition, whenever you open the app, you will get notified if newer versions are available and can download them via the [website](https://stoyicker.github.io/dinger/#download "Dinger APK download").
 
 ## Feature requests & bug reports
 
