@@ -13,9 +13,11 @@ import reporter.CrashReporter
 import retrofit2.HttpException
 import java.util.concurrent.CountDownLatch
 import javax.inject.Inject
+import javax.inject.Named
 
 internal class AutoSwipeJobIntentService : JobIntentService() {
     @Inject
+    @Named("bugsnag")
     lateinit var crashReporter: CrashReporter
     @Inject
     lateinit var defaultSharedPreferences: SharedPreferences

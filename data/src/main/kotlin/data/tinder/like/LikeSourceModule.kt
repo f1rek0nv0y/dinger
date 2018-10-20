@@ -9,7 +9,7 @@ import com.squareup.moshi.Moshi
 import dagger.Lazy
 import dagger.Module
 import dagger.Provides
-import data.crash.VoidCrashReporterModule
+import data.crash.CrashReporterModule
 import data.network.JsonObjectOrFalseAdapter
 import data.network.JsonObjectOrFalseAdapterModule
 import data.network.ParserModule
@@ -23,7 +23,7 @@ import javax.inject.Singleton
     JsonObjectOrFalseAdapterModule::class,
     ParserModule::class,
     TinderApiModule::class,
-    VoidCrashReporterModule::class])
+    CrashReporterModule::class])
 internal class LikeSourceModule {
     @Provides
     @Singleton

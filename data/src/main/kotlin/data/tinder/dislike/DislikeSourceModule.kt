@@ -9,7 +9,7 @@ import com.squareup.moshi.Moshi
 import dagger.Lazy
 import dagger.Module
 import dagger.Provides
-import data.crash.VoidCrashReporterModule
+import data.crash.CrashReporterModule
 import data.network.ParserModule
 import data.tinder.TinderApi
 import data.tinder.TinderApiModule
@@ -18,7 +18,7 @@ import reporter.CrashReporter
 import javax.inject.Singleton
 
 @Module(includes = [
-    ParserModule::class, TinderApiModule::class, VoidCrashReporterModule::class])
+    ParserModule::class, TinderApiModule::class, CrashReporterModule::class])
 internal class DislikeSourceModule {
     @Provides
     @Singleton

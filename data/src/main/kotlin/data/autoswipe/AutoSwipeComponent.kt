@@ -1,7 +1,7 @@
 package data.autoswipe
 
 import dagger.Component
-import data.crash.VoidCrashReporterModule
+import data.crash.CrashReporterModule
 import data.preferences.DefaultSharedPreferencesModule
 import data.tinder.recommendation.GetRecommendationsActionModule
 import data.tinder.recommendation.RecommendationUserResolverModule
@@ -10,7 +10,7 @@ import javax.inject.Singleton
 @Component(modules = [
     AutoSwipeReportHandlerModule::class,
     DefaultSharedPreferencesModule::class,
-    VoidCrashReporterModule::class,
+    CrashReporterModule::class,
     GetRecommendationsActionModule::class,
     ProcessRecommendationActionFactoryModule::class,
     RecommendationUserResolverModule::class])

@@ -1,6 +1,7 @@
 final def androidPluginVersion = "3.2.1"
 project.ext.kotlinVersion = "1.2.71"
 final def kotlinterPluginVersion = "1.20.1"
+final def bugsnagPluginVersion = "3.5.0"
 project.ext.classpathRepositories = {
     google()
     maven { url "https://plugins.gradle.org/m2/" }
@@ -9,5 +10,6 @@ project.ext.classpathDependencies = {
     classpath "com.android.tools.build:gradle:$androidPluginVersion"
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$project.ext.kotlinVersion"
     classpath "org.jmailen.gradle:kotlinter-gradle:$kotlinterPluginVersion"
+    classpath "com.bugsnag:bugsnag-android-gradle-plugin:$bugsnagPluginVersion"
 }
 project.ext.buildToolsVersion = "28.0.3"

@@ -8,7 +8,7 @@ import com.nytimes.android.external.store3.middleware.moshi.MoshiParserFactory
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
-import data.crash.VoidCrashReporterModule
+import data.crash.CrashReporterModule
 import data.network.ParserModule
 import data.tinder.TinderApi
 import data.tinder.TinderApiModule
@@ -18,7 +18,7 @@ import javax.inject.Singleton
 import dagger.Lazy as DaggerLazy
 
 @Module(includes = [
-    ParserModule::class, TinderApiModule::class, VoidCrashReporterModule::class])
+    ParserModule::class, TinderApiModule::class, CrashReporterModule::class])
 internal class LoginSourceModule {
     @Provides
     @Singleton

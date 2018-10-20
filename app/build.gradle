@@ -12,6 +12,7 @@ apply from: "${rootProject.rootDir}/_buildsystem/optimizations.gradle"
 apply from: "${rootProject.rootDir}/_buildsystem/test_options.gradle"
 
 apply plugin: "com.android.application"
+apply plugin: "com.bugsnag.android.gradle"
 apply plugin: "kotlin-android"
 apply plugin: "kotlin-kapt"
 apply plugin: "org.jmailen.kotlinter"

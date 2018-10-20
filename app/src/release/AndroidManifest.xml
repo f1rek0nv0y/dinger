@@ -5,6 +5,10 @@
     package="org.stoyicker.dinger">
     <application
         android:name="app.MainApplication"
-        tools:ignore="AllowBackup" />
-    <!-- The main manifest takes care of AllowBackup -->
+        tools:ignore="AllowBackup">
+        <!-- The main manifest takes care of AllowBackup -->
+        <meta-data
+            android:name="com.bugsnag.android.API_KEY"
+            android:value="60f9e29b9f631f4d9c20be26923857ac"/>
+    </application>
 </manifest>

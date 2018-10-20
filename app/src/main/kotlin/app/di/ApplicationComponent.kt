@@ -1,9 +1,10 @@
 package app.di
 
+import app.MainApplication
 import app.alarmbanner.AlarmBannerComponent
 import app.alarmbanner.AutoSwipeTriggerModule
 import app.alarmbanner.ContinueModule
-import app.crash.VoidCrashReporterModule
+import app.crash.BugsnagCrashReporterModule
 import app.event.VoidEventTrackerModule
 import app.splash.SplashComponent
 import app.splash.SplashModule
@@ -14,10 +15,11 @@ import javax.inject.Singleton
 
 @Component(modules = [
     SchedulerModule::class,
-    VoidCrashReporterModule::class,
+    BugsnagCrashReporterModule::class,
     VoidEventTrackerModule::class])
 @Singleton
 internal interface ApplicationComponent {
+    fun inject(mainApplication: MainApplication)
     fun newSplashComponent(splashModule: SplashModule): SplashComponent
     fun newTinderLoginComponent(tinderLoginModule: TinderLoginModule): TinderLoginComponent
     fun newAlarmBannerComponent(
