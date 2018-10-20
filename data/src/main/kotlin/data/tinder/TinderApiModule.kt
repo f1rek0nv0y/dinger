@@ -20,6 +20,7 @@ import domain.login.TinderLoginUseCase
 import io.reactivex.Single
 import io.reactivex.observers.DisposableCompletableObserver
 import io.reactivex.schedulers.Schedulers
+import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.stoyicker.dinger.data.BuildConfig
@@ -110,7 +111,9 @@ internal class TinderApiModule {
                     null
                 }
             }
-            }.build())
+            }.dispatcher(Dispatcher().apply {
+                maxRequests = 30
+            }).build())
             .baseUrl(TinderApi.BASE_URL)
             .build()
             .create(TinderApi::class.java)
