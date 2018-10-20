@@ -4,7 +4,7 @@ import app.MainApplication
 import app.alarmbanner.AlarmBannerComponent
 import app.alarmbanner.AutoSwipeTriggerModule
 import app.alarmbanner.ContinueModule
-import app.crash.BugsnagCrashReporterModule
+import app.crash.CrashReporterModule
 import app.event.VoidEventTrackerModule
 import app.splash.SplashComponent
 import app.splash.SplashModule
@@ -15,7 +15,7 @@ import javax.inject.Singleton
 
 @Component(modules = [
     SchedulerModule::class,
-    BugsnagCrashReporterModule::class,
+    CrashReporterModule::class,
     VoidEventTrackerModule::class])
 @Singleton
 internal interface ApplicationComponent {

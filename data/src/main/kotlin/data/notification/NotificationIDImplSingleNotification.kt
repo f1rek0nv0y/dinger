@@ -7,5 +7,5 @@ internal class NotificationIDImplSingleNotification : NotificationID {
         const val ID = 0
     }
 
-    override fun next(ignored: Context) = ID
+    override fun next(context: Context) = ID
 }

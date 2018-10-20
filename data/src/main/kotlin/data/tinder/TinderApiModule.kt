@@ -112,7 +112,7 @@ internal class TinderApiModule {
                 }
             }
             }.dispatcher(Dispatcher().apply {
-                maxRequests = 30
+                maxRequestsPerHost = 30
             }).build())
             .baseUrl(TinderApi.BASE_URL)
             .build()
