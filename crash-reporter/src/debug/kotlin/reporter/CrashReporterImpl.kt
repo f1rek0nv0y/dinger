@@ -15,11 +15,11 @@ internal sealed class CrashReporterImpl : CrashReporter {
     }
     object Bugsnag : CrashReporterImpl() {
         override fun init(context: Context) {
-            com.bugsnag.android.Bugsnag.init(context)
+            Log.i("Bugsnag-debug-logs", "init")
         }
 
         override fun report(throwable: Throwable) {
-            com.bugsnag.android.Bugsnag.notify(throwable)
+            Log.i("Bugsnag-debug-logs", throwable.message, throwable)
         }
     }
 }
