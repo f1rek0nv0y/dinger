@@ -12,6 +12,7 @@ import data.autoswipe.AutoSwipeReportHandler.Companion.RESULT_RATE_LIMITED
 import data.notification.NotificationManager
 import domain.like.DomainLikedRecommendationAnswer
 import org.stoyicker.dinger.data.R
+import java.util.Date
 
 internal class AutoSwipeReportHandler(
         private val defaultSharedPreferences: SharedPreferences,
@@ -33,12 +34,15 @@ internal class AutoSwipeReportHandler(
 
     private fun addLike() { ++likeCounter }
 
-    fun show(context: Context, @AutoSwipeResult result: Int) {
+    fun show(context: Context, scheduledFor: Long?, @AutoSwipeResult result: Int) {
         if (!areNotificationsEnabled(context, defaultSharedPreferences)) return
         notificationManager.notify(
                 channelName = R.string.autoswipe_notification_channel_name,
                 title = generateTitle(context, likeCounter, matchCounter),
-                body = generateBody(context, result),
+                body = generateBody(
+                        context,
+                        if (scheduledFor == null) null else Date(scheduledFor).toString(),
+                        result),
                 category = NotificationManager.CATEGORY_SERVICE,
                 priority = NotificationManager.PRIORITY_LOW,
                 clickHandler = PendingIntent.getActivity(
@@ -69,11 +73,15 @@ private fun generateTitle(context: Context, likes: Int, matches: Int) = StringBu
 
 private fun generateBody(
         context: Context,
+        scheduledFor: String?,
         @AutoSwipeResult result: Int) = when (result) {
-    RESULT_RATE_LIMITED -> context.getString(R.string.autoswipe_notification_body_capped)
+    RESULT_RATE_LIMITED -> context.getString(
+            R.string.autoswipe_notification_body_capped, scheduledFor)
     RESULT_MORE_AVAILABLE -> context.getString(R.string.autoswipe_notification_body_more_available)
-    RESULT_ERROR -> context.getString(R.string.autoswipe_notification_body_error)
-    RESULT_BATCH_CLOSED -> context.getString(R.string.autoswipe_notification_body_batch_closed)
+    RESULT_ERROR -> context.getString(
+            R.string.autoswipe_notification_body_error, scheduledFor)
+    RESULT_BATCH_CLOSED -> context.getString(
+            R.string.autoswipe_notification_body_batch_closed, scheduledFor)
     else -> throw IllegalStateException("Unexpected result $result in the autoswipe report.")
 }
 

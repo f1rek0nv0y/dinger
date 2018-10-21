@@ -171,6 +171,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
         ongoingActions += this
         reportHandler.show(
                 this@AutoSwipeJobIntentService,
+                null,
                 AutoSwipeReportHandler.RESULT_MORE_AVAILABLE)
         execute(this@AutoSwipeJobIntentService, Unit)
         reScheduled = true
@@ -182,6 +183,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
             ongoingActions += this
             reportHandler.show(
                     this@AutoSwipeJobIntentService,
+                    notBeforeMillis,
                     AutoSwipeReportHandler.RESULT_RATE_LIMITED)
             execute(this@AutoSwipeJobIntentService, Unit)
             reScheduled = true
@@ -195,6 +197,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
             ongoingActions += this
             reportHandler.show(
                     this@AutoSwipeJobIntentService,
+                    notBeforeMillis,
                     AutoSwipeReportHandler.RESULT_BATCH_CLOSED)
             execute(this@AutoSwipeJobIntentService, Unit)
             reScheduled = true
@@ -205,7 +208,12 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
         likeBatchTracker.closeBatch()
         if (error != null) {
             crashReporter.report(error)
-            reportHandler.show(this, AutoSwipeReportHandler.RESULT_ERROR)
+            reportHandler.show(
+                    this,
+                    resources.getInteger(
+                            org.stoyicker.dinger.domain.R.integer.sweep_from_error_delay_ms)
+                            .toLong(),
+                    AutoSwipeReportHandler.RESULT_ERROR)
         }
         FromErrorPostAutoSwipeAction().apply {
             ongoingActions += this
