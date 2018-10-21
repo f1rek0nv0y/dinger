@@ -6,11 +6,13 @@ import android.content.SharedPreferences
 import android.support.v4.app.JobIntentService
 import data.tinder.recommendation.GetRecommendationsAction
 import data.tinder.recommendation.RecommendationUserResolver
+import domain.autoswipe.FromErrorPostAutoSwipeUseCase
 import domain.like.DomainLikedRecommendationAnswer
 import domain.recommendation.DomainRecommendationUser
 import org.stoyicker.dinger.data.R
 import reporter.CrashReporter
 import retrofit2.HttpException
+import java.util.Date
 import java.util.concurrent.CountDownLatch
 import javax.inject.Inject
 
@@ -191,7 +193,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
     }
 
     private fun scheduleBecauseBatchClosed() {
-        val notBeforeMillis = System.currentTimeMillis() + 1000 * 60 * 60 * 2L //2h from now
+        val notBeforeMillis = Date().time + 1000 * 60 * 60 * 2L //2h from now
         likeBatchTracker.closeBatch()
         FromRateLimitedPostAutoSwipeAction(notBeforeMillis).apply {
             ongoingActions += this
@@ -210,9 +212,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
             crashReporter.report(error)
             reportHandler.show(
                     this,
-                    resources.getInteger(
-                            org.stoyicker.dinger.domain.R.integer.sweep_from_error_delay_ms)
-                            .toLong(),
+                    FromErrorPostAutoSwipeUseCase.interval(this),
                     AutoSwipeReportHandler.RESULT_ERROR)
         }
         FromErrorPostAutoSwipeAction().apply {

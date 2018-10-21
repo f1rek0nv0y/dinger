@@ -16,6 +16,7 @@ internal interface NotificationManager {
     fun notify(@StringRes channelName: Int,
                title: String,
                body: String,
+               bigBody: String? = null,
                @NotificationCategory category: String,
                @NotificationPriority priority: Int = NotificationManager.PRIORITY_MEDIUM,
                @NotificationVisibility visibility: Int = NotificationManager.VISIBILITY_PUBLIC,

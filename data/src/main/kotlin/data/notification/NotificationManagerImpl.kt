@@ -12,6 +12,7 @@ import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
 import org.jetbrains.annotations.Contract
 import org.stoyicker.dinger.data.R
+import java.util.Date
 import java.util.Locale
 
 internal class NotificationManagerImpl(
@@ -38,6 +39,7 @@ internal class NotificationManagerImpl(
             @StringRes channelName: Int,
             title: String,
             body: String,
+            bigBody: String?,
             @NotificationCategory category: String,
             @NotificationPriority priority: Int,
             @NotificationVisibility visibility: Int,
@@ -66,11 +68,13 @@ internal class NotificationManagerImpl(
                     .setPriority(priority)
                     .setSmallIcon(R.drawable.ic_notification)
                     .setTicker(body)
+                    .setStyle(Notification.BigTextStyle()
+                            .bigText(bigBody))
                     .setShowWhen(true)
                     .apply {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
                             setLocalOnly(false)
-                            setSortKey("${System.currentTimeMillis()}")
+                            setSortKey("${Date().time}")
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                 setCategory(NotificationCompat.CATEGORY_SERVICE)
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
