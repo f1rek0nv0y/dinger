@@ -11,6 +11,9 @@ import android.provider.Settings
 import android.support.annotation.RequiresApi
 import android.support.v7.preference.Preference
 import android.support.v7.preference.PreferenceFragmentCompat
+import domain.autoswipe.ImmediatePostAutoSwipeUseCase
+import io.reactivex.observers.DisposableCompletableObserver
+import io.reactivex.schedulers.Schedulers
 import org.stoyicker.dinger.R
 
 internal class SettingsPreferenceFragmentCompat : PreferenceFragmentCompat() {
@@ -19,6 +22,7 @@ internal class SettingsPreferenceFragmentCompat : PreferenceFragmentCompat() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             initializeBypassDozePreference()
         }
+        addTriggerToAutoswipeEnabledPreference()
         initializeSharePreference()
         initializeAboutTheAppPreference()
     }
@@ -38,6 +42,24 @@ internal class SettingsPreferenceFragmentCompat : PreferenceFragmentCompat() {
                         .setData(Uri.parse("package:$packageName"))
             }
             context?.startIntent(intent)
+            true
+        }
+    }
+
+
+    private fun addTriggerToAutoswipeEnabledPreference() {
+        findPreference(context?.getString(R.string.preference_key_autoswipe_enabled))
+                ?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, value ->
+            if (value is Boolean && value) {
+                ImmediatePostAutoSwipeUseCase(context!!, Schedulers.trampoline()).execute(
+                        object : DisposableCompletableObserver() {
+                            override fun onComplete() {
+                            }
+
+                            override fun onError(error: Throwable) {
+                            }
+                        })
+            }
             true
         }
     }
