@@ -57,6 +57,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
         super.onDestroy()
         releaseResources()
         if (!reScheduled) {
+            likeBatchTracker.closeBatch()
             scheduleBecauseError()
         }
     }
@@ -169,45 +170,46 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
                 teasers = recommendation.teasers))
     }
 
-    private fun scheduleBecauseMoreAvailable() = ImmediatePostAutoSwipeAction().apply {
-        ongoingActions += this
+    private fun scheduleBecauseMoreAvailable() {
         reportHandler.show(
-                this@AutoSwipeJobIntentService,
+                this,
                 null,
                 AutoSwipeReportHandler.RESULT_MORE_AVAILABLE)
-        execute(this@AutoSwipeJobIntentService, Unit)
-        reScheduled = true
-    }
-
-    private fun scheduleBecauseLimited(notBeforeMillis: Long) {
-        likeBatchTracker.closeBatch()
-        FromRateLimitedPostAutoSwipeAction(notBeforeMillis).apply {
+        ImmediatePostAutoSwipeAction().apply {
             ongoingActions += this
-            reportHandler.show(
-                    this@AutoSwipeJobIntentService,
-                    notBeforeMillis,
-                    AutoSwipeReportHandler.RESULT_RATE_LIMITED)
             execute(this@AutoSwipeJobIntentService, Unit)
             reScheduled = true
         }
+    }
+
+    private fun scheduleBecauseLimited(notBeforeMillis: Long) {
+        FromRateLimitedPostAutoSwipeAction(notBeforeMillis).apply {
+            ongoingActions += this
+            execute(this@AutoSwipeJobIntentService, Unit)
+        }
+        reportHandler.show(
+                this,
+                notBeforeMillis,
+                AutoSwipeReportHandler.RESULT_RATE_LIMITED)
+        reScheduled = true
+        likeBatchTracker.closeBatch()
     }
 
     private fun scheduleBecauseBatchClosed() {
         val notBeforeMillis = Date().time + 1000 * 60 * 60 * 2L //2h from now
-        likeBatchTracker.closeBatch()
         FromRateLimitedPostAutoSwipeAction(notBeforeMillis).apply {
             ongoingActions += this
-            reportHandler.show(
-                    this@AutoSwipeJobIntentService,
-                    notBeforeMillis,
-                    AutoSwipeReportHandler.RESULT_BATCH_CLOSED)
             execute(this@AutoSwipeJobIntentService, Unit)
-            reScheduled = true
         }
+        reportHandler.show(
+                this,
+                notBeforeMillis,
+                AutoSwipeReportHandler.RESULT_BATCH_CLOSED)
+        reScheduled = true
+        likeBatchTracker.closeBatch()
     }
 
     private fun scheduleBecauseError(error: Throwable? = null) {
-        likeBatchTracker.closeBatch()
         if (error != null) {
             crashReporter.report(error)
             reportHandler.show(
@@ -218,12 +220,12 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
         FromErrorPostAutoSwipeAction().apply {
             ongoingActions += this
             execute(this@AutoSwipeJobIntentService, Unit)
-            reScheduled = true
         }
+        reScheduled = true
+        likeBatchTracker.closeBatch()
     }
 
     private fun releaseResources() {
-        likeBatchTracker.closeBatch()
         ongoingActions.forEach { it.dispose() }
         ongoingActions = emptySet()
     }
