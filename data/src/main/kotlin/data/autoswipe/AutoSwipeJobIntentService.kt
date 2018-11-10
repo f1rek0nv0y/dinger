@@ -174,6 +174,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
         reportHandler.show(
                 this,
                 null,
+                null,
                 AutoSwipeReportHandler.RESULT_MORE_AVAILABLE)
         ImmediatePostAutoSwipeAction().apply {
             ongoingActions += this
@@ -190,6 +191,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
         reportHandler.show(
                 this,
                 notBeforeMillis,
+                null,
                 AutoSwipeReportHandler.RESULT_RATE_LIMITED)
         reScheduled = true
         likeBatchTracker.closeBatch()
@@ -204,6 +206,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
         reportHandler.show(
                 this,
                 notBeforeMillis,
+                null,
                 AutoSwipeReportHandler.RESULT_BATCH_CLOSED)
         reScheduled = true
         likeBatchTracker.closeBatch()
@@ -215,6 +218,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
             reportHandler.show(
                     this,
                     FromErrorPostAutoSwipeUseCase.interval(this),
+                    error.localizedMessage,
                     AutoSwipeReportHandler.RESULT_ERROR)
         }
         FromErrorPostAutoSwipeAction().apply {

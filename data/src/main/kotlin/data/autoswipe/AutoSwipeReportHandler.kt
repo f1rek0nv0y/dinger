@@ -34,7 +34,7 @@ internal class AutoSwipeReportHandler(
 
     private fun addLike() { ++likeCounter }
 
-    fun show(context: Context, scheduledFor: Long?, @AutoSwipeResult result: Int) {
+    fun show(context: Context, scheduledFor: Long?, errorMessage: String?, @AutoSwipeResult result: Int) {
         if (!areNotificationsEnabled(context, defaultSharedPreferences)) return
         notificationManager.notify(
                 channelName = R.string.autoswipe_notification_channel_name,
@@ -42,6 +42,7 @@ internal class AutoSwipeReportHandler(
                 body = generateBody(
                         context,
                         if (scheduledFor == null) null else Date(scheduledFor).toString(),
+                        errorMessage,
                         result),
                 category = NotificationManager.CATEGORY_SERVICE,
                 priority = NotificationManager.PRIORITY_LOW,
@@ -74,12 +75,13 @@ private fun generateTitle(context: Context, likes: Int, matches: Int) = StringBu
 private fun generateBody(
         context: Context,
         scheduledFor: String?,
+        errorMessage: String?,
         @AutoSwipeResult result: Int) = when (result) {
     RESULT_RATE_LIMITED -> context.getString(
             R.string.autoswipe_notification_body_capped, scheduledFor)
     RESULT_MORE_AVAILABLE -> context.getString(R.string.autoswipe_notification_body_more_available)
     RESULT_ERROR -> context.getString(
-            R.string.autoswipe_notification_body_error, scheduledFor)
+            R.string.autoswipe_notification_body_error, scheduledFor, errorMessage)
     RESULT_BATCH_CLOSED -> context.getString(
             R.string.autoswipe_notification_body_batch_closed, scheduledFor)
     else -> throw IllegalStateException("Unexpected result $result in the autoswipe report.")

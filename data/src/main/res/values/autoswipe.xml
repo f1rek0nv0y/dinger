@@ -11,7 +11,7 @@
         <item quantity="other">, %1$d new matches</item>
     </plurals>
 
-    <string name="autoswipe_notification_body_error">Scheduled for %s because of an error</string>
+    <string name="autoswipe_notification_body_error">Scheduled for %s because of error: %s</string>
     <string name="autoswipe_notification_body_batch_closed">Scheduled for %s to avoid 2k likes/hour cap</string>
     <string name="autoswipe_notification_body_more_available">Scheduled to request more profiles immediately</string>
     <string name="autoswipe_notification_body_capped">Scheduled for %s, when the cap resets</string>
