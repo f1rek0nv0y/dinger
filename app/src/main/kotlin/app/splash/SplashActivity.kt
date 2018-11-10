@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import app.MainApplication
-import app.alarmbanner.AlarmBannerActivity
+import app.home.HomeActivity
 import app.tinder.login.TinderLoginActivity
 import javax.inject.Inject
 
@@ -79,7 +79,7 @@ internal class SplashActivity :
     }
 
     private fun continueLoggedIn() {
-        AlarmBannerActivity.getCallingIntent(this).apply {
+        HomeActivity.getCallingIntent(this).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(this)
         }
