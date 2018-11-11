@@ -14,7 +14,9 @@ import reporter.CrashReporter
 import retrofit2.HttpException
 import java.util.Date
 import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.random.Random
 
 internal class AutoSwipeJobIntentService : JobIntentService() {
     @Inject
@@ -132,6 +134,12 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
                                         latch.countDown()
                                     }
                         })
+            }
+            if (defaultSharedPreferences
+                            .getBoolean(
+                                    getString(
+                                            R.string.preference_key_swipe_at_human_speed), true)) {
+                TimeUnit.SECONDS.sleep(Random.nextLong(2, 20))
             }
         }
         latch.await()

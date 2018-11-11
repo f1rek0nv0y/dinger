@@ -12,6 +12,11 @@
             android:key="@string/preference_key_autoswipe_enabled"
             android:title="@string/preference_title_autoswipe_enabled"/>
         <android.support.v7.preference.SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:dependency="@string/preference_key_autoswipe_enabled"
+            android:key="@string/preference_key_swipe_at_human_speed"
+            android:title="@string/preference_title_swipe_at_human_speed"/>
+        <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="false"
             android:dependency="@string/preference_key_autoswipe_enabled"
             android:key="@string/preference_key_autoswipe_notifications_enabled"
