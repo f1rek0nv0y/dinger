@@ -43,10 +43,8 @@ internal class AutoSwipeReportHandler(
             context: Context,
             scheduledFor: Long?,
             errorMessage: String?,
-            @AutoSwipeResult result: Int) {
-        if (!areNotificationsEnabled(context, defaultSharedPreferences)) return
+            @AutoSwipeResult result: Int) =
         notificationManager.show(build(context, scheduledFor, errorMessage, result))
-    }
 
     fun buildPlaceHolder(context: Context) = build(context, null, null, RESULT_PLACEHOLDER)
 
@@ -110,8 +108,3 @@ private fun generateBody(
     RESULT_PLACEHOLDER -> context.getString(R.string.autoswipe_notification_body_placeholder)
     else -> throw IllegalStateException("Unexpected result $result in the autoswipe report.")
 }
-
-private fun areNotificationsEnabled(context: Context, preferences: SharedPreferences) =
-        preferences.getBoolean(
-                context.getString(R.string.preference_key_autoswipe_notifications_enabled),
-                false)
