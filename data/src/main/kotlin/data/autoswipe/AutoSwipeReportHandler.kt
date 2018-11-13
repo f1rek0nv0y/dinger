@@ -8,6 +8,7 @@ import android.support.annotation.IntDef
 import data.autoswipe.AutoSwipeReportHandler.Companion.RESULT_BATCH_CLOSED
 import data.autoswipe.AutoSwipeReportHandler.Companion.RESULT_ERROR
 import data.autoswipe.AutoSwipeReportHandler.Companion.RESULT_MORE_AVAILABLE
+import data.autoswipe.AutoSwipeReportHandler.Companion.RESULT_PLACEHOLDER
 import data.autoswipe.AutoSwipeReportHandler.Companion.RESULT_RATE_LIMITED
 import data.notification.NotificationManager
 import domain.like.DomainLikedRecommendationAnswer
@@ -30,39 +31,61 @@ internal class AutoSwipeReportHandler(
         }
     }
 
-    private fun addMatch() { ++matchCounter }
-
-    private fun addLike() { ++likeCounter }
-
-    fun show(context: Context, scheduledFor: Long?, errorMessage: String?, @AutoSwipeResult result: Int) {
-        if (!areNotificationsEnabled(context, defaultSharedPreferences)) return
-        notificationManager.notify(
-                channelName = R.string.autoswipe_notification_channel_name,
-                title = generateTitle(context, likeCounter, matchCounter),
-                body = generateBody(
-                        context,
-                        if (scheduledFor == null) null else Date(scheduledFor).toString(),
-                        errorMessage,
-                        result),
-                category = NotificationManager.CATEGORY_SERVICE,
-                priority = NotificationManager.PRIORITY_LOW,
-                clickHandler = PendingIntent.getActivity(
-                        context,
-                        1,
-                        Intent("org.stoyicker.action.HOME"),
-                        PendingIntent.FLAG_UPDATE_CURRENT))
+    private fun addMatch() {
+        ++matchCounter
     }
+
+    private fun addLike() {
+        ++likeCounter
+    }
+
+    fun show(
+            context: Context,
+            scheduledFor: Long?,
+            errorMessage: String?,
+            @AutoSwipeResult result: Int) {
+        if (!areNotificationsEnabled(context, defaultSharedPreferences)) return
+        notificationManager.show(build(context, scheduledFor, errorMessage, result))
+    }
+
+    fun buildPlaceHolder(context: Context) = build(context, null, null, RESULT_PLACEHOLDER)
+
+    private fun build(
+            context: Context,
+            scheduledFor: Long?,
+            errorMessage: String?,
+            @AutoSwipeResult result: Int) =
+            notificationManager.build(
+                    channelName = R.string.autoswipe_notification_channel_name,
+                    title = generateTitle(context, likeCounter, matchCounter),
+                    body = generateBody(
+                            context,
+                            if (scheduledFor == null) null else Date(scheduledFor).toString(),
+                            errorMessage,
+                            result),
+                    category = NotificationManager.CATEGORY_SERVICE,
+                    priority = NotificationManager.PRIORITY_LOW,
+                    clickHandler = PendingIntent.getActivity(
+                            context,
+                            1,
+                            Intent("org.stoyicker.action.HOME"),
+                            PendingIntent.FLAG_UPDATE_CURRENT))
 
     companion object {
         const val RESULT_RATE_LIMITED = 1
         const val RESULT_MORE_AVAILABLE = 2
         const val RESULT_ERROR = 3
         const val RESULT_BATCH_CLOSED = 4
+        const val RESULT_PLACEHOLDER = 5
     }
 }
 
 @Retention(AnnotationRetention.SOURCE)
-@IntDef(RESULT_RATE_LIMITED, RESULT_MORE_AVAILABLE, RESULT_ERROR, RESULT_BATCH_CLOSED)
+@IntDef(RESULT_RATE_LIMITED,
+        RESULT_MORE_AVAILABLE,
+        RESULT_ERROR,
+        RESULT_BATCH_CLOSED,
+        RESULT_PLACEHOLDER)
 internal annotation class AutoSwipeResult
 
 private fun generateTitle(context: Context, likes: Int, matches: Int) = StringBuilder().apply {
@@ -84,6 +107,7 @@ private fun generateBody(
             R.string.autoswipe_notification_body_error, scheduledFor, errorMessage)
     RESULT_BATCH_CLOSED -> context.getString(
             R.string.autoswipe_notification_body_batch_closed, scheduledFor)
+    RESULT_PLACEHOLDER -> context.getString(R.string.autoswipe_notification_body_placeholder)
     else -> throw IllegalStateException("Unexpected result $result in the autoswipe report.")
 }
 

@@ -19,7 +19,7 @@ internal class NotificationIDImpl : NotificationID {
     private fun retrieveCurrent(prefs: SharedPreferences) = prefs.getInt(
             PREFERENCE_KEY_NOTIFICATION_ID, 0)
 
-    @SuppressLint("ApplySharedPref") // Intended, otherwise notification overriding could occur
+    @SuppressLint("ApplySharedPref") // Intended, otherwise delegate overriding could occur
     private fun saveCurrent(prefs: SharedPreferences, value: Int) {
         prefs.edit().putInt(PREFERENCE_KEY_NOTIFICATION_ID, value).apply()
     }

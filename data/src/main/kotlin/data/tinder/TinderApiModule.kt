@@ -137,7 +137,7 @@ private fun finishAccount(
         notificationManager: NotificationManager) {
     LoginManager.getInstance().logOut()
     appAccountAuthenticator.removeAccount()
-    notificationManager.notify(
+    notificationManager.build(
             channelName = R.string.authentication_notification_channel_name,
             title = R.string.authentication_notification_title,
             body = R.string.authentication_notification_body,

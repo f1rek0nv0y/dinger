@@ -5,22 +5,24 @@ import android.support.annotation.StringRes
 import android.support.v4.app.NotificationCompat
 
 internal interface NotificationManager {
-    fun notify(@StringRes channelName: Int,
-               @StringRes title: Int,
-               @StringRes body: Int,
-               @NotificationCategory category: String,
-               @NotificationPriority priority: Int = NotificationManager.PRIORITY_MEDIUM,
-               @NotificationVisibility visibility: Int = NotificationManager.VISIBILITY_PUBLIC,
-               clickHandler: PendingIntent? = null)
+    fun build(@StringRes channelName: Int,
+              @StringRes title: Int,
+              @StringRes body: Int,
+              @NotificationCategory category: String,
+              @NotificationPriority priority: Int = NotificationManager.PRIORITY_MEDIUM,
+              @NotificationVisibility visibility: Int = NotificationManager.VISIBILITY_PUBLIC,
+              clickHandler: PendingIntent? = null) : IdentifiedNotification
 
-    fun notify(@StringRes channelName: Int,
-               title: String,
-               body: String,
-               bigBody: String? = null,
-               @NotificationCategory category: String,
-               @NotificationPriority priority: Int = NotificationManager.PRIORITY_MEDIUM,
-               @NotificationVisibility visibility: Int = NotificationManager.VISIBILITY_PUBLIC,
-               clickHandler: PendingIntent? = null)
+    fun build(@StringRes channelName: Int,
+              title: String,
+              body: String,
+              bigBody: String? = null,
+              @NotificationCategory category: String,
+              @NotificationPriority priority: Int = NotificationManager.PRIORITY_MEDIUM,
+              @NotificationVisibility visibility: Int = NotificationManager.VISIBILITY_PUBLIC,
+              clickHandler: PendingIntent? = null) : IdentifiedNotification
+
+    fun show(notification: IdentifiedNotification)
 
     companion object {
         const val CATEGORY_RECOMMENDATION = NotificationCompat.CATEGORY_RECOMMENDATION

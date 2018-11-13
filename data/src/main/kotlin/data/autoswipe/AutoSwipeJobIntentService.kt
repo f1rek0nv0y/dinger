@@ -3,6 +3,7 @@ package data.autoswipe
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.support.v4.app.JobIntentService
 import data.tinder.recommendation.GetRecommendationsAction
 import data.tinder.recommendation.RecommendationUserResolver
@@ -43,6 +44,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
     override fun onHandleWork(intent: Intent) {
         if (defaultSharedPreferences.getBoolean(
                         getString(R.string.preference_key_autoswipe_enabled), true)) {
+            reportHandler.buildPlaceHolder(this).apply { startForeground(id, delegate) }
             try {
                 startAutoSwipe()
             } catch (e: Exception) {
@@ -57,11 +59,11 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
 
     override fun onDestroy() {
         super.onDestroy()
-        releaseResources()
         if (!reScheduled) {
             likeBatchTracker.closeBatch()
             scheduleBecauseError()
         }
+        releaseResources()
     }
 
     abstract class Action<in Callback> {
@@ -189,6 +191,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
             execute(this@AutoSwipeJobIntentService, Unit)
             reScheduled = true
         }
+        releaseResources()
     }
 
     private fun scheduleBecauseLimited(notBeforeMillis: Long) {
@@ -203,6 +206,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
                 AutoSwipeReportHandler.RESULT_RATE_LIMITED)
         reScheduled = true
         likeBatchTracker.closeBatch()
+        releaseResources()
     }
 
     private fun scheduleBecauseBatchClosed() {
@@ -218,6 +222,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
                 AutoSwipeReportHandler.RESULT_BATCH_CLOSED)
         reScheduled = true
         likeBatchTracker.closeBatch()
+        releaseResources()
     }
 
     private fun scheduleBecauseError(error: Throwable? = null) {
@@ -235,11 +240,17 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
         }
         reScheduled = true
         likeBatchTracker.closeBatch()
+        releaseResources()
     }
 
     private fun releaseResources() {
         ongoingActions.forEach { it.dispose() }
         ongoingActions = emptySet()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            stopForeground(STOP_FOREGROUND_DETACH)
+        } else {
+            stopForeground(false)
+        }
     }
 
     private fun clearAction(action: Action<*>) = action.apply {

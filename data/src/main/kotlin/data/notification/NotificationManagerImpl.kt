@@ -19,14 +19,14 @@ internal class NotificationManagerImpl(
         private val context: Context,
         private val notificationID: NotificationID) : NotificationManager {
     @Contract(value = "_, _, _, _, null, true, _, _, _ -> fail")
-    override fun notify(
+    override fun build(
             @StringRes channelName: Int,
             @StringRes title: Int,
             @StringRes body: Int,
             @NotificationCategory category: String,
             @NotificationPriority priority: Int,
             @NotificationVisibility visibility: Int,
-            clickHandler: PendingIntent?) = notify(
+            clickHandler: PendingIntent?) = build(
             channelName = channelName,
             title = context.getString(title),
             body = context.getString(body),
@@ -35,7 +35,7 @@ internal class NotificationManagerImpl(
             visibility = visibility,
             clickHandler = clickHandler)
 
-    override fun notify(
+    override fun build(
             @StringRes channelName: Int,
             title: String,
             body: String,
@@ -43,7 +43,7 @@ internal class NotificationManagerImpl(
             @NotificationCategory category: String,
             @NotificationPriority priority: Int,
             @NotificationVisibility visibility: Int,
-            clickHandler: PendingIntent?) {
+            clickHandler: PendingIntent?): IdentifiedNotification {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.getSystemService<android.app.NotificationManager>(
                     android.app.NotificationManager::class.java)
@@ -55,40 +55,43 @@ internal class NotificationManagerImpl(
                         setSound(null, null) // No sound
                     })
         }
-        NotificationManagerCompat.from(context).let {
-            @Suppress("DEPRECATION") // Deprecated from API 26 on, not before
-            it.notify(notificationID.next(context), Notification.Builder(context)
-                    .setAutoCancel(true)
-                    .setContentIntent(clickHandler)
-                    .setContentText(body)
-                    .setContentTitle(title)
-                    .setDefaults(NotificationCompat.DEFAULT_ALL)
-                    .setOngoing(false)
-                    .setOnlyAlertOnce(true)
-                    .setPriority(priority)
-                    .setSmallIcon(R.drawable.ic_notification)
-                    .setTicker(body)
-                    .setStyle(Notification.BigTextStyle()
-                            .bigText(bigBody))
-                    .setShowWhen(true)
-                    .apply {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
-                            setLocalOnly(false)
-                            setSortKey("${Date().time}")
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                setCategory(NotificationCompat.CATEGORY_SERVICE)
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                    setBadgeIconType(NotificationCompat.BADGE_ICON_NONE)
-                                    setChannelId(getChannelId(context, channelName))
-                                    setGroupAlertBehavior(
-                                            NotificationCompat.GROUP_ALERT_SUMMARY)
-                                }
-                                setVisibility(visibility)
+        @Suppress("DEPRECATION") // Deprecated from API 26 on, not before
+        return IdentifiedNotification(notificationID.next(context), Notification.Builder(context)
+                .setAutoCancel(true)
+                .setContentIntent(clickHandler)
+                .setContentText(body)
+                .setContentTitle(title)
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                .setOngoing(false)
+                .setOnlyAlertOnce(true)
+                .setPriority(priority)
+                .setSmallIcon(R.drawable.ic_notification)
+                .setTicker(body)
+                .setStyle(Notification.BigTextStyle()
+                        .bigText(bigBody))
+                .setShowWhen(true)
+                .apply {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+                        setLocalOnly(false)
+                        setSortKey("${Date().time}")
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            setCategory(NotificationCompat.CATEGORY_SERVICE)
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                setBadgeIconType(NotificationCompat.BADGE_ICON_NONE)
+                                setChannelId(getChannelId(context, channelName))
+                                setGroupAlertBehavior(
+                                        NotificationCompat.GROUP_ALERT_SUMMARY)
                             }
+                            setVisibility(visibility)
                         }
                     }
-                    .build())
-        }
+                }
+                .build())
+    }
+
+    override fun show(notification: IdentifiedNotification) {
+        NotificationManagerCompat.from(context).notify(
+                notification.id, notification.delegate)
     }
 }
 
@@ -106,6 +109,6 @@ private fun getChannelImportance(@NotificationPriority priority: Int) = when (pr
 @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 private fun getChannelId(context: Context, @StringRes channelName: Int) =
         Configuration(context.resources.configuration).run {
-        setLocale(Locale.ENGLISH)
-        context.createConfigurationContext(this).resources.getString(channelName)
-    }
+            setLocale(Locale.ENGLISH)
+            context.createConfigurationContext(this).resources.getString(channelName)
+        }
