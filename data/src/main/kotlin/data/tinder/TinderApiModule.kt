@@ -1,6 +1,7 @@
 package data.tinder
 
 import android.app.PendingIntent
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import com.facebook.AccessToken
@@ -48,69 +49,70 @@ internal class TinderApiModule {
             crashReporter: CrashReporter): TinderApi = retrofitBuilder
             .client(clientBuilder.addInterceptor {
                 it.proceed(it.request().newBuilder().addHeaders(appAccountManager).build())
-            }.authenticator { _, response -> when {
-                !response.request().header(HEADER_AUTH_TRIED).isNullOrBlank() -> null
-                response.code() == 401 -> appAccountManager.let {
-                    val facebookToken: AccessToken? = AccessToken.getCurrentAccessToken()
-                    if (facebookToken != null) {
-                        Single.create<AccessToken> { emitter ->
-                            if (facebookToken.isExpired) {
-                                AccessToken.refreshCurrentAccessTokenAsync(
-                                        object : AccessToken.AccessTokenRefreshCallback {
-                                            @Suppress("FunctionName")
-                                            override fun OnTokenRefreshed(
-                                                    accessToken: AccessToken) {
-                                                emitter.onSuccess(accessToken)
-                                            }
-
-                                            @Suppress("FunctionName")
-                                            override fun OnTokenRefreshFailed(
-                                                    exception: FacebookException) {
-                                                emitter.onError(exception)
-                                            }
-                                        })
-                            } else {
-                                emitter.onSuccess(facebookToken)
-                            }
-                        }.run {
-                            try {
-                                blockingGet().run {
-                                    AccessToken.setCurrentAccessToken(this)
-                                    var request: Request? = null
-                                    TinderLoginUseCase(
-                                            facebookId = userId,
-                                            facebookToken = token,
-                                            postExecutionScheduler = Schedulers.trampoline())
-                                            .execute(object : DisposableCompletableObserver() {
-                                                override fun onComplete() {
-                                                    request = response.request().newBuilder()
-                                                            .addHeader(
-                                                                    HEADER_AUTH_TRIED, "true")
-                                                            .addHeaders(appAccountManager)
-                                                            .build()
+            }.authenticator { _, response ->
+                when {
+                    !response.request().header(HEADER_AUTH_TRIED).isNullOrBlank() -> null
+                    response.code() == 401 -> appAccountManager.let {
+                        val facebookToken: AccessToken? = AccessToken.getCurrentAccessToken()
+                        if (facebookToken != null) {
+                            Single.create<AccessToken> { emitter ->
+                                if (facebookToken.isExpired) {
+                                    AccessToken.refreshCurrentAccessTokenAsync(
+                                            object : AccessToken.AccessTokenRefreshCallback {
+                                                @Suppress("FunctionName")
+                                                override fun OnTokenRefreshed(
+                                                        accessToken: AccessToken) {
+                                                    emitter.onSuccess(accessToken)
                                                 }
 
-                                                override fun onError(error: Throwable) {
-                                                    crashReporter.report(error)
+                                                @Suppress("FunctionName")
+                                                override fun OnTokenRefreshFailed(
+                                                        exception: FacebookException) {
+                                                    emitter.onError(exception)
                                                 }
                                             })
-                                    request
+                                } else {
+                                    emitter.onSuccess(facebookToken)
                                 }
-                            } catch (exception: FacebookException) {
-                                finishAccount(context, appAccountManager, notificationManager)
-                                null
+                            }.run {
+                                try {
+                                    blockingGet().run {
+                                        AccessToken.setCurrentAccessToken(this)
+                                        var request: Request? = null
+                                        TinderLoginUseCase(
+                                                facebookId = userId,
+                                                facebookToken = token,
+                                                postExecutionScheduler = Schedulers.trampoline())
+                                                .execute(object : DisposableCompletableObserver() {
+                                                    override fun onComplete() {
+                                                        request = response.request().newBuilder()
+                                                                .addHeader(
+                                                                        HEADER_AUTH_TRIED, "true")
+                                                                .addHeaders(appAccountManager)
+                                                                .build()
+                                                    }
+
+                                                    override fun onError(error: Throwable) {
+                                                        crashReporter.report(error)
+                                                    }
+                                                })
+                                        request
+                                    }
+                                } catch (exception: FacebookException) {
+                                    finishAccount(context, appAccountManager, notificationManager)
+                                    null
+                                }
                             }
+                        } else {
+                            finishAccount(context, appAccountManager, notificationManager)
+                            null
                         }
-                    } else {
+                    }
+                    else -> {
                         finishAccount(context, appAccountManager, notificationManager)
                         null
                     }
                 }
-                else -> {
-                    finishAccount(context, appAccountManager, notificationManager)
-                    null
-                }
-            }
             }.dispatcher(Dispatcher().apply {
                 maxRequestsPerHost = 30
             }).build())
@@ -124,12 +126,12 @@ internal class TinderApiModule {
 }
 
 private fun Request.Builder.addHeaders(appAccountManager: AppAccountAuthenticator) = apply {
-            appAccountManager.getTinderAccountToken()?.let {
-                addHeader(TinderApi.HEADER_AUTH, it)
-                addHeader(TinderApi.HEADER_CONTENT_TYPE, TinderApi.CONTENT_TYPE_JSON)
-                addHeader(TinderApi.HEADER_PLATFORM, BuildConfig.PLATFORM_ANDROID)
-            }
-        }
+    appAccountManager.getTinderAccountToken()?.let {
+        addHeader(TinderApi.HEADER_AUTH, it)
+        addHeader(TinderApi.HEADER_CONTENT_TYPE, TinderApi.CONTENT_TYPE_JSON)
+        addHeader(TinderApi.HEADER_PLATFORM, BuildConfig.PLATFORM_ANDROID)
+    }
+}
 
 private fun finishAccount(
         context: Context,
@@ -145,7 +147,8 @@ private fun finishAccount(
             priority = NotificationManager.PRIORITY_HIGH,
             clickHandler = PendingIntent.getActivity(
                     context,
-                    1,
-                    Intent("org.stoyicker.action.HOME"),
+                    0,
+                    Intent().setComponent(
+                            ComponentName(context, "app.splash.SplashActivity")),
                     PendingIntent.FLAG_UPDATE_CURRENT))
 }

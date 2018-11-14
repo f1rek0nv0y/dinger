@@ -1,6 +1,8 @@
 package data.autoswipe
 
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_UPDATE_CURRENT
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -44,7 +46,7 @@ internal class AutoSwipeReportHandler(
             scheduledFor: Long?,
             errorMessage: String?,
             @AutoSwipeResult result: Int) =
-        notificationManager.show(build(context, scheduledFor, errorMessage, result))
+            notificationManager.show(build(context, scheduledFor, errorMessage, result))
 
     fun buildPlaceHolder(context: Context) = build(context, null, null, RESULT_PLACEHOLDER)
 
@@ -65,9 +67,10 @@ internal class AutoSwipeReportHandler(
                     priority = NotificationManager.PRIORITY_LOW,
                     clickHandler = PendingIntent.getActivity(
                             context,
-                            1,
-                            Intent("org.stoyicker.action.HOME"),
-                            PendingIntent.FLAG_UPDATE_CURRENT))
+                            0,
+                            Intent().setComponent(
+                                    ComponentName(context, "app.splash.SplashActivity")),
+                            FLAG_UPDATE_CURRENT))
 
     companion object {
         const val RESULT_RATE_LIMITED = 1
