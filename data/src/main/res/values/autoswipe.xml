@@ -11,11 +11,11 @@
         <item quantity="other">, %1$d new matches</item>
     </plurals>
 
-    <string name="autoswipe_notification_body_error">Scheduled for %s because of error: %s</string>
-    <string name="autoswipe_notification_body_batch_closed">Scheduled for %s to avoid 2k likes/hour cap</string>
+    <string name="autoswipe_notification_body_error">Scheduled for %1$s because of error: %2$s</string>
+    <string name="autoswipe_notification_body_batch_closed">Scheduled for %1$s to avoid 2k likes/hour cap</string>
     <string name="autoswipe_notification_body_placeholder">Just give me a second…</string>
     <string name="autoswipe_notification_body_more_available">Scheduled to request more profiles immediately</string>
-    <string name="autoswipe_notification_body_capped">Scheduled for %s, when the cap resets</string>
+    <string name="autoswipe_notification_body_capped">Scheduled for %1$s, when the cap resets</string>
     <string name="autoswipe_notification_channel_name">Autoswipe</string>
     <string name="autoswipe_receiver_description">Swiping for you!</string>
     <string name="autoswipe_receiver_label">dinger</string>
