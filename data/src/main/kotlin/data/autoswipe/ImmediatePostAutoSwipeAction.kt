@@ -5,10 +5,10 @@ import domain.interactor.DisposableUseCase
 import io.reactivex.observers.DisposableCompletableObserver
 import io.reactivex.schedulers.Schedulers
 
-internal class ImmediatePostAutoSwipeAction : AutoSwipeJobIntentService.Action<Unit>() {
+internal class ImmediatePostAutoSwipeAction : AutoSwipeIntentService.Action<Unit>() {
     private var useCaseDelegate: DisposableUseCase? = null
 
-    override fun execute(owner: AutoSwipeJobIntentService, callback: Unit) =
+    override fun execute(owner: AutoSwipeIntentService, callback: Unit) =
         ImmediatePostAutoSwipeUseCase(owner, Schedulers.trampoline()).let {
             useCaseDelegate = it
             it.execute(object : DisposableCompletableObserver() {

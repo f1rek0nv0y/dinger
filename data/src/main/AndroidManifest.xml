@@ -30,7 +30,7 @@
                 android:resource="@xml/authenticator_dinger"/>
         </service>
         <service
-            android:name="data.autoswipe.AutoSwipeJobIntentService"
+            android:name="data.autoswipe.AutoSwipeIntentService"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:description="@string/autoswipe_receiver_description"
             android:icon="@drawable/ic_launcher_adaptive"

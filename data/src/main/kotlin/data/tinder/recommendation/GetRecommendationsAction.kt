@@ -1,6 +1,6 @@
 package data.tinder.recommendation
 
-import data.autoswipe.AutoSwipeJobIntentService
+import data.autoswipe.AutoSwipeIntentService
 import domain.interactor.DisposableUseCase
 import domain.recommendation.DomainRecommendationUser
 import domain.recommendation.GetRecommendationsUseCase
@@ -8,10 +8,10 @@ import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 
 internal class GetRecommendationsAction
-    : AutoSwipeJobIntentService.Action<GetRecommendationsAction.Callback>() {
+    : AutoSwipeIntentService.Action<GetRecommendationsAction.Callback>() {
     private var useCaseDelegate: DisposableUseCase? = null
 
-    override fun execute(owner: AutoSwipeJobIntentService, callback: Callback) =
+    override fun execute(owner: AutoSwipeIntentService, callback: Callback) =
             GetRecommendationsUseCase(Schedulers.trampoline()).let {
                 useCaseDelegate = it
                 it.execute(object

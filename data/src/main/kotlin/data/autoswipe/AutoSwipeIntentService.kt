@@ -1,10 +1,10 @@
 package data.autoswipe
 
+import android.app.IntentService
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
-import android.support.v4.app.JobIntentService
 import data.tinder.recommendation.GetRecommendationsAction
 import data.tinder.recommendation.RecommendationUserResolver
 import domain.autoswipe.FromErrorPostAutoSwipeUseCase
@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.random.Random
 
-internal class AutoSwipeJobIntentService : JobIntentService() {
+internal class AutoSwipeIntentService : IntentService("AutoSwipe") {
     @Inject
     lateinit var crashReporter: CrashReporter
     @Inject
@@ -41,7 +41,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
         AutoSwipeComponentHolder.autoSwipeComponent.inject(this)
     }
 
-    override fun onHandleWork(intent: Intent) {
+    override fun onHandleIntent(intent: Intent) {
         if (defaultSharedPreferences.getBoolean(
                         getString(R.string.preference_key_autoswipe_enabled), true)) {
             reportHandler.buildPlaceHolder(this).apply { startForeground(id, delegate) }
@@ -55,7 +55,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
         }
     }
 
-    override fun onStopCurrentWork() = true.also { releaseResources() }
+
 
     override fun onDestroy() {
         super.onDestroy()
@@ -69,22 +69,22 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
     abstract class Action<in Callback> {
         protected val commonDelegate by lazy { CommonResultDelegate(this) }
 
-        abstract fun execute(owner: AutoSwipeJobIntentService, callback: Callback)
+        abstract fun execute(owner: AutoSwipeIntentService, callback: Callback)
 
         abstract fun dispose()
     }
 
     class CommonResultDelegate(private val action: Action<*>) {
-        fun onComplete(autoSwipeJobIntentService: AutoSwipeJobIntentService) {
-            autoSwipeJobIntentService.clearAction(action)
+        fun onComplete(autoSwipeIntentService: AutoSwipeIntentService) {
+            autoSwipeIntentService.clearAction(action)
         }
 
-        fun onError(error: Throwable, autoSwipeJobIntentService: AutoSwipeJobIntentService) {
+        fun onError(error: Throwable, autoSwipeIntentService: AutoSwipeIntentService) {
             if (error is HttpException && error.code() == 401) {
-                onComplete(autoSwipeJobIntentService)
+                onComplete(autoSwipeIntentService)
             } else {
-                autoSwipeJobIntentService.scheduleBecauseError(error)
-                autoSwipeJobIntentService.clearAction(action)
+                autoSwipeIntentService.scheduleBecauseError(error)
+                autoSwipeIntentService.clearAction(action)
             }
         }
     }
@@ -92,7 +92,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
     private fun startAutoSwipe() = Unit.also {
         getRecommendationsAction.apply {
             ongoingActions += (this)
-            execute(this@AutoSwipeJobIntentService,
+            execute(this@AutoSwipeIntentService,
                     object : GetRecommendationsAction.Callback {
                         override fun onRecommendationsReceived(
                                 recommendations: List<DomainRecommendationUser>) {
@@ -112,7 +112,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
             likeBatchTracker.addLike()
             processRecommendationActionFactory.delegate(recommendation).apply {
                 ongoingActions += (this)
-                execute(this@AutoSwipeJobIntentService,
+                execute(this@AutoSwipeIntentService,
                         object : ProcessRecommendationAction.Callback {
                             override fun onRecommendationProcessed(
                                     answer: DomainLikedRecommendationAnswer) =
@@ -188,7 +188,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
                 AutoSwipeReportHandler.RESULT_MORE_AVAILABLE)
         ImmediatePostAutoSwipeAction().apply {
             ongoingActions += this
-            execute(this@AutoSwipeJobIntentService, Unit)
+            execute(this@AutoSwipeIntentService, Unit)
             reScheduled = true
         }
         releaseResources()
@@ -197,7 +197,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
     private fun scheduleBecauseLimited(notBeforeMillis: Long) {
         FromRateLimitedPostAutoSwipeAction(notBeforeMillis).apply {
             ongoingActions += this
-            execute(this@AutoSwipeJobIntentService, Unit)
+            execute(this@AutoSwipeIntentService, Unit)
         }
         reportHandler.show(
                 this,
@@ -213,7 +213,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
         val notBeforeMillis = Date().time + 1000 * 60 * 60 * 2L //2h from now
         FromRateLimitedPostAutoSwipeAction(notBeforeMillis).apply {
             ongoingActions += this
-            execute(this@AutoSwipeJobIntentService, Unit)
+            execute(this@AutoSwipeIntentService, Unit)
         }
         reportHandler.show(
                 this,
@@ -236,7 +236,7 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
         }
         FromErrorPostAutoSwipeAction().apply {
             ongoingActions += this
-            execute(this@AutoSwipeJobIntentService, Unit)
+            execute(this@AutoSwipeIntentService, Unit)
         }
         reScheduled = true
         likeBatchTracker.closeBatch()
@@ -259,8 +259,6 @@ internal class AutoSwipeJobIntentService : JobIntentService() {
     }
 
     companion object {
-        private const val JOB_ID = 1000
-        fun trigger(context: Context) = enqueueWork(
-                context, AutoSwipeJobIntentService::class.java, JOB_ID, Intent())
+        fun callingIntent(context: Context) = Intent(context, AutoSwipeIntentService::class.java)
     }
 }

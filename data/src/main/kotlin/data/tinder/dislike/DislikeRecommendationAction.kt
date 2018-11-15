@@ -1,6 +1,6 @@
 package data.tinder.dislike
 
-import data.autoswipe.AutoSwipeJobIntentService
+import data.autoswipe.AutoSwipeIntentService
 import domain.dislike.DislikeRecommendationUseCase
 import domain.dislike.DomainDislikedRecommendationAnswer
 import domain.interactor.DisposableUseCase
@@ -9,10 +9,10 @@ import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 
 internal class DislikeRecommendationAction(private val user: DomainRecommendationUser)
-    : AutoSwipeJobIntentService.Action<DislikeRecommendationAction.Callback>() {
+    : AutoSwipeIntentService.Action<DislikeRecommendationAction.Callback>() {
     private var useCaseDelegate: DisposableUseCase? = null
 
-    override fun execute(owner: AutoSwipeJobIntentService, callback: Callback) =
+    override fun execute(owner: AutoSwipeIntentService, callback: Callback) =
             DislikeRecommendationUseCase(user, Schedulers.trampoline()).let {
                 useCaseDelegate = it
                 it.execute(object : DisposableSingleObserver<DomainDislikedRecommendationAnswer>() {

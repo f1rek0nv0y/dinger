@@ -8,7 +8,7 @@ import android.content.Intent
 internal class AutoSwipeLauncherBroadcastReceiver : BroadcastReceiver() {
     @SuppressLint("UnsafeProtectedBroadcastReceiver")
     override fun onReceive(context: Context?, intent: Intent?) {
-        context?.let { AutoSwipeJobIntentService.trigger(it) }
+        context?.startService(AutoSwipeIntentService.callingIntent(context))
     }
 
     companion object {

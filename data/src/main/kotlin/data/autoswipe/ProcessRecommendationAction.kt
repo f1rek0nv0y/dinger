@@ -19,10 +19,10 @@ internal class ProcessRecommendationAction(
         : dagger.Lazy<LikeRecommendationActionFactoryWrapper>,
         private val dislikeRecommendationActionFactory
         : dagger.Lazy<DislikeRecommendationActionFactoryWrapper>)
-    : AutoSwipeJobIntentService.Action<ProcessRecommendationAction.Callback>() {
-    private var runningAction: AutoSwipeJobIntentService.Action<*>? = null
+    : AutoSwipeIntentService.Action<ProcessRecommendationAction.Callback>() {
+    private var runningAction: AutoSwipeIntentService.Action<*>? = null
 
-    override fun execute(owner: AutoSwipeJobIntentService, callback: Callback) {
+    override fun execute(owner: AutoSwipeIntentService, callback: Callback) {
         when {
             sharedPreferences.getBoolean(
                     context.getString(
@@ -42,7 +42,7 @@ internal class ProcessRecommendationAction(
         runningAction?.dispose()
     }
 
-    private fun dislikeRecommendation(owner: AutoSwipeJobIntentService, callback: Callback) =
+    private fun dislikeRecommendation(owner: AutoSwipeIntentService, callback: Callback) =
             dislikeRecommendationActionFactory.get().delegate(user).let {
                 runningAction = it
                 it.execute(
@@ -58,7 +58,7 @@ internal class ProcessRecommendationAction(
                 })
             }
 
-    private fun likeRecommendation(owner: AutoSwipeJobIntentService, callback: Callback) =
+    private fun likeRecommendation(owner: AutoSwipeIntentService, callback: Callback) =
             likeRecommendationActionFactory.get().delegate(user).let {
                 runningAction = it
                 it.execute(

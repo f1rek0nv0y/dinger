@@ -6,10 +6,10 @@ import io.reactivex.observers.DisposableCompletableObserver
 import io.reactivex.schedulers.Schedulers
 
 internal class FromRateLimitedPostAutoSwipeAction(private val notBeforeMillis: Long)
-    : AutoSwipeJobIntentService.Action<Unit>() {
+    : AutoSwipeIntentService.Action<Unit>() {
     private var useCaseDelegate: DisposableUseCase? = null
 
-    override fun execute(owner: AutoSwipeJobIntentService, callback: Unit) =
+    override fun execute(owner: AutoSwipeIntentService, callback: Unit) =
         FromRateLimitedPostAutoSwipeUseCase(owner, Schedulers.trampoline(), notBeforeMillis).let {
             useCaseDelegate = it
             it.execute(object : DisposableCompletableObserver() {

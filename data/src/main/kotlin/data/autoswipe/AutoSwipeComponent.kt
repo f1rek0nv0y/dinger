@@ -16,5 +16,5 @@ import javax.inject.Singleton
     RecommendationUserResolverModule::class])
 @Singleton
 internal interface AutoSwipeComponent {
-    fun inject(autoSwipeJobIntentService: AutoSwipeJobIntentService)
+    fun inject(autoSwipeIntentService: AutoSwipeIntentService)
 }
