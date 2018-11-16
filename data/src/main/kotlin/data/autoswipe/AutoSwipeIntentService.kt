@@ -56,7 +56,6 @@ internal class AutoSwipeIntentService : IntentService("AutoSwipe") {
     }
 
 
-
     override fun onDestroy() {
         super.onDestroy()
         if (!reScheduled) {
@@ -112,6 +111,11 @@ internal class AutoSwipeIntentService : IntentService("AutoSwipe") {
             likeBatchTracker.addLike()
             processRecommendationActionFactory.delegate(recommendation).apply {
                 ongoingActions += (this)
+                if (defaultSharedPreferences.getBoolean(
+                                getString(R.string.preference_key_swipe_at_human_speed),
+                                true)) {
+                    TimeUnit.SECONDS.sleep(Random.nextLong(2, 7))
+                }
                 execute(this@AutoSwipeIntentService,
                         object : ProcessRecommendationAction.Callback {
                             override fun onRecommendationProcessed(
@@ -136,12 +140,6 @@ internal class AutoSwipeIntentService : IntentService("AutoSwipe") {
                                         latch.countDown()
                                     }
                         })
-            }
-            if (defaultSharedPreferences
-                            .getBoolean(
-                                    getString(
-                                            R.string.preference_key_swipe_at_human_speed), true)) {
-                TimeUnit.SECONDS.sleep(Random.nextLong(2, 20))
             }
         }
         latch.await()
