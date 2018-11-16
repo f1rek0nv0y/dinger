@@ -23,14 +23,16 @@ ext {
             "com.android.support:design:$project.ext.supportLibraryVersion",
             "com.android.support:preference-v7:$supportLibraryVersion",
             "com.android.support.constraint:constraint-layout:$constraintLayoutVersion",
-            "com.android.support:multidex:$multidexVersion"
+            "com.android.support:multidex:$multidexVersion",
+            "android.arch.paging:runtime:$project.ext.architecturePagingVersion"
     ]
     annotationProcessorDomainDependencies = [
             "javax.annotation:jsr250-api:$jsr250Version"
     ]
     implementationDomainDependencies = [
             "io.reactivex.rxjava2:rxjava:$project.ext.rxjava2Version",
-            "com.facebook.android:facebook-android-sdk:$facebookSdkVersion"
+            "com.facebook.android:facebook-android-sdk:$facebookSdkVersion",
+            "android.arch.paging:runtime:$project.ext.architecturePagingVersion"
     ]
     providedDomainDependencies = [
             "com.android.support:support-annotations:$supportLibraryVersion"
@@ -51,7 +53,8 @@ ext {
             "android.arch.persistence.room:runtime:$project.ext.architectureComponentsVersion",
             "android.arch.lifecycle:runtime:$project.ext.architectureComponentsVersion",
             "android.arch.lifecycle:extensions:$project.ext.architectureComponentsVersion",
-            "com.facebook.android:facebook-android-sdk:$facebookSdkVersion"
+            "com.facebook.android:facebook-android-sdk:$facebookSdkVersion",
+            "android.arch.paging:runtime:$project.ext.architecturePagingVersion"
     ]
     providedDataDependencies = [
             "com.android.support:support-annotations:$supportLibraryVersion"

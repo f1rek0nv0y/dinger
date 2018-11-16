@@ -6,6 +6,7 @@ import data.alarm.AlarmModule
 import data.autoswipe.AutoSwipeModule
 import data.autoswipe.AutoSwipeServiceDestructorModule
 import data.network.NetworkModule
+import data.seen.SeenRecommendationsModule
 import data.storage.StorageClearModule
 import data.stoyicker.versioncheck.VersionCheckModule
 import data.tinder.dislike.DislikeRecommendationModule
@@ -18,6 +19,7 @@ import javax.inject.Singleton
         NetworkModule::class,
         LoginModule::class,
         GetRecommendationModule::class,
+        SeenRecommendationsModule::class,
         LikeRecommendationModule::class,
         DislikeRecommendationModule::class,
         AccountModule::class,

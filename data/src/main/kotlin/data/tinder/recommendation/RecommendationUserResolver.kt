@@ -2,6 +2,7 @@ package data.tinder.recommendation
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Transformations
+import android.arch.paging.DataSource
 import android.database.SQLException
 import domain.recommendation.DomainRecommendationUser
 import reporter.CrashReporter
@@ -56,8 +57,9 @@ internal class RecommendationUserResolver(
     fun selectById(id: String): LiveData<List<DomainRecommendationUser>> =
             Transformations.map(userDao.selectUserById(id)) { it.map { from(it) } }
 
-    fun selectByFilterOnName(filter: String): LiveData<List<DomainRecommendationUser>> =
-            Transformations.map(userDao.selectUsersByFilterOnName(filter)) { it.map { from(it) } }
+    fun selectByFilterOnName(filter: String)
+            : DataSource.Factory<Int, DomainRecommendationUser> =
+            userDao.selectUsersByFilterOnName(filter).map { from(it) }
 
     private fun from(source: RecommendationUserWithRelatives): DomainRecommendationUser {
         val commonFriends =

@@ -25,6 +25,8 @@ import domain.logout.LogoutHolder
 import domain.logout.StorageClear
 import domain.recommendation.GetRecommendation
 import domain.recommendation.GetRecommendationHolder
+import domain.seen.SeenRecommendations
+import domain.seen.SeenRecommendationsHolder
 import domain.versioncheck.VersionCheck
 import domain.versioncheck.VersionCheckHolder
 import javax.inject.Inject
@@ -54,6 +56,8 @@ internal class InitializationContentProvider : ContentProvider() {
     lateinit var storageClearImpl: StorageClear
     @Inject
     lateinit var autoswipeServiceDestructor: AutoSwipeServiceDestructor
+    @Inject
+    lateinit var seenRecommendations: SeenRecommendations
 
     override fun onCreate(): Boolean {
         val rootModule = RootModule(context!!)
@@ -83,6 +87,7 @@ internal class InitializationContentProvider : ContentProvider() {
         LogoutHolder.autoswipeDestructor(autoswipeServiceDestructor)
         LogoutHolder.removeAccount(accountManagerImpl)
         LogoutHolder.storageClear(storageClearImpl)
+        SeenRecommendationsHolder.seenRecommendations(seenRecommendations)
         return true
     }
 

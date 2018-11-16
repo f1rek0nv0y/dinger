@@ -8,7 +8,7 @@ abstract class SingleDisposableUseCase<T> protected constructor(
         /**
          * Send null for in-place synchronous execution
          */
-        private val asyncExecutionScheduler: Scheduler? = null,
+        private val executionScheduler: Scheduler? = null,
         private val postExecutionScheduler: Scheduler)
     : DisposableUseCase(), UseCase<Single<T>> {
     fun execute(subscriber: DisposableSingleObserver<T>) {
@@ -17,8 +17,8 @@ abstract class SingleDisposableUseCase<T> protected constructor(
                 // noinspection CheckResult - False positive
                 x.observeOn(postExecutionScheduler).subscribeWith(subscriber)
             }
-            if (asyncExecutionScheduler != null) {
-                completeSetup(it.subscribeOn(asyncExecutionScheduler))
+            if (executionScheduler != null) {
+                completeSetup(it.subscribeOn(executionScheduler))
             } else {
                 completeSetup(it)
             }

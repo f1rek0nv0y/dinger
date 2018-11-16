@@ -96,7 +96,7 @@ internal class AutoSwipeIntentService : IntentService("AutoSwipe") {
                         override fun onRecommendationsReceived(
                                 recommendations: List<DomainRecommendationUser>) {
                             if (recommendations.isEmpty()) {
-                                scheduleBecauseError(IllegalStateException("Empty recommendation list"))
+                                scheduleBecauseError(IllegalStateException("Empty recommendation filter"))
                             } else {
                                 processRecommendations(recommendations)
                             }
