@@ -57,7 +57,7 @@ internal class NotificationManagerImpl(
         }
         @Suppress("DEPRECATION") // Deprecated from API 26 on, not before
         return IdentifiedNotification(notificationID.next(context), Notification.Builder(context)
-                .setAutoCancel(true)
+                .setAutoCancel(false)
                 .setContentIntent(clickHandler)
                 .setContentText(body)
                 .setContentTitle(title)
