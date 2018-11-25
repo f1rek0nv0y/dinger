@@ -8,6 +8,7 @@ final def multidexVersion = "1.0.2"
 final def retrofitVersion = "2.3.0"
 final def rxAndroid2Version = "2.1.0"
 final def storeVersion = "3.0.0" // Frozen
+final def architectureLifecycleVersion = "1.1.1"
 ext {
     implementationDependencies = [
             "org.jetbrains.kotlin:kotlin-stdlib:$project.ext.kotlinVersion"
@@ -24,7 +25,8 @@ ext {
             "com.android.support:preference-v7:$supportLibraryVersion",
             "com.android.support.constraint:constraint-layout:$constraintLayoutVersion",
             "com.android.support:multidex:$multidexVersion",
-            "android.arch.paging:runtime:$project.ext.architecturePagingVersion"
+            "android.arch.paging:runtime:$project.ext.architecturePagingVersion",
+            "android.arch.lifecycle:extensions:$architectureLifecycleVersion"
     ]
     annotationProcessorDomainDependencies = [
             "javax.annotation:jsr250-api:$jsr250Version"
