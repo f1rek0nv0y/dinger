@@ -10,7 +10,7 @@ data class DomainRecommendationUser(
         val commonLikes: Iterable<DomainRecommendationLike>,
         val commonLikeCount: Int,
         val id: String,
-        val birthDate: Date,
+        val birthDate: Date?,
         val name: String,
         val instagram: DomainRecommendationInstagram?,
         val teaser: DomainRecommendationTeaser,

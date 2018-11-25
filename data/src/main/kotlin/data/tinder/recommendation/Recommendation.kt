@@ -21,7 +21,7 @@ internal class Recommendation private constructor(
         @field:Json(name = "_id")
         val id: String,
         @field:Json(name = "birth_date")
-        val birthDate: Date,
+        val birthDate: Date?,
         @field:Json(name = "name")
         val name: String,
         @field:Json(name = "photos")

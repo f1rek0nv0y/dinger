@@ -27,7 +27,7 @@ internal open class RecommendationUserEntity(
         @PrimaryKey
         var id: String,
         @Embedded
-        var birthDate: Date,
+        var birthDate: Date?,
         var name: String,
         var instagram: String?,
         var teaser: String,
