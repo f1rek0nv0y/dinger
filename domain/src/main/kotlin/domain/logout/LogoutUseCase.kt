@@ -16,7 +16,6 @@ class LogoutUseCase(
         return Completable.fromCallable {
             LogoutHolder.apply {
                 autoswipeDestructor.stopService(context)
-                // TODO Stop autoswipe service from running in the background
                 alarmManager.cancelOneShotBroadcast(
                         PostAutoSwipeUseCase.REQUEST_CODE,
                         AutoSwipeHolder.autoSwipeLauncherFactory.newFromBroadcast(context))
