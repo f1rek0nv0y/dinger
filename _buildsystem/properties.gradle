@@ -1,7 +1,7 @@
 final def inducedVersion = System.getenv("ARTIFACT_VERSION")
 ext {
     androidCompileSdkVersion = 28
-    androidMinSdkVersion = 19
+    androidMinSdkVersion = 23
     androidTargetSdkVersion = 28
     androidVersionCode = inducedVersion != null ? Integer.parseInt(inducedVersion) : Integer.MAX_VALUE // Depending on the git method locally causes IDE issues
     androidVersionName = String.valueOf(androidVersionCode)

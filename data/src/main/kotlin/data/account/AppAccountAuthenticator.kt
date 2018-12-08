@@ -7,8 +7,6 @@ import android.accounts.AccountManager
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import domain.loggedincheck.LoggedInCheck
 import domain.login.AccountManagement
 import org.stoyicker.dinger.data.R
@@ -17,7 +15,9 @@ internal class AppAccountAuthenticator(context: Context)
     : AccountManagement, LoggedInCheck, AbstractAccountAuthenticator(context) {
     private val delegate by lazy { AccountManager.get(context) }
 
-    init { ACCOUNT_TYPE = context.getString(R.string.account_type) }
+    init {
+        ACCOUNT_TYPE = context.getString(R.string.account_type)
+    }
 
     override fun addAccount(
             p0: AccountAuthenticatorResponse?,
@@ -59,7 +59,7 @@ internal class AppAccountAuthenticator(context: Context)
             facebookToken: String,
             tinderApiKey: String): Boolean {
         removeAccount()
-        return Account(facebookId, Companion.ACCOUNT_TYPE).let {
+        return Account(facebookId, ACCOUNT_TYPE).let {
             if (delegate.addAccountExplicitly(it, tinderApiKey, null)) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     delegate.notifyAccountAuthenticated(it)
@@ -72,21 +72,14 @@ internal class AppAccountAuthenticator(context: Context)
     }
 
     override fun removeAccount() {
-        delegate.getAccountsByType(ACCOUNT_TYPE).forEach {
-            delegate.apply {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                    removeAccountExplicitly(it)
-                } else {
-                    @Suppress("DEPRECATION")
-                    removeAccount(it, null, Handler(Looper.myLooper()))
-                }
-            }
+        delegate.apply {
+            getAccountsByType(ACCOUNT_TYPE).forEach { removeAccountExplicitly(it) }
         }
     }
 
     override fun isThereALoggedInUser() = getTinderAccountToken() != null
 
-    fun getTinderAccountToken() = delegate.getAccountsByType(Companion.ACCOUNT_TYPE).let {
+    fun getTinderAccountToken() = delegate.getAccountsByType(ACCOUNT_TYPE).let {
         when (it.size) {
             0 -> null
             else -> delegate.getPassword(it.first())
