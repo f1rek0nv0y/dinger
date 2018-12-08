@@ -5,6 +5,7 @@ import android.app.NotificationChannel
 import android.app.PendingIntent
 import android.content.Context
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Build
 import android.support.annotation.RequiresApi
 import android.support.annotation.StringRes
@@ -26,14 +27,16 @@ internal class NotificationManagerImpl(
             @NotificationCategory category: String,
             @NotificationPriority priority: Int,
             @NotificationVisibility visibility: Int,
-            clickHandler: PendingIntent?) = build(
+            clickHandler: PendingIntent?,
+            actions: Array<Notification.Action>) = build(
             channelName = channelName,
             title = context.getString(title),
             body = context.getString(body),
             category = category,
             priority = priority,
             visibility = visibility,
-            clickHandler = clickHandler)
+            clickHandler = clickHandler,
+            actions = actions)
 
     override fun build(
             @StringRes channelName: Int,
@@ -43,7 +46,8 @@ internal class NotificationManagerImpl(
             @NotificationCategory category: String,
             @NotificationPriority priority: Int,
             @NotificationVisibility visibility: Int,
-            clickHandler: PendingIntent?): IdentifiedNotification {
+            clickHandler: PendingIntent?,
+            actions: Array<Notification.Action>): IdentifiedNotification {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.getSystemService<android.app.NotificationManager>(
                     android.app.NotificationManager::class.java)
@@ -63,6 +67,7 @@ internal class NotificationManagerImpl(
                 .setContentTitle(title)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setOngoing(false)
+                .setColor(Color.parseColor("#FFAB40")) // textPrimary, not available in data
                 .setOnlyAlertOnce(true)
                 .setPriority(priority)
                 .setSmallIcon(R.drawable.ic_notification)
@@ -85,6 +90,7 @@ internal class NotificationManagerImpl(
                             setVisibility(visibility)
                         }
                     }
+                    actions.forEach { addAction(it) }
                 }
                 .build())
     }

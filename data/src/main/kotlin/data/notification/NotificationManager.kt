@@ -1,5 +1,6 @@
 package data.notification
 
+import android.app.Notification
 import android.app.PendingIntent
 import android.support.annotation.StringRes
 import android.support.v4.app.NotificationCompat
@@ -11,7 +12,8 @@ internal interface NotificationManager {
               @NotificationCategory category: String,
               @NotificationPriority priority: Int = NotificationManager.PRIORITY_MEDIUM,
               @NotificationVisibility visibility: Int = NotificationManager.VISIBILITY_PUBLIC,
-              clickHandler: PendingIntent? = null) : IdentifiedNotification
+              clickHandler: PendingIntent? = null,
+              actions: Array<Notification.Action> = emptyArray()) : IdentifiedNotification
 
     fun build(@StringRes channelName: Int,
               title: String,
@@ -20,7 +22,8 @@ internal interface NotificationManager {
               @NotificationCategory category: String,
               @NotificationPriority priority: Int = NotificationManager.PRIORITY_MEDIUM,
               @NotificationVisibility visibility: Int = NotificationManager.VISIBILITY_PUBLIC,
-              clickHandler: PendingIntent? = null) : IdentifiedNotification
+              clickHandler: PendingIntent? = null,
+              actions: Array<Notification.Action> = emptyArray()) : IdentifiedNotification
 
     fun show(notification: IdentifiedNotification)
 

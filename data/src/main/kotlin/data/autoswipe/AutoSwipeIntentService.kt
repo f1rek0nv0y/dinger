@@ -57,12 +57,11 @@ internal class AutoSwipeIntentService : IntentService("AutoSwipe") {
 
 
     override fun onDestroy() {
-        super.onDestroy()
         if (!reScheduled) {
             likeBatchTracker.closeBatch()
             scheduleBecauseError()
         }
-        releaseResources()
+        super.onDestroy()
     }
 
     abstract class Action<in Callback> {

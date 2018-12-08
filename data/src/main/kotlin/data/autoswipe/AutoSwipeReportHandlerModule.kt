@@ -17,5 +17,5 @@ internal class AutoSwipeReportHandlerModule {
     fun autoSwipeReportHandler(
             defaultSharedPreferences: SharedPreferences,
             notificationManager: NotificationManager) =
-            AutoSwipeReportHandler(defaultSharedPreferences, notificationManager)
+            AutoSwipeReportHandler(notificationManager)
 }
