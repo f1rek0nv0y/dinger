@@ -13,4 +13,5 @@
     <issue id="MissingRegistered" severity="ignore" />
     <!-- Synthetic accessors could only ever have a real impact on lists -->
     <issue id="SyntheticAccessor" severity="ignore" />
+    <issue id="VectorPath" severity="ignore" />
 </lint>
