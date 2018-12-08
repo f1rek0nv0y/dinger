@@ -84,7 +84,7 @@ internal class AutoSwipeReportHandler(
         const val RESULT_MORE_AVAILABLE = 2
         const val RESULT_ERROR = 3
         const val RESULT_BATCH_CLOSED = 4
-        private const val RESULT_PLACEHOLDER = 5
+        private const val RESULT_PLACEHOLDER = -1
 
 
         @Retention(AnnotationRetention.SOURCE)
