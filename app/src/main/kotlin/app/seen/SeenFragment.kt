@@ -37,6 +37,8 @@ internal class SeenFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() = SeenFragment()
+        fun newInstance() = SeenFragment().also {
+            it.retainInstance = true
+        }
     }
 }

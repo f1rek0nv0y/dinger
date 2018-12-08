@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import app.home.HomeActivity
-import kotlinx.android.synthetic.main.fragment_me.logout
+import kotlinx.android.synthetic.main.fragment_me.*
 import org.stoyicker.dinger.R
 import javax.inject.Inject
 
@@ -40,6 +40,8 @@ internal class MeFragment : Fragment() {
             homeActivity.homeComponent.newMeComponent().inject(this)
 
     companion object {
-        fun newInstance() = MeFragment()
+        fun newInstance() = MeFragment().also {
+            it.retainInstance = true
+        }
     }
 }

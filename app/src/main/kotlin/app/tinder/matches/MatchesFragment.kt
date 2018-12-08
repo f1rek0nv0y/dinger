@@ -17,6 +17,8 @@ internal class MatchesFragment : Fragment() {
             }
 
     companion object {
-        fun newInstance() = MatchesFragment()
+        fun newInstance() = MatchesFragment().also {
+            it.retainInstance = true
+        }
     }
 }
