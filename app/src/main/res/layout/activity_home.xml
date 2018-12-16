@@ -11,8 +11,7 @@
         <include
             layout="@layout/include_toolbar"
             android:id="@+id/toolbar_wrapper"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_scrollFlags="scroll|enterAlways" />
+            app:layout_constraintTop_toTopOf="parent" />
         <include
             layout="@layout/include_home_pager"
             android:layout_width="match_parent"
