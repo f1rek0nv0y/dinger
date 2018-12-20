@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="navigation_bottom_bar_elevation">8dp</dimen>
     <dimen name="navigation_bottom_bar_height">56dp</dimen>
 
     <string name="navigation_bar_matches">Matches</string>
