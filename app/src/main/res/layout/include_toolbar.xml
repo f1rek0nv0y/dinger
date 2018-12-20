@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar
+<android.support.design.widget.AppBarLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/toolbar"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:contentInsetEnd="@dimen/layout_content_padding"
-    app:contentInsetStart="@dimen/layout_content_padding"
-    app:title="@string/app_label" />
+    android:layout_height="wrap_content">
+    <android.support.v7.widget.Toolbar
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/app_label"
+        app:contentInsetEnd="@dimen/layout_content_padding"
+        app:contentInsetStart="@dimen/layout_content_padding" />
+</android.support.design.widget.AppBarLayout>
