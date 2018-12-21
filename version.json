@@ -2,6 +2,8 @@
   "title": "Update available",
   "body": "There is an update available for the app. Older versions are now unsupported.",
   "positive_button": "Download",
-  "download_url": "https://github.com/stoyicker/dinger/releases/download/765/dinger-765.apk",
-  "version": "765"
+  "negative_button": "Changelog",
+  "download_url": "https://github.com/stoyicker/dinger/releases/download/768/dinger-768.apk",
+  "changelog_url": "https://stoyicker.github.io/dinger/#changelog",
+  "version": "768"
 }
