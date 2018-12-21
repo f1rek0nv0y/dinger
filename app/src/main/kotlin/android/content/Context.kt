@@ -4,7 +4,7 @@ import android.os.Build
 import android.widget.Toast
 import org.stoyicker.dinger.R
 
-internal fun Context.startIntent(intent: Intent, noHandlersFallback: (Intent) -> Unit? = { _ ->
+internal fun Context.startIntent(intent: Intent, noHandlersFallback: (Intent) -> Unit? = {
     Toast.makeText(
             this,
             getString(R.string.no_intent_handlers, intent),
