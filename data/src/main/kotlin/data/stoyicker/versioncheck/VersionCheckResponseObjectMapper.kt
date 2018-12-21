@@ -9,7 +9,9 @@ internal class VersionCheckResponseObjectMapper : ObjectMapper<VersionCheckRespo
                 dialogTitle = title,
                 dialogBody = body,
                 positiveButtonText = positiveButtonText,
+                negativeButtonText = negativeButtonText,
                 downloadUrl = downloadUrl,
+                changelogUrl = changelogUrl,
                 newVersion = version)
     }
 }

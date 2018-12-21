@@ -7,8 +7,10 @@ import android.content.Context
 import android.content.Context.DOWNLOAD_SERVICE
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.startIntent
 import android.content.versionCode
 import android.net.Uri
+import android.provider.Browser
 import android.support.v7.app.AlertDialog
 import android.view.WindowManager
 import domain.versioncheck.DomainVersionCheckDescription
@@ -86,6 +88,7 @@ internal class VersionCheckCoordinator(
                             .setMessage(checkDescription.dialogBody)
                             .setCancelable(false)
                             .setPositiveButton(checkDescription.positiveButtonText, null)
+                            .setNegativeButton(checkDescription.negativeButtonText, null)
                             .create()
                             .apply {
                                 setOnShowListener {
@@ -97,6 +100,11 @@ internal class VersionCheckCoordinator(
                                                 ?.enqueue(DownloadManager.Request(Uri.parse(checkDescription.downloadUrl)).apply {
                                                     setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                                                 })
+                                    }
+                                    getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener {
+                                        activity.startIntent(
+                                                Intent(Intent.ACTION_VIEW, Uri.parse(checkDescription.changelogUrl))
+                                                        .putExtra(Browser.EXTRA_APPLICATION_ID, activity.packageName))
                                     }
                                 }
                                 show()
