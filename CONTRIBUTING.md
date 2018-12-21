@@ -6,5 +6,4 @@
 
 Note that, if approved, your pull request may have to be closed and 
 re-opened by a contributor with write access due to CI restrictions, 
-but once merged you will still figure as author of the commits 
-nevertheless.
+but once merged you will still figure as commit author nevertheless.
