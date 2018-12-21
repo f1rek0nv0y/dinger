@@ -34,7 +34,9 @@ echo "{
   \"title\": \"Update available\",
   \"body\": \"There is an update available for the app. Older versions are now unsupported.\",
   \"positive_button\": \"Download\",
+  \"negative_button\": \"Changelog\",
   \"download_url\": \"https://github.com/stoyicker/dinger/releases/download/${VERSION}/dinger-${VERSION}.apk\",
+  \"changelog_url\": \"https://stoyicker.github.io/dinger/#changelog\",
   \"version\": \"${VERSION}\"
 }" > version.json
 
