@@ -1,6 +1,6 @@
 final def constraintLayoutVersion = "1.1.3"
 final def daggerVersion = "2.14.1"
-final def facebookSdkVersion = "4.30.0"
+final def facebookSdkVersion = "4.39.0"
 final def jsr250Version = "1.0"
 final def lottieVersion = "2.5.6"
 final def moshiVersion = "1.5.0" // Frozen
