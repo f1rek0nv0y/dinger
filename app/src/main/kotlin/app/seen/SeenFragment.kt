@@ -17,29 +17,29 @@ import domain.seen.SeenRecommendationsViewModel
 import org.stoyicker.dinger.R
 
 internal class SeenFragment : Fragment() {
-    override fun onCreateView(inflater: LayoutInflater,
-                              parent: ViewGroup?,
-                              savedInstanceState: Bundle?) =
-            inflater.inflate(R.layout.fragment_seen, parent, false)!!
+  override fun onCreateView(inflater: LayoutInflater,
+                            parent: ViewGroup?,
+                            savedInstanceState: Bundle?) =
+      inflater.inflate(R.layout.fragment_seen, parent, false)!!
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val seenAdapter = SeenAdapter()
-        ViewModelProviders.of(this).get(SeenRecommendationsViewModel::class.java).filter().observe(
-                this@SeenFragment, Observer<PagedList<DomainRecommendationUser>> {
-            seenAdapter.submitList(it)
-        })
-        (view as RecyclerView).apply {
-            adapter = seenAdapter
-            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL).also {
-                it.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
-            }
-            itemAnimator = DefaultItemAnimator()
-        }
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    val seenAdapter = SeenAdapter()
+    ViewModelProviders.of(this).get(SeenRecommendationsViewModel::class.java).filter().observe(
+        this@SeenFragment, Observer<PagedList<DomainRecommendationUser>> {
+      seenAdapter.submitList(it)
+    })
+    (view as RecyclerView).apply {
+      adapter = seenAdapter
+      layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL).also {
+        it.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+      }
+      itemAnimator = DefaultItemAnimator()
     }
+  }
 
-    companion object {
-        fun newInstance() = SeenFragment().also {
-            it.retainInstance = true
-        }
+  companion object {
+    fun newInstance() = SeenFragment().also {
+      it.retainInstance = true
     }
+  }
 }

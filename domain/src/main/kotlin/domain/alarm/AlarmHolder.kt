@@ -1,9 +1,9 @@
 package domain.alarm
 
 object AlarmHolder {
-    internal lateinit var alarmManager: AppAlarmManager
+  internal lateinit var alarmManager: AppAlarmManager
 
-    fun alarmManager(serviceAlarmManager: AppAlarmManager) {
-        this.alarmManager = serviceAlarmManager
-    }
+  fun alarmManager(serviceAlarmManager: AppAlarmManager) {
+    this.alarmManager = serviceAlarmManager
+  }
 }

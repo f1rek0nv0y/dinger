@@ -8,10 +8,10 @@ import android.arch.persistence.room.Transaction
 
 @Dao
 internal interface RecommendationUserPhotoDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertPhoto(photo: RecommendationUserPhotoEntity)
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertPhoto(photo: RecommendationUserPhotoEntity)
 
-    @Query("SELECT * from RecommendationUserPhotoEntity WHERE id=:id")
-    @Transaction
-    fun selectPhotoById(id: String): List<RecommendationUserPhotoWithRelatives>
+  @Query("SELECT * from RecommendationUserPhotoEntity WHERE id=:id")
+  @Transaction
+  fun selectPhotoById(id: String): List<RecommendationUserPhotoWithRelatives>
 }

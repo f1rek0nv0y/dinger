@@ -1,5 +1,5 @@
 package domain.loggedincheck
 
 interface LoggedInCheck {
-    fun isThereALoggedInUser(): Boolean
+  fun isThereALoggedInUser(): Boolean
 }

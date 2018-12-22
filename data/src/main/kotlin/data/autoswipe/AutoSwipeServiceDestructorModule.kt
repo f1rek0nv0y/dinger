@@ -7,7 +7,7 @@ import javax.inject.Singleton
 
 @Module
 internal class AutoSwipeServiceDestructorModule {
-    @Provides
-    @Singleton
-    fun autoswipeServiceDestructor(): AutoSwipeServiceDestructor = AutoSwipeServiceDestructorImpl()
+  @Provides
+  @Singleton
+  fun autoswipeServiceDestructor(): AutoSwipeServiceDestructor = AutoSwipeServiceDestructorImpl()
 }

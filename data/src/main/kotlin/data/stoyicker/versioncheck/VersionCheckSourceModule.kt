@@ -20,27 +20,27 @@ import javax.inject.Singleton
 import dagger.Lazy as DaggerLazy
 
 @Module(includes = [
-    ParserModule::class, StoyickerApiModule::class, CrashReporterModule::class])
+  ParserModule::class, StoyickerApiModule::class, CrashReporterModule::class])
 internal class VersionCheckSourceModule {
-    @Provides
-    @Singleton
-    fun store(moshiBuilder: Moshi.Builder, api: StoyickerApi) =
-            FluentStoreBuilder.parsedWithKey<Unit, BufferedSource, VersionCheckResponse>(
-                    Fetcher { fetch(api) }) {
-                parsers = listOf(MoshiParserFactory.createSourceParser(
-                    moshiBuilder.build(), VersionCheckResponse::class.java))
-                memoryPolicy = FluentMemoryPolicyBuilder.build {
-                    expireAfterWrite = 1
-                    expireAfterTimeUnit = TimeUnit.SECONDS
-                    memorySize = 0
-                }
-                stalePolicy = StalePolicy.REFRESH_ON_STALE
-            }
+  @Provides
+  @Singleton
+  fun store(moshiBuilder: Moshi.Builder, api: StoyickerApi) =
+      FluentStoreBuilder.parsedWithKey<Unit, BufferedSource, VersionCheckResponse>(
+          Fetcher { fetch(api) }) {
+        parsers = listOf(MoshiParserFactory.createSourceParser(
+            moshiBuilder.build(), VersionCheckResponse::class.java))
+        memoryPolicy = FluentMemoryPolicyBuilder.build {
+          expireAfterWrite = 1
+          expireAfterTimeUnit = TimeUnit.SECONDS
+          memorySize = 0
+        }
+        stalePolicy = StalePolicy.REFRESH_ON_STALE
+      }
 
-    @Provides
-    @Singleton
-    fun source(store: DaggerLazy<Store<VersionCheckResponse, Unit>>,
-               crashReporter: CrashReporter) = VersionCheckSource(store, crashReporter)
+  @Provides
+  @Singleton
+  fun source(store: DaggerLazy<Store<VersionCheckResponse, Unit>>,
+             crashReporter: CrashReporter) = VersionCheckSource(store, crashReporter)
 
-    private fun fetch(api: StoyickerApi) = api.versionCheck().map { it.source() }
+  private fun fetch(api: StoyickerApi) = api.versionCheck().map { it.source() }
 }

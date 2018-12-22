@@ -9,5 +9,5 @@ import javax.inject.Singleton
 @Component(modules = [MeModule::class, SchedulerModule::class])
 @Singleton
 internal interface HomeComponent {
-    fun newMeComponent(): MeComponent
+  fun newMeComponent(): MeComponent
 }

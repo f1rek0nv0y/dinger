@@ -9,9 +9,9 @@ import javax.inject.Singleton
 
 @Module(includes = [GetRecommendationFacadeModule::class, CrashReporterModule::class])
 internal class GetRecommendationModule {
-    @Provides
-    @Singleton
-    fun getRecommendation(getRecommendationFacade: GetRecommendationFacade,
-                          crashReporter: CrashReporter): GetRecommendation =
-            GetRecommendationImpl(getRecommendationFacade, crashReporter)
+  @Provides
+  @Singleton
+  fun getRecommendation(getRecommendationFacade: GetRecommendationFacade,
+                        crashReporter: CrashReporter): GetRecommendation =
+      GetRecommendationImpl(getRecommendationFacade, crashReporter)
 }

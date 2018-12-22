@@ -9,8 +9,8 @@ import javax.inject.Singleton
 
 @Module(includes = [LoginFacadeModule::class, CrashReporterModule::class])
 internal class LoginModule {
-    @Provides
-    @Singleton
-    fun login(loginFacade: LoginFacade, crashReporter: CrashReporter): Login =
-            LoginImpl(loginFacade, crashReporter)
+  @Provides
+  @Singleton
+  fun login(loginFacade: LoginFacade, crashReporter: CrashReporter): Login =
+      LoginImpl(loginFacade, crashReporter)
 }

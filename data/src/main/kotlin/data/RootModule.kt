@@ -9,15 +9,15 @@ import javax.inject.Singleton
 
 @Module
 internal class RootModule(private val context: Context) {
-    @Provides
-    @Singleton
-    fun context() = context
+  @Provides
+  @Singleton
+  fun context() = context
 
-    @Provides
-    @Singleton
-    fun database(context: Context): AppDatabase = Room.databaseBuilder(
-            context,
-            AppDatabase::class.java,
-            "AppDatabase")
-            .build()
+  @Provides
+  @Singleton
+  fun database(context: Context): AppDatabase = Room.databaseBuilder(
+      context,
+      AppDatabase::class.java,
+      "AppDatabase")
+      .build()
 }

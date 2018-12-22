@@ -7,9 +7,9 @@ import android.arch.persistence.room.Query
 
 @Dao
 internal interface RecommendationSpotifyArtistDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertArtist(artist: RecommendationUserSpotifyThemeTrackArtistEntity)
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertArtist(artist: RecommendationUserSpotifyThemeTrackArtistEntity)
 
-    @Query("SELECT * from RecommendationUserSpotifyThemeTrackArtistEntity WHERE id=:id")
-    fun selectArtistById(id: String): List<RecommendationUserSpotifyThemeTrackArtistEntity>
+  @Query("SELECT * from RecommendationUserSpotifyThemeTrackArtistEntity WHERE id=:id")
+  fun selectArtistById(id: String): List<RecommendationUserSpotifyThemeTrackArtistEntity>
 }

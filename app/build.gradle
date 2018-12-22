@@ -37,7 +37,7 @@ android {
             signingConfig signingConfigs.dummy1
             minifyEnabled true
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard/rules.pro"
+                    "proguard/rules.pro"
             shrinkResources true
         }
     }
@@ -71,7 +71,8 @@ android {
     testOptions project.ext.testOptions
 }
 dependencies {
-    implementation project(":data") // This is only for the ContentProvider. Don"t import data in src!
+    implementation project(":data")
+    // This is only for the ContentProvider. Don"t import data in src!
     implementation project(":domain")
     implementation project(":crash-reporter")
     implementation project(":event-tracker") // Required by the ContentProvider

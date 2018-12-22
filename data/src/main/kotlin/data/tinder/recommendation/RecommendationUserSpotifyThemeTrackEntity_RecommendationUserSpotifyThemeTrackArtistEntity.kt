@@ -4,9 +4,9 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.Index
 
 @Entity(indices = [Index("recommendationUserSpotifyThemeTrackEntityId")],
-        primaryKeys = [
-            "recommendationUserSpotifyThemeTrackEntityId",
-            "recommendationUserSpotifyThemeTrackArtistEntityId"])
+    primaryKeys = [
+      "recommendationUserSpotifyThemeTrackEntityId",
+      "recommendationUserSpotifyThemeTrackArtistEntityId"])
 internal class
 RecommendationUserSpotifyThemeTrackEntity_RecommendationUserSpotifyThemeTrackArtistEntity(
     var recommendationUserSpotifyThemeTrackEntityId: String,

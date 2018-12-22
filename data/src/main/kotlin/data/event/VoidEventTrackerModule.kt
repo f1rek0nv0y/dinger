@@ -7,7 +7,7 @@ import javax.inject.Singleton
 
 @Module
 internal class VoidEventTrackerModule {
-    @Provides
-    @Singleton
-    fun instance() = EventTrackers.void()
+  @Provides
+  @Singleton
+  fun instance() = EventTrackers.void()
 }

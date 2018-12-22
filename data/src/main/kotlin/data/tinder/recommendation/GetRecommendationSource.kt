@@ -6,6 +6,6 @@ import reporter.CrashReporter
 import dagger.Lazy as DaggerLazy
 
 internal class GetRecommendationSource(
-        storeAccessor: DaggerLazy<Store<RecommendationResponse, Unit>>,
-        crashReporter: CrashReporter)
-    : RequestSource<Unit, RecommendationResponse>(storeAccessor.get(), crashReporter)
+    storeAccessor: DaggerLazy<Store<RecommendationResponse, Unit>>,
+    crashReporter: CrashReporter)
+  : RequestSource<Unit, RecommendationResponse>(storeAccessor.get(), crashReporter)

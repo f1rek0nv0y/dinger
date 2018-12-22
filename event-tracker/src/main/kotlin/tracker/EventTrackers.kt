@@ -1,7 +1,7 @@
 package tracker
 
 abstract class EventTrackers {
-    companion object {
-        fun void(): EventTracker = EventTrackerImpl.Void
-    }
+  companion object {
+    fun void(): EventTracker = EventTrackerImpl.Void
+  }
 }

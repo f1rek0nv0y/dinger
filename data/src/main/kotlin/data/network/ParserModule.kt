@@ -7,7 +7,7 @@ import javax.inject.Singleton
 
 @Module
 internal class ParserModule {
-    @Provides
-    @Singleton
-    fun kotlinMoshiBuilder() = Moshi.Builder()
+  @Provides
+  @Singleton
+  fun kotlinMoshiBuilder() = Moshi.Builder()
 }

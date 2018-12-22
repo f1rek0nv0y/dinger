@@ -7,22 +7,22 @@ import android.content.Intent
 import domain.alarm.AppAlarmManager
 
 internal class AppAlarmManagerImpl(private val context: Context)
-    : AppAlarmManager() {
-    override fun setOneShotBroadcastFor(requestCode: Int, notBeforeMillis: Long, task: Intent) =
-            (context.getSystemService(Context.ALARM_SERVICE) as AlarmManager).set(
-                    AlarmManager.RTC_WAKEUP,
-                    notBeforeMillis,
-                    generatePendingIntent(context, requestCode, task))
+  : AppAlarmManager() {
+  override fun setOneShotBroadcastFor(requestCode: Int, notBeforeMillis: Long, task: Intent) =
+      (context.getSystemService(Context.ALARM_SERVICE) as AlarmManager).set(
+          AlarmManager.RTC_WAKEUP,
+          notBeforeMillis,
+          generatePendingIntent(context, requestCode, task))
 
-    override fun cancelOneShotBroadcast(requestCode: Int, task: Intent) =
-            (context.getSystemService(Context.ALARM_SERVICE) as AlarmManager).cancel(
-                    generatePendingIntent(context, requestCode, task))
-    
-    private fun generatePendingIntent(context: Context, requestCode: Int, task: Intent) =
-            PendingIntent.getBroadcast(
-                    context,
-                    requestCode,
-                    task,
-                    PendingIntent.FLAG_ONE_SHOT)
-            
+  override fun cancelOneShotBroadcast(requestCode: Int, task: Intent) =
+      (context.getSystemService(Context.ALARM_SERVICE) as AlarmManager).cancel(
+          generatePendingIntent(context, requestCode, task))
+
+  private fun generatePendingIntent(context: Context, requestCode: Int, task: Intent) =
+      PendingIntent.getBroadcast(
+          context,
+          requestCode,
+          task,
+          PendingIntent.FLAG_ONE_SHOT)
+
 }

@@ -8,7 +8,7 @@ import javax.inject.Singleton
 
 @Module
 internal class CrashReporterModule {
-    @Provides
-    @Singleton
-    fun bugsnag(): CrashReporter = CrashReporters.bugsnag()
+  @Provides
+  @Singleton
+  fun bugsnag(): CrashReporter = CrashReporters.bugsnag()
 }

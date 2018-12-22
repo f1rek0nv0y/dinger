@@ -6,8 +6,8 @@ import javax.inject.Singleton
 
 @Module
 internal class DislikeRecommendationActionFactoryModule {
-    @Provides
-    @Singleton
-    fun likeRecommendationActionFactory() =
-            DislikeRecommendationActionFactoryWrapper{  DislikeRecommendationAction(it) }
+  @Provides
+  @Singleton
+  fun likeRecommendationActionFactory() =
+      DislikeRecommendationActionFactoryWrapper { DislikeRecommendationAction(it) }
 }

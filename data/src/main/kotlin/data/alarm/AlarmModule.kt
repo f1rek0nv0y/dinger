@@ -9,7 +9,7 @@ import javax.inject.Singleton
 
 @Module(includes = [RootModule::class])
 internal class AlarmModule {
-    @Provides
-    @Singleton
-    fun alarmManager(context: Context): AppAlarmManager = AppAlarmManagerImpl(context)
+  @Provides
+  @Singleton
+  fun alarmManager(context: Context): AppAlarmManager = AppAlarmManagerImpl(context)
 }

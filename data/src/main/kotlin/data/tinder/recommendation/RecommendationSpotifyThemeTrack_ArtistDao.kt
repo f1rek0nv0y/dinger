@@ -6,7 +6,7 @@ import android.arch.persistence.room.OnConflictStrategy
 
 @Dao
 internal interface RecommendationSpotifyThemeTrack_ArtistDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertSpotifyThemeTrack_Artist(
-            bond: RecommendationUserSpotifyThemeTrackEntity_RecommendationUserSpotifyThemeTrackArtistEntity)
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertSpotifyThemeTrack_Artist(
+      bond: RecommendationUserSpotifyThemeTrackEntity_RecommendationUserSpotifyThemeTrackArtistEntity)
 }

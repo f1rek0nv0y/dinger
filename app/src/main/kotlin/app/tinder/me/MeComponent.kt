@@ -6,5 +6,5 @@ import dagger.Subcomponent
 @Subcomponent(modules = [MeModule::class])
 @PerActivity
 internal interface MeComponent {
-    fun inject(target: MeFragment)
+  fun inject(target: MeFragment)
 }

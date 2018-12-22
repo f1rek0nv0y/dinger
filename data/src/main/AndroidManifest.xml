@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.stoyicker.dinger.data">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission
@@ -12,29 +12,32 @@
         android:maxSdkVersion="22" />
     <uses-permission
         android:name="android.permission.MANAGE_ACCOUNTS"
-        android:maxSdkVersion="22"/>
+        android:maxSdkVersion="22" />
+
     <application>
         <provider
-            android:authorities="org.stoyicker.dinger.InitializationContentProvider"
             android:name="data.InitializationContentProvider"
+            android:authorities="data.InitializationContentProvider"
             android:exported="false"
             android:syncable="false" />
+
         <service
             android:name="data.account.DingerAccountManagerService"
             android:exported="false">
             <intent-filter>
-                <action android:name="android.accounts.AccountAuthenticator"/>
+                <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
-                android:resource="@xml/authenticator_dinger"/>
+                android:resource="@xml/authenticator_dinger" />
         </service>
         <service
             android:name="data.autoswipe.AutoSwipeIntentService"
-            android:permission="android.permission.BIND_JOB_SERVICE"
             android:description="@string/autoswipe_receiver_description"
             android:icon="@drawable/ic_launcher_adaptive"
-            android:label="@string/autoswipe_receiver_label" />
+            android:label="@string/autoswipe_receiver_label"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
         <receiver
             android:name="data.autoswipe.AutoSwipeLauncherBroadcastReceiver"
             android:description="@string/autoswipe_receiver_description"

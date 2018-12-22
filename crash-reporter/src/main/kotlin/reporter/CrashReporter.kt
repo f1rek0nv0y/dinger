@@ -3,7 +3,7 @@ package reporter
 import android.content.Context
 
 interface CrashReporter {
-    fun init(context: Context)
+  fun init(context: Context)
 
-    fun report(throwable: Throwable)
+  fun report(throwable: Throwable)
 }

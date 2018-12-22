@@ -7,9 +7,9 @@ import android.arch.persistence.room.PrimaryKey
 
 @Entity(indices = [Index("id")])
 internal class RecommendationUserJobEntity(
-        @PrimaryKey
-        var id: String,
-        @Embedded(prefix = "company_")
-        var company: RecommendationUserJobCompany?,
-        @Embedded(prefix = "title_")
-        var title: RecommendationUserJobTitle?)
+    @PrimaryKey
+    var id: String,
+    @Embedded(prefix = "company_")
+    var company: RecommendationUserJobCompany?,
+    @Embedded(prefix = "title_")
+    var title: RecommendationUserJobTitle?)

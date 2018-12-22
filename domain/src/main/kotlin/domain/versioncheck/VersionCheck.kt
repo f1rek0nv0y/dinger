@@ -3,5 +3,5 @@ package domain.versioncheck
 import io.reactivex.Single
 
 interface VersionCheck {
-    fun versionCheck(): Single<DomainVersionCheckResponse>
+  fun versionCheck(): Single<DomainVersionCheckResponse>
 }

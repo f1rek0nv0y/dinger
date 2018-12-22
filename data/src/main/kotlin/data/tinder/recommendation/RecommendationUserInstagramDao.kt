@@ -8,10 +8,10 @@ import android.arch.persistence.room.Transaction
 
 @Dao
 internal interface RecommendationUserInstagramDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertInstagram(instagram: RecommendationUserInstagramEntity)
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertInstagram(instagram: RecommendationUserInstagramEntity)
 
-    @Query("SELECT * from RecommendationUserInstagramEntity WHERE username=:username")
-    @Transaction
-    fun selectInstagramByUsername(username: String): List<RecommendationUserInstagramWithRelatives>
+  @Query("SELECT * from RecommendationUserInstagramEntity WHERE username=:username")
+  @Transaction
+  fun selectInstagramByUsername(username: String): List<RecommendationUserInstagramWithRelatives>
 }

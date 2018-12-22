@@ -10,18 +10,18 @@ import javax.inject.Singleton
 
 @Module(includes = [RootModule::class, VoidEventTrackerModule::class])
 internal class LikeEventTrackerModule {
-    @Provides
-    @Singleton
-    fun likeResponseMarshaller() = LikeResponseTrackedDataMarshaller()
+  @Provides
+  @Singleton
+  fun likeResponseMarshaller() = LikeResponseTrackedDataMarshaller()
 
-    @Provides
-    @Singleton
-    fun eventTracker(
-            context: Context,
-            eventTracker: EventTracker,
-            likeResponseMarshaller: LikeResponseTrackedDataMarshaller) =
-            LikeEventTracker(
-                    context,
-                    eventTracker,
-                    likeResponseMarshaller)
+  @Provides
+  @Singleton
+  fun eventTracker(
+      context: Context,
+      eventTracker: EventTracker,
+      likeResponseMarshaller: LikeResponseTrackedDataMarshaller) =
+      LikeEventTracker(
+          context,
+          eventTracker,
+          likeResponseMarshaller)
 }

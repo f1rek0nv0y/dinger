@@ -3,7 +3,8 @@ ext {
     androidCompileSdkVersion = 28
     androidMinSdkVersion = 23
     androidTargetSdkVersion = 28
-    androidVersionCode = inducedVersion != null ? Integer.parseInt(inducedVersion) : Integer.MAX_VALUE // Depending on the git method locally causes IDE issues
+    androidVersionCode = inducedVersion != null ? Integer.parseInt(inducedVersion) : Integer.MAX_VALUE
+    // Depending on the git method locally causes IDE issues
     androidVersionName = String.valueOf(androidVersionCode)
     androidApplicationIdBase = "org.stoyicker.dinger"
     staticAnalysisReportTarget = project.buildDir.absolutePath + "/staticAnalysisReport"

@@ -6,7 +6,7 @@ import javax.inject.Singleton
 
 @Module
 internal class GetRecommendationsActionModule {
-    @Provides
-    @Singleton
-    fun getRecommendationsAction() = GetRecommendationsAction()
+  @Provides
+  @Singleton
+  fun getRecommendationsAction() = GetRecommendationsAction()
 }

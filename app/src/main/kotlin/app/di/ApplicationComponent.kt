@@ -14,15 +14,15 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Component(modules = [
-    SchedulerModule::class,
-    CrashReporterModule::class,
-    VoidEventTrackerModule::class])
+  SchedulerModule::class,
+  CrashReporterModule::class,
+  VoidEventTrackerModule::class])
 @Singleton
 internal interface ApplicationComponent {
-    fun inject(mainApplication: MainApplication)
-    fun newSplashComponent(splashModule: SplashModule): SplashComponent
-    fun newTinderLoginComponent(tinderLoginModule: TinderLoginModule): TinderLoginComponent
-    fun newAlarmBannerComponent(
-            autoSwipeTriggerModule: AutoSwipeTriggerModule,
-            continueModule: ContinueModule): AlarmBannerComponent
+  fun inject(mainApplication: MainApplication)
+  fun newSplashComponent(splashModule: SplashModule): SplashComponent
+  fun newTinderLoginComponent(tinderLoginModule: TinderLoginModule): TinderLoginComponent
+  fun newAlarmBannerComponent(
+      autoSwipeTriggerModule: AutoSwipeTriggerModule,
+      continueModule: ContinueModule): AlarmBannerComponent
 }

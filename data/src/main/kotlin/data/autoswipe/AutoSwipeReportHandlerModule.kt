@@ -8,8 +8,8 @@ import javax.inject.Singleton
 
 @Module(includes = [NotificationManagerModule::class])
 internal class AutoSwipeReportHandlerModule {
-    @Provides
-    @Singleton
-    fun autoSwipeReportHandler(notificationManager: NotificationManager) =
-            AutoSwipeReportHandler(notificationManager)
+  @Provides
+  @Singleton
+  fun autoSwipeReportHandler(notificationManager: NotificationManager) =
+      AutoSwipeReportHandler(notificationManager)
 }

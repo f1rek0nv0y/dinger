@@ -7,7 +7,7 @@ import javax.inject.Singleton
 
 @Module
 internal class JsonObjectOrFalseAdapterModule {
-    @Provides
-    @Singleton
-    fun provideAdapterFactory() = JsonObjectOrFalseAdapter.Factory(classJsonAdapterFactory)
+  @Provides
+  @Singleton
+  fun provideAdapterFactory() = JsonObjectOrFalseAdapter.Factory(classJsonAdapterFactory)
 }

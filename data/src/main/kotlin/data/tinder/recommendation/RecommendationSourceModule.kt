@@ -20,24 +20,24 @@ import javax.inject.Singleton
 import dagger.Lazy as DaggerLazy
 
 @Module(includes = [
-    ParserModule::class, TinderApiModule::class, CrashReporterModule::class])
+  ParserModule::class, TinderApiModule::class, CrashReporterModule::class])
 internal class RecommendationSourceModule {
-    @Provides
-    @Singleton
-    fun store(moshiBuilder: Moshi.Builder, api: TinderApi) =
-            FluentStoreBuilder.parsedWithKey<Unit, BufferedSource, RecommendationResponse>(
-                    Fetcher { fetch(api) }) {
-                parsers = listOf(MoshiParserFactory.createSourceParser(moshiBuilder
-                                .add(Date::class.java, Rfc3339DateJsonAdapter().nullSafe())
-                                .build(),
-                                RecommendationResponse::class.java))
-                stalePolicy = StalePolicy.NETWORK_BEFORE_STALE
-            }
+  @Provides
+  @Singleton
+  fun store(moshiBuilder: Moshi.Builder, api: TinderApi) =
+      FluentStoreBuilder.parsedWithKey<Unit, BufferedSource, RecommendationResponse>(
+          Fetcher { fetch(api) }) {
+        parsers = listOf(MoshiParserFactory.createSourceParser(moshiBuilder
+            .add(Date::class.java, Rfc3339DateJsonAdapter().nullSafe())
+            .build(),
+            RecommendationResponse::class.java))
+        stalePolicy = StalePolicy.NETWORK_BEFORE_STALE
+      }
 
-    @Provides
-    @Singleton
-    fun source(store: DaggerLazy<Store<RecommendationResponse, Unit>>,
-               crashReporter: CrashReporter) = GetRecommendationSource(store, crashReporter)
+  @Provides
+  @Singleton
+  fun source(store: DaggerLazy<Store<RecommendationResponse, Unit>>,
+             crashReporter: CrashReporter) = GetRecommendationSource(store, crashReporter)
 
-    private fun fetch(api: TinderApi) = api.getRecommendations().map { it.source() }
+  private fun fetch(api: TinderApi) = api.getRecommendations().map { it.source() }
 }

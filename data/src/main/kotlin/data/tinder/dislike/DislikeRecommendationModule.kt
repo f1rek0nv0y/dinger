@@ -9,9 +9,9 @@ import javax.inject.Singleton
 
 @Module(includes = [DislikeFacadeModule::class, CrashReporterModule::class])
 internal class DislikeRecommendationModule {
-    @Provides
-    @Singleton
-    fun dislikeRecommendation(dislikeFacade: DislikeFacade, crashReporter: CrashReporter)
-            : DislikeRecommendation =
-            DislikeRecommendationImpl(dislikeFacade, crashReporter)
+  @Provides
+  @Singleton
+  fun dislikeRecommendation(dislikeFacade: DislikeFacade, crashReporter: CrashReporter)
+      : DislikeRecommendation =
+      DislikeRecommendationImpl(dislikeFacade, crashReporter)
 }

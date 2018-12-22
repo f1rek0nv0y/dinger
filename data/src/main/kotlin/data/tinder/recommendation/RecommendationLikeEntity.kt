@@ -6,6 +6,6 @@ import android.arch.persistence.room.PrimaryKey
 
 @Entity(indices = [Index("id")])
 internal class RecommendationLikeEntity(
-        @PrimaryKey
-        var id: String,
-        var name: String)
+    @PrimaryKey
+    var id: String,
+    var name: String)

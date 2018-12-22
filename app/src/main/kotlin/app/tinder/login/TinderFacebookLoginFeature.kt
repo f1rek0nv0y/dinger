@@ -19,50 +19,50 @@ import reporter.CrashReporter
  * a way that it's only responsibility is flow routing.
  */
 internal class TinderFacebookLoginFeature(
-        loginButton: LoginButton,
-        private val resultCallback: ResultCallback,
-        private val crashReporter: CrashReporter) {
-    private val callbackManager: CallbackManager = CallbackManager.Factory.create()
+    loginButton: LoginButton,
+    private val resultCallback: ResultCallback,
+    private val crashReporter: CrashReporter) {
+  private val callbackManager: CallbackManager = CallbackManager.Factory.create()
 
-    init {
-        loginButton.apply {
-            // This 'hack' is required to pretend that we are Tinder
-            loginBehavior = LoginBehavior.WEB_ONLY
-            registerCallback(callbackManager,
-                    object : FacebookCallback<LoginResult> {
-                        override fun onCancel() = Toast.makeText(context, R.string.login_cancelled,
-                                Toast.LENGTH_LONG)
-                                .show()
+  init {
+    loginButton.apply {
+      // This 'hack' is required to pretend that we are Tinder
+      loginBehavior = LoginBehavior.WEB_ONLY
+      registerCallback(callbackManager,
+          object : FacebookCallback<LoginResult> {
+            override fun onCancel() = Toast.makeText(context, R.string.login_cancelled,
+                Toast.LENGTH_LONG)
+                .show()
 
-                        override fun onError(exception: FacebookException) {
-                            crashReporter.report(exception)
-                            Toast.makeText(context, R.string.login_failed,
-                                    Toast.LENGTH_LONG)
-                                    .show()
-                        }
+            override fun onError(exception: FacebookException) {
+              crashReporter.report(exception)
+              Toast.makeText(context, R.string.login_failed,
+                  Toast.LENGTH_LONG)
+                  .show()
+            }
 
-                        override fun onSuccess(loginResult: LoginResult) =
-                                reportSuccess(AccessToken.getCurrentAccessToken())
-                    })
-        }
+            override fun onSuccess(loginResult: LoginResult) =
+                reportSuccess(AccessToken.getCurrentAccessToken())
+          })
     }
+  }
 
-    fun bind() = AccessToken.getCurrentAccessToken()?.also { reportSuccess(it) }
+  fun bind() = AccessToken.getCurrentAccessToken()?.also { reportSuccess(it) }
 
-    /**
-     * Call from Activity#onActivityResult(Int, Int, Intent?).
-     */
-    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        callbackManager.onActivityResult(requestCode, resultCode, data)
-    }
+  /**
+   * Call from Activity#onActivityResult(Int, Int, Intent?).
+   */
+  fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    callbackManager.onActivityResult(requestCode, resultCode, data)
+  }
 
-    fun release(loginButton: LoginButton) = loginButton.unregisterCallback(callbackManager)
+  fun release(loginButton: LoginButton) = loginButton.unregisterCallback(callbackManager)
 
-    private fun reportSuccess(accessToken: AccessToken) = accessToken.let {
-        resultCallback.onSuccess(it.userId, it.token)
-    }
+  private fun reportSuccess(accessToken: AccessToken) = accessToken.let {
+    resultCallback.onSuccess(it.userId, it.token)
+  }
 
-    internal interface ResultCallback {
-        fun onSuccess(facebookId: String, facebookToken: String)
-    }
+  internal interface ResultCallback {
+    fun onSuccess(facebookId: String, facebookToken: String)
+  }
 }

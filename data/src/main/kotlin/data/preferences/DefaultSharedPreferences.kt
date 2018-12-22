@@ -11,13 +11,13 @@ import javax.inject.Singleton
 
 @Module(includes = [RootModule::class])
 internal class DefaultSharedPreferencesModule {
-    @Provides
-    @Singleton
-    fun defaultSharedPreferences(context: Context) =
-            PreferenceManager.getDefaultSharedPreferences(context)!!
+  @Provides
+  @Singleton
+  fun defaultSharedPreferences(context: Context) =
+      PreferenceManager.getDefaultSharedPreferences(context)!!
 
-    @Provides
-    @Singleton
-    fun likeBatchTracker(context: Context, sharedPreferences: SharedPreferences) =
-            LikeBatchTracker(context, sharedPreferences)
+  @Provides
+  @Singleton
+  fun likeBatchTracker(context: Context, sharedPreferences: SharedPreferences) =
+      LikeBatchTracker(context, sharedPreferences)
 }

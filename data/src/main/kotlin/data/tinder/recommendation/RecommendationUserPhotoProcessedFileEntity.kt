@@ -6,7 +6,7 @@ import android.arch.persistence.room.PrimaryKey
 
 @Entity(indices = [Index("url")])
 internal class RecommendationUserPhotoProcessedFileEntity(
-        var widthPx: Int,
-        @PrimaryKey
-        var url: String,
-        var heightPx: Int)
+    var widthPx: Int,
+    @PrimaryKey
+    var url: String,
+    var heightPx: Int)

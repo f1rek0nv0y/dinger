@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="org.stoyicker.dinger">
-    <uses-permission
-        android:name="android.permission.INTERNET" />
-    <uses-permission
-        android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
+
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher_adaptive"
-        android:roundIcon="@mipmap/ic_launcher_adaptive_round"
         android:label="@string/app_label"
         android:resizeableActivity="true"
+        android:roundIcon="@mipmap/ic_launcher_adaptive_round"
         tools:ignore="UnusedAttribute"> <!-- resizeableActivity -->
         <activity
             android:name="app.splash.SplashActivity"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.SplashTheme"
-            android:windowSoftInputMode="stateHidden"
-            android:launchMode="singleTask">
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -26,20 +27,20 @@
         </activity>
         <activity
             android:name="app.tinder.login.TinderLoginActivity"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden"
-            android:launchMode="singleTask" />
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name="app.alarmbanner.AlarmBannerActivity"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden"
-            android:launchMode="singleTask" />
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name="app.home.HomeActivity"
-            android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -47,34 +48,36 @@
         </activity>
         <activity
             android:name="app.settings.SettingsActivity"
-            android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden"
             android:label="@string/label_settings"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="app.home.HomeActivity"/>
+                android:value="app.home.HomeActivity" />
         </activity>
 
         <!-- BEGIN Facebook -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
+            android:value="@string/facebook_app_id" />
         <meta-data
             android:name="com.facebook.sdk.AutoLogAppEventsEnabled"
-            android:value="false"/>
+            android:value="false" />
+
         <activity
             android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_label" />
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>

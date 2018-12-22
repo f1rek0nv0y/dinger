@@ -18,23 +18,23 @@ import javax.inject.Singleton
 import dagger.Lazy as DaggerLazy
 
 @Module(includes = [
-    ParserModule::class, TinderApiModule::class, CrashReporterModule::class])
+  ParserModule::class, TinderApiModule::class, CrashReporterModule::class])
 internal class LoginSourceModule {
-    @Provides
-    @Singleton
-    fun store(moshiBuilder: Moshi.Builder, api: TinderApi) =
-            FluentStoreBuilder.parsedWithKey<LoginRequestParameters, BufferedSource, LoginResponse>(
-                    Fetcher { fetch(it, api) }) {
-                parsers = listOf(MoshiParserFactory.createSourceParser(
-                    moshiBuilder.build(), LoginResponse::class.java))
-                stalePolicy = StalePolicy.NETWORK_BEFORE_STALE
-            }
+  @Provides
+  @Singleton
+  fun store(moshiBuilder: Moshi.Builder, api: TinderApi) =
+      FluentStoreBuilder.parsedWithKey<LoginRequestParameters, BufferedSource, LoginResponse>(
+          Fetcher { fetch(it, api) }) {
+        parsers = listOf(MoshiParserFactory.createSourceParser(
+            moshiBuilder.build(), LoginResponse::class.java))
+        stalePolicy = StalePolicy.NETWORK_BEFORE_STALE
+      }
 
-    @Provides
-    @Singleton
-    fun source(store: DaggerLazy<Store<LoginResponse, LoginRequestParameters>>,
-               crashReporter: CrashReporter) = LoginSource(store, crashReporter)
+  @Provides
+  @Singleton
+  fun source(store: DaggerLazy<Store<LoginResponse, LoginRequestParameters>>,
+             crashReporter: CrashReporter) = LoginSource(store, crashReporter)
 
-    private fun fetch(requestParameters: LoginRequestParameters, api: TinderApi) =
-            api.login(requestParameters).map { it.source() }
+  private fun fetch(requestParameters: LoginRequestParameters, api: TinderApi) =
+      api.login(requestParameters).map { it.source() }
 }

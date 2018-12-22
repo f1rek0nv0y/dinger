@@ -10,13 +10,13 @@ import javax.inject.Singleton
 
 @Module(includes = [NetworkClientModule::class, NetworkModule::class])
 internal class StoyickerApiModule {
-    @Provides
-    @Singleton
-    fun tinderApi(
-            clientBuilder: OkHttpClient.Builder,
-            retrofitBuilder: Retrofit.Builder): StoyickerApi = retrofitBuilder
-            .client(clientBuilder.build())
-            .baseUrl(StoyickerApi.BASE_URL)
-            .build()
-            .create(StoyickerApi::class.java)
+  @Provides
+  @Singleton
+  fun tinderApi(
+      clientBuilder: OkHttpClient.Builder,
+      retrofitBuilder: Retrofit.Builder): StoyickerApi = retrofitBuilder
+      .client(clientBuilder.build())
+      .baseUrl(StoyickerApi.BASE_URL)
+      .build()
+      .create(StoyickerApi::class.java)
 }

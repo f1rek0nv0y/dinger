@@ -6,11 +6,11 @@ import android.os.IBinder
 import javax.inject.Inject
 
 internal class DingerAccountManagerService : Service() {
-    @Inject
-    lateinit var accountManagerImpl: AppAccountAuthenticator
+  @Inject
+  lateinit var accountManagerImpl: AppAccountAuthenticator
 
-    override fun onBind(intent: Intent): IBinder {
-        AccountComponentHolder.accountComponent.inject(this)
-        return accountManagerImpl.iBinder
-    }
+  override fun onBind(intent: Intent): IBinder {
+    AccountComponentHolder.accountComponent.inject(this)
+    return accountManagerImpl.iBinder
+  }
 }

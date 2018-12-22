@@ -3,4 +3,4 @@ package data.tinder.like
 import domain.recommendation.DomainRecommendationUser
 
 internal class LikeRecommendationActionFactoryWrapper(
-        val delegate: (DomainRecommendationUser) -> LikeRecommendationAction)
+    val delegate: (DomainRecommendationUser) -> LikeRecommendationAction)

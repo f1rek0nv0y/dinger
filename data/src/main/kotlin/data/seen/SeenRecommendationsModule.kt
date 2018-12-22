@@ -9,8 +9,8 @@ import javax.inject.Singleton
 
 @Module(includes = [RecommendationUserResolverModule::class])
 internal class SeenRecommendationsModule {
-    @Provides
-    @Singleton
-    fun seenRecommendations(resolver: RecommendationUserResolver): SeenRecommendations =
-            SeenRecommendationsImpl(resolver)
+  @Provides
+  @Singleton
+  fun seenRecommendations(resolver: RecommendationUserResolver): SeenRecommendations =
+      SeenRecommendationsImpl(resolver)
 }

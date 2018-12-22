@@ -4,6 +4,6 @@ import data.tinder.recommendation.RecommendationUserResolver
 import domain.seen.SeenRecommendations
 
 internal class SeenRecommendationsImpl(private val resolver: RecommendationUserResolver)
-    : SeenRecommendations {
-    override fun filter(filter: String) = resolver.selectByFilterOnName(filter)
+  : SeenRecommendations {
+  override fun filter(filter: String) = resolver.selectByFilterOnName(filter)
 }

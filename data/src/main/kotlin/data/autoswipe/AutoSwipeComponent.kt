@@ -8,13 +8,13 @@ import data.tinder.recommendation.RecommendationUserResolverModule
 import javax.inject.Singleton
 
 @Component(modules = [
-    AutoSwipeReportHandlerModule::class,
-    DefaultSharedPreferencesModule::class,
-    CrashReporterModule::class,
-    GetRecommendationsActionModule::class,
-    ProcessRecommendationActionFactoryModule::class,
-    RecommendationUserResolverModule::class])
+  AutoSwipeReportHandlerModule::class,
+  DefaultSharedPreferencesModule::class,
+  CrashReporterModule::class,
+  GetRecommendationsActionModule::class,
+  ProcessRecommendationActionFactoryModule::class,
+  RecommendationUserResolverModule::class])
 @Singleton
 internal interface AutoSwipeComponent {
-    fun inject(autoSwipeIntentService: AutoSwipeIntentService)
+  fun inject(autoSwipeIntentService: AutoSwipeIntentService)
 }

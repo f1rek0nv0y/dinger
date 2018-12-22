@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 
 internal class MatchesFragment : Fragment() {
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?) = FrameLayout(context!!)
+  override fun onCreateView(inflater: LayoutInflater,
+                            container: ViewGroup?,
+                            savedInstanceState: Bundle?) = FrameLayout(context!!)
 
-    companion object {
-        fun newInstance() = MatchesFragment().also {
-            it.retainInstance = true
-        }
+  companion object {
+    fun newInstance() = MatchesFragment().also {
+      it.retainInstance = true
     }
+  }
 }

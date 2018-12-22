@@ -36,66 +36,68 @@ import javax.inject.Inject
  *     The Firebase Blog: How does Void initialize on Android</a>
  */
 internal class InitializationContentProvider : ContentProvider() {
-    @Inject
-    lateinit var loginImpl: Login
-    @Inject
-    lateinit var getRecommendationImpl: GetRecommendation
-    @Inject
-    lateinit var likeRecommendationImpl: LikeRecommendation
-    @Inject
-    lateinit var dislikeRecommendationImpl: DislikeRecommendation
-    @Inject
-    lateinit var accountManagerImpl: AppAccountAuthenticator
-    @Inject
-    lateinit var alarmManagerImpl: AppAlarmManager
-    @Inject
-    lateinit var autoSwipeIntentFactoryImpl: AutoSwipeLauncherFactory
-    @Inject
-    lateinit var versionCheckImpl: VersionCheck
-    @Inject
-    lateinit var storageClearImpl: StorageClear
-    @Inject
-    lateinit var autoswipeServiceDestructor: AutoSwipeServiceDestructor
-    @Inject
-    lateinit var seenRecommendations: SeenRecommendations
+  @Inject
+  lateinit var loginImpl: Login
+  @Inject
+  lateinit var getRecommendationImpl: GetRecommendation
+  @Inject
+  lateinit var likeRecommendationImpl: LikeRecommendation
+  @Inject
+  lateinit var dislikeRecommendationImpl: DislikeRecommendation
+  @Inject
+  lateinit var accountManagerImpl: AppAccountAuthenticator
+  @Inject
+  lateinit var alarmManagerImpl: AppAlarmManager
+  @Inject
+  lateinit var autoSwipeIntentFactoryImpl: AutoSwipeLauncherFactory
+  @Inject
+  lateinit var versionCheckImpl: VersionCheck
+  @Inject
+  lateinit var storageClearImpl: StorageClear
+  @Inject
+  lateinit var autoswipeServiceDestructor: AutoSwipeServiceDestructor
+  @Inject
+  lateinit var seenRecommendations: SeenRecommendations
 
-    override fun onCreate(): Boolean {
-        val rootModule = RootModule(context!!)
-        val accountModule = AccountModule()
-        AccountComponentHolder.accountComponent = DaggerAccountComponent.builder()
-                .rootModule(rootModule)
-                .accountModule(accountModule)
-                .build()
-        AutoSwipeComponentHolder.autoSwipeComponent = DaggerAutoSwipeComponent.builder()
-                .rootModule(rootModule)
-                .build()
-        DaggerInitializationComponent.builder()
-                .rootModule(rootModule)
-                .accountModule(accountModule)
-                .build()
-                .inject(this)
-        LoginHolder.login(loginImpl)
-        LoginHolder.addAccount(accountManagerImpl)
-        LoggedInCheckHolder.loggedInCheck(accountManagerImpl)
-        GetRecommendationHolder.getRecommendation(getRecommendationImpl)
-        LikeRecommendationHolder.likeRecommendation(likeRecommendationImpl)
-        DislikeRecommendationHolder.dislikeRecommendation(dislikeRecommendationImpl)
-        AlarmHolder.alarmManager(alarmManagerImpl)
-        AutoSwipeHolder.autoSwipeIntentFactory(autoSwipeIntentFactoryImpl)
-        VersionCheckHolder.versionCheck(versionCheckImpl)
-        LogoutHolder.alarmManager(alarmManagerImpl)
-        LogoutHolder.autoswipeDestructor(autoswipeServiceDestructor)
-        LogoutHolder.removeAccount(accountManagerImpl)
-        LogoutHolder.storageClear(storageClearImpl)
-        SeenRecommendationsHolder.seenRecommendations(seenRecommendations)
-        return true
-    }
+  override fun onCreate(): Boolean {
+    val rootModule = RootModule(context!!)
+    val accountModule = AccountModule()
+    AccountComponentHolder.accountComponent = DaggerAccountComponent.builder()
+        .rootModule(rootModule)
+        .accountModule(accountModule)
+        .build()
+    AutoSwipeComponentHolder.autoSwipeComponent = DaggerAutoSwipeComponent.builder()
+        .rootModule(rootModule)
+        .build()
+    DaggerInitializationComponent.builder()
+        .rootModule(rootModule)
+        .accountModule(accountModule)
+        .build()
+        .inject(this)
+    LoginHolder.login(loginImpl)
+    LoginHolder.addAccount(accountManagerImpl)
+    LoggedInCheckHolder.loggedInCheck(accountManagerImpl)
+    GetRecommendationHolder.getRecommendation(getRecommendationImpl)
+    LikeRecommendationHolder.likeRecommendation(likeRecommendationImpl)
+    DislikeRecommendationHolder.dislikeRecommendation(dislikeRecommendationImpl)
+    AlarmHolder.alarmManager(alarmManagerImpl)
+    AutoSwipeHolder.autoSwipeIntentFactory(autoSwipeIntentFactoryImpl)
+    VersionCheckHolder.versionCheck(versionCheckImpl)
+    LogoutHolder.alarmManager(alarmManagerImpl)
+    LogoutHolder.autoswipeDestructor(autoswipeServiceDestructor)
+    LogoutHolder.removeAccount(accountManagerImpl)
+    LogoutHolder.storageClear(storageClearImpl)
+    SeenRecommendationsHolder.seenRecommendations(seenRecommendations)
+    return true
+  }
 
-    override fun insert(uri: Uri?, values: ContentValues?) = null
-    override fun query(uri: Uri?, projection: Array<out String>?, selection: String?,
-                       selectionArgs: Array<out String>?, sortOrder: String?) = null
-    override fun update(uri: Uri?, values: ContentValues?, selection: String?,
-                        selectionArgs: Array<out String>?) = 0
-    override fun delete(uri: Uri?, selection: String?, selectionArgs: Array<out String>?) = 0
-    override fun getType(uri: Uri?) = "vnd.android.cursor.item.none"
+  override fun insert(uri: Uri?, values: ContentValues?) = null
+  override fun query(uri: Uri?, projection: Array<out String>?, selection: String?,
+                     selectionArgs: Array<out String>?, sortOrder: String?) = null
+
+  override fun update(uri: Uri?, values: ContentValues?, selection: String?,
+                      selectionArgs: Array<out String>?) = 0
+
+  override fun delete(uri: Uri?, selection: String?, selectionArgs: Array<out String>?) = 0
+  override fun getType(uri: Uri?) = "vnd.android.cursor.item.none"
 }

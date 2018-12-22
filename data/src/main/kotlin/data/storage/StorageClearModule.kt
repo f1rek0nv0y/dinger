@@ -7,7 +7,7 @@ import javax.inject.Singleton
 
 @Module
 internal class StorageClearModule {
-    @Provides
-    @Singleton
-    fun storageClear(): StorageClear = StorageClearImpl()
+  @Provides
+  @Singleton
+  fun storageClear(): StorageClear = StorageClearImpl()
 }

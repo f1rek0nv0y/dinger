@@ -1,36 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="app.tinder.login.TinderLoginActivity"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true">
+    android:animateLayoutChanges="true"
+    tools:context="app.tinder.login.TinderLoginActivity">
+
     <android.support.v4.widget.ContentLoadingProgressBar
         android:id="@+id/progress"
+        style="?android:attr/android:progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:indeterminate="true"
         android:layout_alignParentBottom="true"
-        android:visibility="invisible"
-        style="?android:attr/android:progressBarStyleHorizontal" />
+        android:indeterminate="true"
+        android:visibility="invisible" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_above="@id/progress"
         android:gravity="center"
-        android:layout_above="@id/progress">
+        android:orientation="vertical">
+
         <android.support.v7.widget.AppCompatImageView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            app:srcCompat="@drawable/ic_launcher_big"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_launcher_big" />
+
         <Space
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="1" />
+
         <com.facebook.login.widget.LoginButton
             android:id="@+id/login_button"
             android:layout_width="wrap_content"

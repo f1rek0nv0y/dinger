@@ -11,13 +11,13 @@ import javax.inject.Singleton
 @Module
 @Singleton
 internal class SchedulerModule {
-    @Provides
-    @Named("io")
-    @Singleton
-    fun ioScheduler(): Scheduler = Schedulers.io()
+  @Provides
+  @Named("io")
+  @Singleton
+  fun ioScheduler(): Scheduler = Schedulers.io()
 
-    @Provides
-    @Named("main")
-    @Singleton
-    fun mainThreadScheduler(): Scheduler = AndroidSchedulers.mainThread()
+  @Provides
+  @Named("main")
+  @Singleton
+  fun mainThreadScheduler(): Scheduler = AndroidSchedulers.mainThread()
 }

@@ -7,9 +7,9 @@ import android.arch.persistence.room.Query
 
 @Dao
 internal interface RecommendationUserJobDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertJob(job: RecommendationUserJobEntity)
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertJob(job: RecommendationUserJobEntity)
 
-    @Query("SELECT * from RecommendationUserJobEntity WHERE id=:id")
-    fun selectJobById(id: String): List<RecommendationUserJobEntity>
+  @Query("SELECT * from RecommendationUserJobEntity WHERE id=:id")
+  fun selectJobById(id: String): List<RecommendationUserJobEntity>
 }

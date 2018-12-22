@@ -1,9 +1,9 @@
 package domain.loggedincheck
 
 object LoggedInCheckHolder {
-    internal lateinit var loggedInCheck: LoggedInCheck
+  internal lateinit var loggedInCheck: LoggedInCheck
 
-    fun loggedInCheck(it: LoggedInCheck){
-        loggedInCheck = it
-    }
+  fun loggedInCheck(it: LoggedInCheck) {
+    loggedInCheck = it
+  }
 }

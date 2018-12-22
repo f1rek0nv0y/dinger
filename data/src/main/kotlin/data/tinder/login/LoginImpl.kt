@@ -7,8 +7,8 @@ import io.reactivex.Single
 import reporter.CrashReporter
 
 internal class LoginImpl(
-        private val loginFacade: LoginFacade,
-        private val crashReporter: CrashReporter) : Login {
-    override fun login(parameters: DomainAuthRequestParameters): Single<DomainAuthenticatedUser> =
-            loginFacade.fetch(parameters).doOnError { crashReporter.report(it) }
+    private val loginFacade: LoginFacade,
+    private val crashReporter: CrashReporter) : Login {
+  override fun login(parameters: DomainAuthRequestParameters): Single<DomainAuthenticatedUser> =
+      loginFacade.fetch(parameters).doOnError { crashReporter.report(it) }
 }

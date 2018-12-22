@@ -13,25 +13,25 @@ import data.tinder.like.LikeRecommendationActionFactoryWrapper
 import javax.inject.Singleton
 
 @Module(includes = [
-    DefaultSharedPreferencesModule::class,
-    DislikeRecommendationActionFactoryModule::class,
-    LikeRecommendationActionFactoryModule::class,
-    RootModule::class])
+  DefaultSharedPreferencesModule::class,
+  DislikeRecommendationActionFactoryModule::class,
+  LikeRecommendationActionFactoryModule::class,
+  RootModule::class])
 internal class ProcessRecommendationActionFactoryModule {
-    @Provides
-    @Singleton
-    fun processRecommendationActionFactory(
-            rootContext: Context,
-            defaultSharedPreferences: SharedPreferences,
-            likeRecommendationActionFactory: dagger.Lazy<LikeRecommendationActionFactoryWrapper>,
-            dislikeRecommendationActionFactory
-            : dagger.Lazy<DislikeRecommendationActionFactoryWrapper>) =
-            ProcessRecommendationActionFactoryWrapper {
+  @Provides
+  @Singleton
+  fun processRecommendationActionFactory(
+      rootContext: Context,
+      defaultSharedPreferences: SharedPreferences,
+      likeRecommendationActionFactory: dagger.Lazy<LikeRecommendationActionFactoryWrapper>,
+      dislikeRecommendationActionFactory
+      : dagger.Lazy<DislikeRecommendationActionFactoryWrapper>) =
+      ProcessRecommendationActionFactoryWrapper {
         ProcessRecommendationAction(
-                rootContext,
-                it,
-                defaultSharedPreferences,
-                likeRecommendationActionFactory,
-                dislikeRecommendationActionFactory)
-    }
+            rootContext,
+            it,
+            defaultSharedPreferences,
+            likeRecommendationActionFactory,
+            dislikeRecommendationActionFactory)
+      }
 }

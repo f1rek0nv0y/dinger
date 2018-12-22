@@ -6,6 +6,6 @@ import data.network.RequestSource
 import reporter.CrashReporter
 
 internal class LikeSource(
-        storeAccessor: Lazy<Store<LikeResponse, String>>,
-        crashReporter: CrashReporter)
-    : RequestSource<String, LikeResponse>(storeAccessor.get(), crashReporter)
+    storeAccessor: Lazy<Store<LikeResponse, String>>,
+    crashReporter: CrashReporter)
+  : RequestSource<String, LikeResponse>(storeAccessor.get(), crashReporter)

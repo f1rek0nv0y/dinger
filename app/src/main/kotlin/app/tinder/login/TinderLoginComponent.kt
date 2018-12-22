@@ -6,5 +6,5 @@ import dagger.Subcomponent
 @Subcomponent(modules = [TinderLoginModule::class])
 @PerActivity
 internal interface TinderLoginComponent {
-    fun inject(target: TinderLoginActivity)
+  fun inject(target: TinderLoginActivity)
 }

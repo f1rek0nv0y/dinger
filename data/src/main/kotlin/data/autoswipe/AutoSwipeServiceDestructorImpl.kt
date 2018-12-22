@@ -5,7 +5,7 @@ import android.content.Intent
 import domain.logout.AutoSwipeServiceDestructor
 
 internal class AutoSwipeServiceDestructorImpl : AutoSwipeServiceDestructor {
-    override fun stopService(context: Context) {
-        context.stopService(Intent(context, AutoSwipeIntentService::class.java))
-    }
+  override fun stopService(context: Context) {
+    context.stopService(Intent(context, AutoSwipeIntentService::class.java))
+  }
 }

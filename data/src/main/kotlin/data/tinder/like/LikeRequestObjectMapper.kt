@@ -4,6 +4,6 @@ import data.ObjectMapper
 import domain.recommendation.DomainRecommendationUser
 
 internal class LikeRequestObjectMapper
-    : ObjectMapper<DomainRecommendationUser, String> {
-    override fun from(source: DomainRecommendationUser) = source.id
+  : ObjectMapper<DomainRecommendationUser, String> {
+  override fun from(source: DomainRecommendationUser) = source.id
 }

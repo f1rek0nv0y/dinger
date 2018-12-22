@@ -1,9 +1,9 @@
 package app.tinder.login
 
 internal interface TinderLoginView {
-    fun setRunning()
+  fun setRunning()
 
-    fun setStale()
+  fun setStale()
 
-    fun setError()
+  fun setError()
 }

@@ -1,9 +1,9 @@
 package domain.dislike
 
 object DislikeRecommendationHolder {
-    internal lateinit var dislikeRecommendation: DislikeRecommendation
+  internal lateinit var dislikeRecommendation: DislikeRecommendation
 
-    fun dislikeRecommendation(it: DislikeRecommendation) {
-        dislikeRecommendation = it
-    }
+  fun dislikeRecommendation(it: DislikeRecommendation) {
+    dislikeRecommendation = it
+  }
 }

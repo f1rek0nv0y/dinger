@@ -20,242 +20,242 @@ import javax.inject.Inject
 import kotlin.random.Random
 
 internal class AutoSwipeIntentService : IntentService("AutoSwipe") {
-    @Inject
-    lateinit var crashReporter: CrashReporter
-    @Inject
-    lateinit var defaultSharedPreferences: SharedPreferences
-    @Inject
-    lateinit var getRecommendationsAction: GetRecommendationsAction
-    @Inject
-    lateinit var processRecommendationActionFactory: ProcessRecommendationActionFactoryWrapper
-    @Inject
-    lateinit var recommendationResolver: RecommendationUserResolver
-    @Inject
-    lateinit var reportHandler: AutoSwipeReportHandler
-    @Inject
-    lateinit var likeBatchTracker: LikeBatchTracker
-    private var reScheduled = false
-    private var ongoingActions = emptySet<Action<*>>()
+  @Inject
+  lateinit var crashReporter: CrashReporter
+  @Inject
+  lateinit var defaultSharedPreferences: SharedPreferences
+  @Inject
+  lateinit var getRecommendationsAction: GetRecommendationsAction
+  @Inject
+  lateinit var processRecommendationActionFactory: ProcessRecommendationActionFactoryWrapper
+  @Inject
+  lateinit var recommendationResolver: RecommendationUserResolver
+  @Inject
+  lateinit var reportHandler: AutoSwipeReportHandler
+  @Inject
+  lateinit var likeBatchTracker: LikeBatchTracker
+  private var reScheduled = false
+  private var ongoingActions = emptySet<Action<*>>()
 
-    init {
-        AutoSwipeComponentHolder.autoSwipeComponent.inject(this)
+  init {
+    AutoSwipeComponentHolder.autoSwipeComponent.inject(this)
+  }
+
+  override fun onHandleIntent(intent: Intent) {
+    if (defaultSharedPreferences.getBoolean(
+            getString(R.string.preference_key_autoswipe_enabled), true)) {
+      reportHandler.buildPlaceHolder(this).apply { startForeground(id, delegate) }
+      try {
+        startAutoSwipe()
+      } catch (e: Exception) {
+        scheduleBecauseError(e)
+      }
+    } else {
+      scheduleBecauseError()
+    }
+  }
+
+
+  override fun onDestroy() {
+    if (!reScheduled) {
+      likeBatchTracker.closeBatch()
+      scheduleBecauseError()
+    }
+    super.onDestroy()
+  }
+
+  abstract class Action<in Callback> {
+    protected val commonDelegate by lazy { CommonResultDelegate(this) }
+
+    abstract fun execute(owner: AutoSwipeIntentService, callback: Callback)
+
+    abstract fun dispose()
+  }
+
+  class CommonResultDelegate(private val action: Action<*>) {
+    fun onComplete(autoSwipeIntentService: AutoSwipeIntentService) {
+      autoSwipeIntentService.clearAction(action)
     }
 
-    override fun onHandleIntent(intent: Intent) {
+    fun onError(error: Throwable, autoSwipeIntentService: AutoSwipeIntentService) {
+      if (error is HttpException && error.code() == 401) {
+        onComplete(autoSwipeIntentService)
+      } else {
+        autoSwipeIntentService.scheduleBecauseError(error)
+        autoSwipeIntentService.clearAction(action)
+      }
+    }
+  }
+
+  private fun startAutoSwipe() = Unit.also {
+    getRecommendationsAction.apply {
+      ongoingActions += (this)
+      execute(this@AutoSwipeIntentService,
+          object : GetRecommendationsAction.Callback {
+            override fun onRecommendationsReceived(
+                recommendations: List<DomainRecommendationUser>) {
+              if (recommendations.isEmpty()) {
+                scheduleBecauseError(IllegalStateException("Empty recommendation filter"))
+              } else {
+                processRecommendations(recommendations)
+              }
+            }
+          })
+    }
+  }
+
+  private fun processRecommendations(recommendations: List<DomainRecommendationUser>) {
+    val latch = CountDownLatch(recommendations.size)
+    recommendations.forEach { recommendation ->
+      likeBatchTracker.addLike()
+      processRecommendationActionFactory.delegate(recommendation).apply {
+        ongoingActions += (this)
         if (defaultSharedPreferences.getBoolean(
-                        getString(R.string.preference_key_autoswipe_enabled), true)) {
-            reportHandler.buildPlaceHolder(this).apply { startForeground(id, delegate) }
-            try {
-                startAutoSwipe()
-            } catch (e: Exception) {
-                scheduleBecauseError(e)
-            }
-        } else {
-            scheduleBecauseError()
+                getString(R.string.preference_key_swipe_at_human_speed),
+                true)) {
+          TimeUnit.SECONDS.sleep(Random.nextLong(2, 7))
         }
+        execute(this@AutoSwipeIntentService,
+            object : ProcessRecommendationAction.Callback {
+              override fun onRecommendationProcessed(
+                  answer: DomainLikedRecommendationAnswer) =
+                  saveRecommendationToDatabase(
+                      recommendation = recommendation,
+                      liked = answer.rateLimitedUntilMillis != null,
+                      matched = answer.matched).also {
+                    reportHandler.addLikeAnswer(answer)
+                    latch.countDown()
+                    answer.rateLimitedUntilMillis?.let { limitedUntil ->
+                      scheduleBecauseLimited(limitedUntil)
+                      return
+                    }
+                  }
+
+              override fun onRecommendationProcessingFailed() =
+                  saveRecommendationToDatabase(
+                      recommendation,
+                      liked = false,
+                      matched = false).also {
+                    latch.countDown()
+                  }
+            })
+      }
     }
-
-
-    override fun onDestroy() {
-        if (!reScheduled) {
-            likeBatchTracker.closeBatch()
-            scheduleBecauseError()
-        }
-        super.onDestroy()
+    latch.await()
+    if (likeBatchTracker.isBatchOpen()) {
+      scheduleBecauseMoreAvailable()
+    } else {
+      scheduleBecauseBatchClosed()
     }
+  }
 
-    abstract class Action<in Callback> {
-        protected val commonDelegate by lazy { CommonResultDelegate(this) }
+  private fun saveRecommendationToDatabase(
+      recommendation: DomainRecommendationUser, liked: Boolean, matched: Boolean) {
+    recommendationResolver.insert(DomainRecommendationUser(
+        bio = recommendation.bio,
+        distanceMiles = recommendation.distanceMiles,
+        commonFriends = recommendation.commonFriends,
+        commonFriendCount = recommendation.commonFriendCount,
+        commonLikes = recommendation.commonLikes,
+        commonLikeCount = recommendation.commonLikeCount,
+        id = recommendation.id,
+        birthDate = recommendation.birthDate,
+        name = recommendation.name,
+        instagram = recommendation.instagram,
+        teaser = recommendation.teaser,
+        spotifyThemeTrack = recommendation.spotifyThemeTrack,
+        gender = recommendation.gender,
+        birthDateInfo = recommendation.birthDateInfo,
+        contentHash = recommendation.contentHash,
+        groupMatched = recommendation.groupMatched,
+        sNumber = recommendation.sNumber,
+        liked = liked,
+        matched = matched,
+        photos = recommendation.photos,
+        jobs = recommendation.jobs,
+        schools = recommendation.schools,
+        teasers = recommendation.teasers))
+  }
 
-        abstract fun execute(owner: AutoSwipeIntentService, callback: Callback)
-
-        abstract fun dispose()
+  private fun scheduleBecauseMoreAvailable() {
+    reportHandler.show(
+        this,
+        null,
+        null,
+        AutoSwipeReportHandler.RESULT_MORE_AVAILABLE)
+    ImmediatePostAutoSwipeAction().apply {
+      ongoingActions += this
+      execute(this@AutoSwipeIntentService, Unit)
+      reScheduled = true
     }
+    releaseResources()
+  }
 
-    class CommonResultDelegate(private val action: Action<*>) {
-        fun onComplete(autoSwipeIntentService: AutoSwipeIntentService) {
-            autoSwipeIntentService.clearAction(action)
-        }
-
-        fun onError(error: Throwable, autoSwipeIntentService: AutoSwipeIntentService) {
-            if (error is HttpException && error.code() == 401) {
-                onComplete(autoSwipeIntentService)
-            } else {
-                autoSwipeIntentService.scheduleBecauseError(error)
-                autoSwipeIntentService.clearAction(action)
-            }
-        }
+  private fun scheduleBecauseLimited(notBeforeMillis: Long) {
+    FromRateLimitedPostAutoSwipeAction(notBeforeMillis).apply {
+      ongoingActions += this
+      execute(this@AutoSwipeIntentService, Unit)
     }
+    reportHandler.show(
+        this,
+        notBeforeMillis,
+        null,
+        AutoSwipeReportHandler.RESULT_RATE_LIMITED)
+    reScheduled = true
+    likeBatchTracker.closeBatch()
+    releaseResources()
+  }
 
-    private fun startAutoSwipe() = Unit.also {
-        getRecommendationsAction.apply {
-            ongoingActions += (this)
-            execute(this@AutoSwipeIntentService,
-                    object : GetRecommendationsAction.Callback {
-                        override fun onRecommendationsReceived(
-                                recommendations: List<DomainRecommendationUser>) {
-                            if (recommendations.isEmpty()) {
-                                scheduleBecauseError(IllegalStateException("Empty recommendation filter"))
-                            } else {
-                                processRecommendations(recommendations)
-                            }
-                        }
-                    })
-        }
+  private fun scheduleBecauseBatchClosed() {
+    val notBeforeMillis = Date().time + 1000 * 60 * 60 * 2L //2h from now
+    FromRateLimitedPostAutoSwipeAction(notBeforeMillis).apply {
+      ongoingActions += this
+      execute(this@AutoSwipeIntentService, Unit)
     }
+    reportHandler.show(
+        this,
+        notBeforeMillis,
+        null,
+        AutoSwipeReportHandler.RESULT_BATCH_CLOSED)
+    reScheduled = true
+    likeBatchTracker.closeBatch()
+    releaseResources()
+  }
 
-    private fun processRecommendations(recommendations: List<DomainRecommendationUser>) {
-        val latch = CountDownLatch(recommendations.size)
-        recommendations.forEach { recommendation ->
-            likeBatchTracker.addLike()
-            processRecommendationActionFactory.delegate(recommendation).apply {
-                ongoingActions += (this)
-                if (defaultSharedPreferences.getBoolean(
-                                getString(R.string.preference_key_swipe_at_human_speed),
-                                true)) {
-                    TimeUnit.SECONDS.sleep(Random.nextLong(2, 7))
-                }
-                execute(this@AutoSwipeIntentService,
-                        object : ProcessRecommendationAction.Callback {
-                            override fun onRecommendationProcessed(
-                                    answer: DomainLikedRecommendationAnswer) =
-                                    saveRecommendationToDatabase(
-                                            recommendation = recommendation,
-                                            liked = answer.rateLimitedUntilMillis != null,
-                                            matched = answer.matched).also {
-                                        reportHandler.addLikeAnswer(answer)
-                                        latch.countDown()
-                                        answer.rateLimitedUntilMillis?.let { limitedUntil ->
-                                            scheduleBecauseLimited(limitedUntil)
-                                            return
-                                        }
-                                    }
-
-                            override fun onRecommendationProcessingFailed() =
-                                    saveRecommendationToDatabase(
-                                            recommendation,
-                                            liked = false,
-                                            matched = false).also {
-                                        latch.countDown()
-                                    }
-                        })
-            }
-        }
-        latch.await()
-        if (likeBatchTracker.isBatchOpen()) {
-            scheduleBecauseMoreAvailable()
-        } else {
-            scheduleBecauseBatchClosed()
-        }
+  private fun scheduleBecauseError(error: Throwable? = null) {
+    if (error != null) {
+      crashReporter.report(error)
+      reportHandler.show(
+          this,
+          FromErrorPostAutoSwipeUseCase.interval(this),
+          error.localizedMessage,
+          AutoSwipeReportHandler.RESULT_ERROR)
     }
-
-    private fun saveRecommendationToDatabase(
-            recommendation: DomainRecommendationUser, liked: Boolean, matched: Boolean) {
-        recommendationResolver.insert(DomainRecommendationUser(
-                bio = recommendation.bio,
-                distanceMiles = recommendation.distanceMiles,
-                commonFriends = recommendation.commonFriends,
-                commonFriendCount = recommendation.commonFriendCount,
-                commonLikes = recommendation.commonLikes,
-                commonLikeCount = recommendation.commonLikeCount,
-                id = recommendation.id,
-                birthDate = recommendation.birthDate,
-                name = recommendation.name,
-                instagram = recommendation.instagram,
-                teaser = recommendation.teaser,
-                spotifyThemeTrack = recommendation.spotifyThemeTrack,
-                gender = recommendation.gender,
-                birthDateInfo = recommendation.birthDateInfo,
-                contentHash = recommendation.contentHash,
-                groupMatched = recommendation.groupMatched,
-                sNumber = recommendation.sNumber,
-                liked = liked,
-                matched = matched,
-                photos = recommendation.photos,
-                jobs = recommendation.jobs,
-                schools = recommendation.schools,
-                teasers = recommendation.teasers))
+    FromErrorPostAutoSwipeAction().apply {
+      ongoingActions += this
+      execute(this@AutoSwipeIntentService, Unit)
     }
+    reScheduled = true
+    likeBatchTracker.closeBatch()
+    releaseResources()
+  }
 
-    private fun scheduleBecauseMoreAvailable() {
-        reportHandler.show(
-                this,
-                null,
-                null,
-                AutoSwipeReportHandler.RESULT_MORE_AVAILABLE)
-        ImmediatePostAutoSwipeAction().apply {
-            ongoingActions += this
-            execute(this@AutoSwipeIntentService, Unit)
-            reScheduled = true
-        }
-        releaseResources()
+  private fun releaseResources() {
+    ongoingActions.forEach { it.dispose() }
+    ongoingActions = emptySet()
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+      stopForeground(STOP_FOREGROUND_DETACH)
+    } else {
+      stopForeground(false)
     }
+  }
 
-    private fun scheduleBecauseLimited(notBeforeMillis: Long) {
-        FromRateLimitedPostAutoSwipeAction(notBeforeMillis).apply {
-            ongoingActions += this
-            execute(this@AutoSwipeIntentService, Unit)
-        }
-        reportHandler.show(
-                this,
-                notBeforeMillis,
-                null,
-                AutoSwipeReportHandler.RESULT_RATE_LIMITED)
-        reScheduled = true
-        likeBatchTracker.closeBatch()
-        releaseResources()
-    }
+  private fun clearAction(action: Action<*>) = action.apply {
+    dispose()
+    ongoingActions -= this
+  }
 
-    private fun scheduleBecauseBatchClosed() {
-        val notBeforeMillis = Date().time + 1000 * 60 * 60 * 2L //2h from now
-        FromRateLimitedPostAutoSwipeAction(notBeforeMillis).apply {
-            ongoingActions += this
-            execute(this@AutoSwipeIntentService, Unit)
-        }
-        reportHandler.show(
-                this,
-                notBeforeMillis,
-                null,
-                AutoSwipeReportHandler.RESULT_BATCH_CLOSED)
-        reScheduled = true
-        likeBatchTracker.closeBatch()
-        releaseResources()
-    }
-
-    private fun scheduleBecauseError(error: Throwable? = null) {
-        if (error != null) {
-            crashReporter.report(error)
-            reportHandler.show(
-                    this,
-                    FromErrorPostAutoSwipeUseCase.interval(this),
-                    error.localizedMessage,
-                    AutoSwipeReportHandler.RESULT_ERROR)
-        }
-        FromErrorPostAutoSwipeAction().apply {
-            ongoingActions += this
-            execute(this@AutoSwipeIntentService, Unit)
-        }
-        reScheduled = true
-        likeBatchTracker.closeBatch()
-        releaseResources()
-    }
-
-    private fun releaseResources() {
-        ongoingActions.forEach { it.dispose() }
-        ongoingActions = emptySet()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            stopForeground(STOP_FOREGROUND_DETACH)
-        } else {
-            stopForeground(false)
-        }
-    }
-
-    private fun clearAction(action: Action<*>) = action.apply {
-        dispose()
-        ongoingActions -= this
-    }
-
-    companion object {
-        fun callingIntent(context: Context) = Intent(context, AutoSwipeIntentService::class.java)
-    }
+  companion object {
+    fun callingIntent(context: Context) = Intent(context, AutoSwipeIntentService::class.java)
+  }
 }

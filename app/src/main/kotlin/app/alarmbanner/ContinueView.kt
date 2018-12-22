@@ -1,5 +1,5 @@
 package app.alarmbanner
 
 internal interface ContinueView {
-    fun clickListener(function: () -> Unit)
+  fun clickListener(function: () -> Unit)
 }

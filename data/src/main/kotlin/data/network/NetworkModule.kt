@@ -9,9 +9,9 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 @Module
 internal class NetworkModule {
-    @Provides
-    fun retrofitBuilder(): Retrofit.Builder = Retrofit.Builder()
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(MoshiConverterFactory.create())
-            .validateEagerly(BuildConfig.DEBUG)
+  @Provides
+  fun retrofitBuilder(): Retrofit.Builder = Retrofit.Builder()
+      .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create())
+      .validateEagerly(BuildConfig.DEBUG)
 }

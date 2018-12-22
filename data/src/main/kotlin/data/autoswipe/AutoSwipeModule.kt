@@ -7,7 +7,7 @@ import javax.inject.Singleton
 
 @Module
 internal class AutoSwipeModule {
-    @Provides
-    @Singleton
-    fun autoSwipeIntentFactory(): AutoSwipeLauncherFactory = AutoSwipeLauncherFactoryImpl()
+  @Provides
+  @Singleton
+  fun autoSwipeIntentFactory(): AutoSwipeLauncherFactory = AutoSwipeLauncherFactoryImpl()
 }

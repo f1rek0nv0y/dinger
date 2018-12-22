@@ -16,19 +16,19 @@ import data.tinder.recommendation.GetRecommendationModule
 import javax.inject.Singleton
 
 @Component(modules = [
-        NetworkModule::class,
-        LoginModule::class,
-        GetRecommendationModule::class,
-        SeenRecommendationsModule::class,
-        LikeRecommendationModule::class,
-        DislikeRecommendationModule::class,
-        AccountModule::class,
-        AlarmModule::class,
-        AutoSwipeModule::class,
-        VersionCheckModule::class,
-        StorageClearModule::class,
-        AutoSwipeServiceDestructorModule::class])
+  NetworkModule::class,
+  LoginModule::class,
+  GetRecommendationModule::class,
+  SeenRecommendationsModule::class,
+  LikeRecommendationModule::class,
+  DislikeRecommendationModule::class,
+  AccountModule::class,
+  AlarmModule::class,
+  AutoSwipeModule::class,
+  VersionCheckModule::class,
+  StorageClearModule::class,
+  AutoSwipeServiceDestructorModule::class])
 @Singleton
 internal interface InitializationComponent {
-    fun inject(initializationContentProvider: InitializationContentProvider)
+  fun inject(initializationContentProvider: InitializationContentProvider)
 }

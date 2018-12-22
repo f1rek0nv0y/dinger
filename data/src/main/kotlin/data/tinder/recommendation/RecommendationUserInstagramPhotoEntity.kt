@@ -6,8 +6,8 @@ import android.arch.persistence.room.PrimaryKey
 
 @Entity(indices = [Index("link")])
 internal class RecommendationUserInstagramPhotoEntity(
-        @PrimaryKey
-        var link: String,
-        var imageUrl: String,
-        var thumbnailUrl: String,
-        var ts: String)
+    @PrimaryKey
+    var link: String,
+    var imageUrl: String,
+    var thumbnailUrl: String,
+    var ts: String)

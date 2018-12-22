@@ -8,20 +8,20 @@ import io.reactivex.Completable
 import io.reactivex.Scheduler
 
 class LogoutUseCase(
-        private val context: Context,
-        asyncExecutionScheduler: Scheduler? = null,
-        postExecutionScheduler: Scheduler)
-    : CompletableDisposableUseCase(asyncExecutionScheduler, postExecutionScheduler) {
-    override fun buildUseCase(): Completable {
-        return Completable.fromCallable {
-            LogoutHolder.apply {
-                autoswipeDestructor.stopService(context)
-                alarmManager.cancelOneShotBroadcast(
-                        PostAutoSwipeUseCase.REQUEST_CODE,
-                        AutoSwipeHolder.autoSwipeLauncherFactory.newFromBroadcast(context))
-                removeAccount.removeAccount()
-                storageClear.clearStorage(context)
-            }
-        }
+    private val context: Context,
+    asyncExecutionScheduler: Scheduler? = null,
+    postExecutionScheduler: Scheduler)
+  : CompletableDisposableUseCase(asyncExecutionScheduler, postExecutionScheduler) {
+  override fun buildUseCase(): Completable {
+    return Completable.fromCallable {
+      LogoutHolder.apply {
+        autoswipeDestructor.stopService(context)
+        alarmManager.cancelOneShotBroadcast(
+            PostAutoSwipeUseCase.REQUEST_CODE,
+            AutoSwipeHolder.autoSwipeLauncherFactory.newFromBroadcast(context))
+        removeAccount.removeAccount()
+        storageClear.clearStorage(context)
+      }
     }
+  }
 }

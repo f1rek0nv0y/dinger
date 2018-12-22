@@ -9,8 +9,8 @@ import javax.inject.Singleton
 
 @Module(includes = [LikeFacadeModule::class, CrashReporterModule::class])
 internal class LikeRecommendationModule {
-    @Provides
-    @Singleton
-    fun likeRecommendation(likeFacade: LikeFacade, crashReporter: CrashReporter)
-            : LikeRecommendation = LikeRecommendationImpl(likeFacade, crashReporter)
+  @Provides
+  @Singleton
+  fun likeRecommendation(likeFacade: LikeFacade, crashReporter: CrashReporter)
+      : LikeRecommendation = LikeRecommendationImpl(likeFacade, crashReporter)
 }

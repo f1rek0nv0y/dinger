@@ -1,5 +1,5 @@
 package data.account
 
 internal object AccountComponentHolder {
-    lateinit var accountComponent: AccountComponent
+  lateinit var accountComponent: AccountComponent
 }

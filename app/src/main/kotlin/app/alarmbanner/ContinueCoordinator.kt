@@ -1,11 +1,11 @@
 package app.alarmbanner
 
 internal class ContinueCoordinator(
-        private val resultCallback: ResultCallback,
-        private val continueView: ContinueView) {
-    fun enable() = continueView.clickListener { resultCallback.onContinueClicked() }
+    private val resultCallback: ResultCallback,
+    private val continueView: ContinueView) {
+  fun enable() = continueView.clickListener { resultCallback.onContinueClicked() }
 
-    interface ResultCallback {
-        fun onContinueClicked()
-    }
+  interface ResultCallback {
+    fun onContinueClicked()
+  }
 }

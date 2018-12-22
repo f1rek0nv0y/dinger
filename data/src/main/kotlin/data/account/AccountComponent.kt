@@ -6,5 +6,5 @@ import javax.inject.Singleton
 @Component(modules = [AccountModule::class])
 @Singleton
 internal interface AccountComponent {
-    fun inject(dingerAccountManagerService: DingerAccountManagerService)
+  fun inject(dingerAccountManagerService: DingerAccountManagerService)
 }

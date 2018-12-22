@@ -10,7 +10,7 @@ import javax.inject.Named
 @Module
 @PerActivity
 internal class MeModule(private val context: Context) {
-    @Provides
-    fun logoutCoordinator(@Named("main") postExecutionScheduler: Scheduler) =
-            LogoutCoordinator(context, postExecutionScheduler)
+  @Provides
+  fun logoutCoordinator(@Named("main") postExecutionScheduler: Scheduler) =
+      LogoutCoordinator(context, postExecutionScheduler)
 }

@@ -7,9 +7,9 @@ import io.reactivex.Single
 import reporter.CrashReporter
 
 internal class LikeRecommendationImpl(
-        private val likeFacade: LikeFacade,
-        private val crashReporter: CrashReporter) : LikeRecommendation {
-    override fun likeRecommendation(recommendation: DomainRecommendationUser)
-            : Single<DomainLikedRecommendationAnswer> =
-            likeFacade.fetch(recommendation).doOnError { crashReporter.report(it) }
+    private val likeFacade: LikeFacade,
+    private val crashReporter: CrashReporter) : LikeRecommendation {
+  override fun likeRecommendation(recommendation: DomainRecommendationUser)
+      : Single<DomainLikedRecommendationAnswer> =
+      likeFacade.fetch(recommendation).doOnError { crashReporter.report(it) }
 }

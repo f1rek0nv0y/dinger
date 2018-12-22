@@ -20,31 +20,31 @@ import reporter.CrashReporter
 import javax.inject.Singleton
 
 @Module(includes = [
-    JsonObjectOrFalseAdapterModule::class,
-    ParserModule::class,
-    TinderApiModule::class,
-    CrashReporterModule::class])
+  JsonObjectOrFalseAdapterModule::class,
+  ParserModule::class,
+  TinderApiModule::class,
+  CrashReporterModule::class])
 internal class LikeSourceModule {
-    @Provides
-    @Singleton
-    fun store(jsonObjectOrFalseAdapterFactory: JsonObjectOrFalseAdapter.Factory,
-              moshiBuilder: Moshi.Builder,
-              api: TinderApi) =
-            FluentStoreBuilder.parsedWithKey<String, BufferedSource, LikeResponse>(
-                    Fetcher { fetch(it, api) }) {
-                parsers = listOf(MoshiParserFactory.createSourceParser(
-                        moshiBuilder
-                                .add(jsonObjectOrFalseAdapterFactory)
-                                .build(),
-                        LikeResponse::class.java))
-                stalePolicy = StalePolicy.NETWORK_BEFORE_STALE
-            }
+  @Provides
+  @Singleton
+  fun store(jsonObjectOrFalseAdapterFactory: JsonObjectOrFalseAdapter.Factory,
+            moshiBuilder: Moshi.Builder,
+            api: TinderApi) =
+      FluentStoreBuilder.parsedWithKey<String, BufferedSource, LikeResponse>(
+          Fetcher { fetch(it, api) }) {
+        parsers = listOf(MoshiParserFactory.createSourceParser(
+            moshiBuilder
+                .add(jsonObjectOrFalseAdapterFactory)
+                .build(),
+            LikeResponse::class.java))
+        stalePolicy = StalePolicy.NETWORK_BEFORE_STALE
+      }
 
-    @Provides
-    @Singleton
-    fun source(store: Lazy<Store<LikeResponse, String>>,
-               crashReporter: CrashReporter) = LikeSource(store, crashReporter)
+  @Provides
+  @Singleton
+  fun source(store: Lazy<Store<LikeResponse, String>>,
+             crashReporter: CrashReporter) = LikeSource(store, crashReporter)
 
-    private fun fetch(requestParameters: String, api: TinderApi) =
-            api.like(requestParameters).map { it.source() }
+  private fun fetch(requestParameters: String, api: TinderApi) =
+      api.like(requestParameters).map { it.source() }
 }

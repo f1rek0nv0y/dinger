@@ -18,23 +18,23 @@ import reporter.CrashReporter
 import javax.inject.Singleton
 
 @Module(includes = [
-    ParserModule::class, TinderApiModule::class, CrashReporterModule::class])
+  ParserModule::class, TinderApiModule::class, CrashReporterModule::class])
 internal class DislikeSourceModule {
-    @Provides
-    @Singleton
-    fun store(moshiBuilder: Moshi.Builder, api: TinderApi) =
-            FluentStoreBuilder.parsedWithKey<String, BufferedSource, DislikeResponse>(
-                    Fetcher { fetch(it, api) }) {
-                parsers = listOf(MoshiParserFactory.createSourceParser(
-                        moshiBuilder.build(), DislikeResponse::class.java))
-                stalePolicy = StalePolicy.NETWORK_BEFORE_STALE
-            }
+  @Provides
+  @Singleton
+  fun store(moshiBuilder: Moshi.Builder, api: TinderApi) =
+      FluentStoreBuilder.parsedWithKey<String, BufferedSource, DislikeResponse>(
+          Fetcher { fetch(it, api) }) {
+        parsers = listOf(MoshiParserFactory.createSourceParser(
+            moshiBuilder.build(), DislikeResponse::class.java))
+        stalePolicy = StalePolicy.NETWORK_BEFORE_STALE
+      }
 
-    @Provides
-    @Singleton
-    fun source(store: Lazy<Store<DislikeResponse, String>>,
-               crashReporter: CrashReporter) = DislikeSource(store, crashReporter)
+  @Provides
+  @Singleton
+  fun source(store: Lazy<Store<DislikeResponse, String>>,
+             crashReporter: CrashReporter) = DislikeSource(store, crashReporter)
 
-    private fun fetch(requestParameters: String, api: TinderApi) =
-            api.dislike(requestParameters).map { it.source() }
+  private fun fetch(requestParameters: String, api: TinderApi) =
+      api.dislike(requestParameters).map { it.source() }
 }

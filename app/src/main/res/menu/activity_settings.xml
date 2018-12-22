@@ -6,5 +6,5 @@
         android:icon="@drawable/ic_linkedin"
         android:title="@string/about_the_author"
         app:iconTint="@color/text_secondary"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
 </menu>

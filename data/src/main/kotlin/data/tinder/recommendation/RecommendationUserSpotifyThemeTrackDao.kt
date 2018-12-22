@@ -8,11 +8,11 @@ import android.arch.persistence.room.Transaction
 
 @Dao
 internal interface RecommendationUserSpotifyThemeTrackDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertSpotifyThemeTrack(track: RecommendationUserSpotifyThemeTrackEntity)
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertSpotifyThemeTrack(track: RecommendationUserSpotifyThemeTrackEntity)
 
-    @Query("SELECT * from RecommendationUserSpotifyThemeTrackEntity WHERE id=:id")
-    @Transaction
-    fun selectSpotifyThemeTrackById(id: String)
-            : List<RecommendationUserSpotifyThemeTrackWithRelatives>
+  @Query("SELECT * from RecommendationUserSpotifyThemeTrackEntity WHERE id=:id")
+  @Transaction
+  fun selectSpotifyThemeTrackById(id: String)
+      : List<RecommendationUserSpotifyThemeTrackWithRelatives>
 }

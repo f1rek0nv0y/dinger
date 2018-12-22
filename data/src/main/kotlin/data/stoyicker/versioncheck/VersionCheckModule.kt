@@ -9,9 +9,9 @@ import javax.inject.Singleton
 
 @Module(includes = [VersionCheckFacadeModule::class, CrashReporterModule::class])
 internal class VersionCheckModule {
-    @Provides
-    @Singleton
-    fun versionCheck(versionCheckFacade: VersionCheckFacade,
-                     crashReporter: CrashReporter): VersionCheck =
-            VersionCheckImpl(versionCheckFacade, crashReporter)
+  @Provides
+  @Singleton
+  fun versionCheck(versionCheckFacade: VersionCheckFacade,
+                   crashReporter: CrashReporter): VersionCheck =
+      VersionCheckImpl(versionCheckFacade, crashReporter)
 }

@@ -19,7 +19,9 @@
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="android:textColorPrimary">@color/text_primary</item>
         <item name="android:textColorSecondary">@color/text_secondary</item>
-        <item name="android:progressBarStyleHorizontal">@style/Widget.AppCompat.ProgressBar.Horizontal</item>
+        <item name="android:progressBarStyleHorizontal">
+            @style/Widget.AppCompat.ProgressBar.Horizontal
+        </item>
         <item name="android:windowBackground">@color/window_background</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>

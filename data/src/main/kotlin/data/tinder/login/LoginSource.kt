@@ -6,6 +6,6 @@ import reporter.CrashReporter
 import dagger.Lazy as DaggerLazy
 
 internal class LoginSource(
-        storeAccessor: DaggerLazy<Store<LoginResponse, LoginRequestParameters>>,
-        crashReporter: CrashReporter)
-    : RequestSource<LoginRequestParameters, LoginResponse>(storeAccessor.get(), crashReporter)
+    storeAccessor: DaggerLazy<Store<LoginResponse, LoginRequestParameters>>,
+    crashReporter: CrashReporter)
+  : RequestSource<LoginRequestParameters, LoginResponse>(storeAccessor.get(), crashReporter)

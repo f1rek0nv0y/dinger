@@ -7,9 +7,9 @@ import android.arch.persistence.room.Query
 
 @Dao
 internal interface RecommendationUserTeaserDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertTeaser(teaser: RecommendationUserTeaserEntity)
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertTeaser(teaser: RecommendationUserTeaserEntity)
 
-    @Query("SELECT * from RecommendationUserTeaserEntity WHERE id=:id")
-    fun selectTeaserById(id: String): List<RecommendationUserTeaserEntity>
+  @Query("SELECT * from RecommendationUserTeaserEntity WHERE id=:id")
+  fun selectTeaserById(id: String): List<RecommendationUserTeaserEntity>
 }

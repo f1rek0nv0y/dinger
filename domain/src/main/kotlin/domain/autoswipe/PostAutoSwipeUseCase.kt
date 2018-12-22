@@ -8,20 +8,20 @@ import io.reactivex.Completable
 import io.reactivex.Scheduler
 
 abstract class PostAutoSwipeUseCase internal constructor(
-        private val context: Context,
-        postExecutionScheduler: Scheduler)
-    : CompletableDisposableUseCase(postExecutionScheduler = postExecutionScheduler) {
-    @IntRange(from = 0, to = Long.MAX_VALUE)
-    internal abstract fun notBeforeMillis(context: Context): Long
+    private val context: Context,
+    postExecutionScheduler: Scheduler)
+  : CompletableDisposableUseCase(postExecutionScheduler = postExecutionScheduler) {
+  @IntRange(from = 0, to = Long.MAX_VALUE)
+  internal abstract fun notBeforeMillis(context: Context): Long
 
-    override fun buildUseCase(): Completable = Completable.fromCallable {
-        AlarmHolder.alarmManager.setOneShotBroadcastFor(
-                REQUEST_CODE,
-                notBeforeMillis(context),
-                AutoSwipeHolder.autoSwipeLauncherFactory.newFromBroadcast(context))
-    }
+  override fun buildUseCase(): Completable = Completable.fromCallable {
+    AlarmHolder.alarmManager.setOneShotBroadcastFor(
+        REQUEST_CODE,
+        notBeforeMillis(context),
+        AutoSwipeHolder.autoSwipeLauncherFactory.newFromBroadcast(context))
+  }
 
-    companion object {
-        internal const val REQUEST_CODE = 0
-    }
+  companion object {
+    internal const val REQUEST_CODE = 0
+  }
 }
