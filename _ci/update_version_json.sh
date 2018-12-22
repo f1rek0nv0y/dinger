@@ -36,7 +36,7 @@ echo "{
   \"positive_button\": \"Download\",
   \"negative_button\": \"Changelog\",
   \"download_url\": \"https://github.com/stoyicker/dinger/releases/download/${VERSION}/dinger-${VERSION}.apk\",
-  \"changelog_url\": \"https://stoyicker.github.io/dinger/#changelog\",
+  \"changelog_url\": \"https://stoyicker.github.io/dinger/changelog.html\",
   \"version\": \"${VERSION}\"
 }" > version.json
 
