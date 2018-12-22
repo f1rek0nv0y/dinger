@@ -52,8 +52,7 @@
         <div class="row">
           <div class="span9">
             <section>
-              <h3>Changelog</h3>
-              <h4 class="version-tag">Changelog</h4>
+              <h3 class="version-tag">Changelog</h3>
               <p class="changelog"></p>
               <p>The source code to Dinger, its documentation and this website are <a href="http://github.com/stoyicker/dinger">available on GitHub</a>.</p>
             </section>
@@ -89,6 +88,7 @@
         });
         $.getJSON('https://stoyicker.github.io/dinger/version.json', function(data) {
           $('.version-tag').append(' ' + data.version);
+        });
         $.getJSON('https://api.github.com/repos/stoyicker/dinger/releases/latest', function(data) {
           $('.changelog').text(data.body.substring(data.body.indexOf("CHANGELOG**:\n\n") + "CHANGELOG**:\n\n".length));
           $('.changelog').css('white-space', 'pre-line');
