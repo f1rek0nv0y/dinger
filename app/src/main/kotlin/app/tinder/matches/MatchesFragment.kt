@@ -12,8 +12,6 @@ internal class MatchesFragment : Fragment() {
                             savedInstanceState: Bundle?) = FrameLayout(context!!)
 
   companion object {
-    fun newInstance() = MatchesFragment().also {
-      it.retainInstance = true
-    }
+    fun newInstance() = MatchesFragment()
   }
 }

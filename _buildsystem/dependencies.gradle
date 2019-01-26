@@ -9,6 +9,7 @@ final def retrofitVersion = "2.3.0"
 final def rxAndroid2Version = "2.1.0"
 final def storeVersion = "3.0.0" // Frozen
 final def architectureLifecycleVersion = "1.1.1"
+final def picassoVersion = "2.71828"
 ext {
     implementationDependencies = [
             "org.jetbrains.kotlin:kotlin-stdlib:$project.ext.kotlinVersion"
@@ -26,7 +27,8 @@ ext {
             "com.android.support.constraint:constraint-layout:$constraintLayoutVersion",
             "com.android.support:multidex:$multidexVersion",
             "android.arch.paging:runtime:$project.ext.architecturePagingVersion",
-            "android.arch.lifecycle:extensions:$architectureLifecycleVersion"
+            "android.arch.lifecycle:extensions:$architectureLifecycleVersion",
+            "com.squareup.picasso:picasso:$picassoVersion"
     ]
     annotationProcessorDomainDependencies = [
             "javax.annotation:jsr250-api:$jsr250Version"

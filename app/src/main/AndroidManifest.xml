@@ -37,7 +37,6 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name="app.home.HomeActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden">

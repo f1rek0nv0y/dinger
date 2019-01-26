@@ -14,6 +14,8 @@ configurations.all {
                 "com.android.support:customtabs:$project.ext.supportLibraryVersion",
                 "com.android.support:support-v4:$project.ext.supportLibraryVersion",
                 "com.android.support:recyclerview-v7:$project.ext.supportLibraryVersion",
+                "com.android.support:animated-vector-drawable:$project.ext.supportLibraryVersion",
+                "com.android.support:exifinterface:$project.ext.supportLibraryVersion",
                 "android.arch.lifecycle:runtime:$project.ext.architectureComponentsVersion",
                 "io.reactivex.rxjava2:rxjava:$project.ext.rxjava2Version"
         ]

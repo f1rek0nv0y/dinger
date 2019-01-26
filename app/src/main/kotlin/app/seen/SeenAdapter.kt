@@ -1,4 +1,4 @@
-package app.app.seen
+package app.seen
 
 import android.arch.paging.PagedListAdapter
 import android.support.v7.util.DiffUtil
@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import domain.recommendation.DomainRecommendationUser
 import org.stoyicker.dinger.R
 
-class SeenAdapter : PagedListAdapter<DomainRecommendationUser, SeenViewHolder>(DIFF_CALLBACK) {
+class SeenAdapter : PagedListAdapter<DomainRecommendationUser, SeenRecommendationViewHolder>(DIFF_CALLBACK) {
   override fun onCreateViewHolder(parent: ViewGroup, position: Int) =
-      SeenViewHolder(LayoutInflater.from(parent.context)
+      SeenRecommendationViewHolder(LayoutInflater.from(parent.context)
           .inflate(R.layout.item_view_recommendation, parent, false))
 
-  override fun onBindViewHolder(holder: SeenViewHolder, position: Int) {
+  override fun onBindViewHolder(holder: SeenRecommendationViewHolder, position: Int) {
     val item = getItem(position)
     if (item != null) {
       holder.bindTo(item)

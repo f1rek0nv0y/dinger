@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/layout_content_padding"
+    android:padding="@dimen/layout_content_spacing"
     tools:context="app.tinder.me.MeFragment">
 
     <Button

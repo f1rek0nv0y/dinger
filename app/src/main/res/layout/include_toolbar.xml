@@ -4,6 +4,6 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:contentInsetEnd="@dimen/layout_content_padding"
-    app:contentInsetStart="@dimen/layout_content_padding"
+    app:contentInsetEnd="@dimen/layout_content_spacing"
+    app:contentInsetStart="@dimen/layout_content_spacing"
     app:title="@string/app_label" />

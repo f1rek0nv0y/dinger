@@ -5,13 +5,11 @@ import android.arch.lifecycle.ViewModelProviders
 import android.arch.paging.PagedList
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import app.app.seen.SeenAdapter
 import domain.recommendation.DomainRecommendationUser
 import domain.seen.SeenRecommendationsViewModel
 import org.stoyicker.dinger.R
@@ -30,16 +28,14 @@ internal class SeenFragment : Fragment() {
     })
     (view as RecyclerView).apply {
       adapter = seenAdapter
-      layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL).also {
-        it.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+      layoutManager = StaggeredGridLayoutManager(
+          context.resources.getInteger(R.integer.seen_grid_span), StaggeredGridLayoutManager.VERTICAL).apply {
+        gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
       }
-      itemAnimator = DefaultItemAnimator()
     }
   }
 
   companion object {
-    fun newInstance() = SeenFragment().also {
-      it.retainInstance = true
-    }
+    fun newInstance() = SeenFragment()
   }
 }

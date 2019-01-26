@@ -8,7 +8,8 @@
     <color name="text_secondary">#FAE7AF</color>
     <color name="window_background">#273339</color>
 
-    <dimen name="layout_content_padding">16dp</dimen>
+    <dimen name="layout_content_spacing">16dp</dimen>
+    <dimen name="layout_grid_spacing">4dp</dimen>
 
     <string name="app_label" translatable="false">dinger</string>
     <string name="no_intent_handlers">No handlers found for %1$s, ignored</string>

@@ -40,8 +40,6 @@ internal class MeFragment : Fragment() {
       homeActivity.homeComponent.newMeComponent().inject(this)
 
   companion object {
-    fun newInstance() = MeFragment().also {
-      it.retainInstance = true
-    }
+    fun newInstance() = MeFragment()
   }
 }
