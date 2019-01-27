@@ -113,7 +113,7 @@ internal class AutoSwipeIntentService : IntentService("AutoSwipe") {
         if (defaultSharedPreferences.getBoolean(
                 getString(R.string.preference_key_swipe_at_human_speed),
                 true)) {
-          TimeUnit.SECONDS.sleep(Random.nextLong(2, 7))
+          TimeUnit.SECONDS.sleep(Random.nextLong(1, 3))
         }
         execute(this@AutoSwipeIntentService,
             object : ProcessRecommendationAction.Callback {
