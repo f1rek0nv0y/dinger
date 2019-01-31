@@ -17,7 +17,8 @@ configurations.all {
                 "com.android.support:animated-vector-drawable:$project.ext.supportLibraryVersion",
                 "com.android.support:exifinterface:$project.ext.supportLibraryVersion",
                 "android.arch.lifecycle:runtime:$project.ext.architectureComponentsVersion",
-                "io.reactivex.rxjava2:rxjava:$project.ext.rxjava2Version"
+                "io.reactivex.rxjava2:rxjava:$project.ext.rxjava2Version",
+                "com.squareup.okhttp3:okhttp:3.12.1"
         ]
     }
 }
