@@ -17,7 +17,7 @@ internal interface RecommendationUserDao {
   @Transaction
   fun selectUserById(id: String): LiveData<List<RecommendationUserWithRelatives>>
 
-  @Query("SELECT * from RecommendationUserEntity WHERE instr(name, :filter) > 0")
+  @Query("SELECT * from RecommendationUserEntity WHERE instr(name, :filter) > 0 ORDER BY distanceMiles ASC")
   @Transaction
   fun selectUsersByFilterOnName(filter: String)
       : DataSource.Factory<Int, RecommendationUserWithRelatives>
