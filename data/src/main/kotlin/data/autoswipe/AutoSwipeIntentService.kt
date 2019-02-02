@@ -108,8 +108,8 @@ internal class AutoSwipeIntentService : IntentService("AutoSwipe") {
 
   private fun processRecommendations(recommendations: List<DomainRecommendationUser>) {
     val latch = CountDownLatch(recommendations.size)
-    var likedThisRun = 0 // This will be used to avoid rescheduling immediately if no likes happened
-    recommendations.forEach { recommendation ->
+    var processedThisRun = 0 // This will be used to avoid rescheduling immediately if no likes happened
+    for (recommendation in recommendations) {
       likeBatchTracker.addLike()
       processRecommendationActionFactory.delegate(recommendation).apply {
         ongoingActions += (this)
@@ -126,8 +126,10 @@ internal class AutoSwipeIntentService : IntentService("AutoSwipe") {
                       recommendation = recommendation,
                       liked = answer.rateLimitedUntilMillis != null,
                       matched = answer.matched).also {
-                    reportHandler.addLikeAnswer(answer)
-                    ++likedThisRun
+                    if (answer.rateLimitedUntilMillis != null) {
+                      reportHandler.addLikeAnswer(answer)
+                    }
+                    ++processedThisRun
                     latch.countDown()
                     answer.rateLimitedUntilMillis?.let { limitedUntil ->
                       scheduleBecauseLimited(limitedUntil)
@@ -140,14 +142,29 @@ internal class AutoSwipeIntentService : IntentService("AutoSwipe") {
                       recommendation,
                       liked = false,
                       matched = false).also {
-                    latch.countDown()
+                    // Assume the rest of the batch will fail too,
+                    // is probably the most likely thing to happen
+                    while (latch.count > 0) {
+                      latch.countDown()
+                    }
                   }
             })
       }
+      // The latch may be done because either we swept all recommendations,
+      // case in which this is not needed, or we failed to swipe one thus
+      // assumed the next ones in the batch would fail and forcefully signalled
+      // the latch
+      if (latch.count == 0L) {
+        break
+      }
     }
     latch.await()
-    if (likedThisRun > 0 && likeBatchTracker.isBatchOpen()) {
-      scheduleBecauseMoreAvailable()
+    if (likeBatchTracker.isBatchOpen()) {
+      if (processedThisRun > 0) {
+        scheduleBecauseMoreAvailable()
+      } else {
+        scheduleBecauseError(Error(getString(R.string.autoswipe_error_no_recs_processed)))
+      }
     } else {
       scheduleBecauseBatchClosed()
     }
