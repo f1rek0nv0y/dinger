@@ -1,6 +1,7 @@
 package data.autoswipe
 
 import android.app.IntentService
+import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -209,7 +210,7 @@ internal class AutoSwipeIntentService : IntentService("AutoSwipe") {
       execute(this@AutoSwipeIntentService, Unit)
       reScheduled = true
     }
-    releaseResources()
+    releaseResourcesAndDetachNotification()
   }
 
   private fun scheduleBecauseLimited(notBeforeMillis: Long) {
@@ -224,7 +225,7 @@ internal class AutoSwipeIntentService : IntentService("AutoSwipe") {
         AutoSwipeReportHandler.RESULT_RATE_LIMITED)
     reScheduled = true
     likeBatchTracker.closeBatch()
-    releaseResources()
+    releaseResourcesAndDetachNotification()
   }
 
   private fun scheduleBecauseBatchClosed() {
@@ -240,7 +241,7 @@ internal class AutoSwipeIntentService : IntentService("AutoSwipe") {
         AutoSwipeReportHandler.RESULT_BATCH_CLOSED)
     reScheduled = true
     likeBatchTracker.closeBatch()
-    releaseResources()
+    releaseResourcesAndDetachNotification()
   }
 
   private fun silentReschedule() = scheduleBecauseError()
@@ -260,17 +261,34 @@ internal class AutoSwipeIntentService : IntentService("AutoSwipe") {
     }
     reScheduled = true
     likeBatchTracker.closeBatch()
-    releaseResources()
+    if (error == null) {
+      releaseResourcesAndRemoveNotification()
+    } else {
+      releaseResourcesAndDetachNotification()
+    }
   }
 
-  private fun releaseResources() {
-    ongoingActions.forEach { it.dispose() }
-    ongoingActions = emptySet()
+  private fun releaseResourcesAndRemoveNotification() {
+    dismissOngoingActions()
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-      stopForeground(STOP_FOREGROUND_DETACH)
+      stopForeground(Service.STOP_FOREGROUND_REMOVE)
+    } else {
+      stopForeground(true)
+    }
+  }
+
+  private fun releaseResourcesAndDetachNotification() {
+    dismissOngoingActions()
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+      stopForeground(Service.STOP_FOREGROUND_DETACH)
     } else {
       stopForeground(false)
     }
+  }
+
+  private fun dismissOngoingActions() {
+    ongoingActions.forEach { it.dispose() }
+    ongoingActions = emptySet()
   }
 
   private fun clearAction(action: Action<*>) = action.apply {
