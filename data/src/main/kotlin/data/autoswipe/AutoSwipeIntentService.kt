@@ -4,6 +4,7 @@ import android.app.IntentService
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.isOnNotMeteredInternet
 import android.os.Build
 import data.tinder.recommendation.GetRecommendationsAction
 import data.tinder.recommendation.RecommendationUserResolver
@@ -42,24 +43,25 @@ internal class AutoSwipeIntentService : IntentService("AutoSwipe") {
   }
 
   override fun onHandleIntent(intent: Intent) {
+    reportHandler.buildPlaceHolder(this).apply { startForeground(id, delegate) }
     if (defaultSharedPreferences.getBoolean(
-            getString(R.string.preference_key_autoswipe_enabled), true)) {
-      reportHandler.buildPlaceHolder(this).apply { startForeground(id, delegate) }
+            getString(R.string.preference_key_autoswipe_enabled), true) &&
+        (!defaultSharedPreferences.getBoolean(getString(R.string.preference_key_wifi_only), true)
+            || isOnNotMeteredInternet())) {
       try {
         startAutoSwipe()
       } catch (e: Exception) {
         scheduleBecauseError(e)
       }
     } else {
-      scheduleBecauseError()
+      silentReschedule()
     }
   }
-
 
   override fun onDestroy() {
     if (!reScheduled) {
       likeBatchTracker.closeBatch()
-      scheduleBecauseError()
+      silentReschedule()
     }
     super.onDestroy()
   }
@@ -223,6 +225,8 @@ internal class AutoSwipeIntentService : IntentService("AutoSwipe") {
     likeBatchTracker.closeBatch()
     releaseResources()
   }
+
+  private fun silentReschedule() = scheduleBecauseError()
 
   private fun scheduleBecauseError(error: Throwable? = null) {
     if (error != null) {

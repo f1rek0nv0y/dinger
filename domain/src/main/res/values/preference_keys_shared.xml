@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="preference_key_autoswipe_enabled" translatable="false">autoswipe_enabled</string>
+    <string name="preference_key_wifi_only" translatable="false">autoswipe_wifi_only</string>
     <string name="preference_key_dislike_empty_profiles" translatable="false">dislike_empty_profiles</string>
     <string name="preference_key_dislike_if_friends_in_common" translatable="false">dislike_if_friends_in_common</string>
     <string name="preference_key_swipe_at_human_speed" translatable="false">swipe_at_human_speed</string>

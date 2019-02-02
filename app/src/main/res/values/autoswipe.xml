@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="preference_category_autoswipe">Autoswipe</string>
-    <string name="preference_title_autoswipe_enabled">Enabled</string>
-    <string name="preference_title_dislike_empty_profiles">Dislike empty profiles</string>
-    <string name="preference_title_dislike_if_friends_in_common">Dislike friends of friends</string>
-    <string name="preference_title_swipe_at_human_speed" translatable="false">Wait randomly between likes</string>
+  <string name="preference_category_autoswipe">Autoswipe</string>
+  <string name="preference_title_autoswipe_enabled">Enabled</string>
+  <string name="preference_title_wifi_only">Run on Wi-Fi only</string>
+  <string name="preference_title_dislike_empty_profiles">Dislike empty profiles</string>
+  <string name="preference_title_dislike_if_friends_in_common">Dislike friends of friends</string>
+  <string name="preference_title_swipe_at_human_speed">Wait randomly between likes</string>
 </resources>
