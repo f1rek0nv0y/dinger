@@ -45,10 +45,8 @@ internal class RoundedImageView(context: Context, attributeSet: AttributeSet? = 
 
   override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) = loadImageInternal(w, h)
 
-  fun clear() {
+  fun cancelRequest() {
     picasso.cancelRequest(this)
-    queuedUrl = null
-    drawable = null
   }
 
   override fun onDraw(canvas: Canvas) {
