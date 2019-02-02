@@ -1,5 +1,6 @@
 package data.tinder
 
+import data.tinder.like.LikeRatingRequest
 import data.tinder.login.LoginRequestParameters
 import io.reactivex.Single
 import okhttp3.ResponseBody
@@ -16,8 +17,8 @@ internal interface TinderApi {
   @GET("/recs/core?locale=${BuildConfig.TINDER_API_LOCALE}")
   fun getRecommendations(): Single<ResponseBody>
 
-  @GET("/like/{targetId}")
-  fun like(@Path("targetId") targetId: String): Single<ResponseBody>
+  @POST("/like/{targetId}")
+  fun like(@Path("targetId") targetId: String, @Body likeRatingRequest: LikeRatingRequest): Single<ResponseBody>
 
   @GET("/pass/{targetId}")
   fun dislike(@Path("targetId") targetId: String): Single<ResponseBody>

@@ -35,7 +35,7 @@ internal open class RecommendationUserEntity(
     var name: String,
     var instagram: String?,
     var teaser: String,
-    var sNumber: Int,
+    var sNumber: Long,
     var spotifyThemeTrack: String?,
     var gender: Int,
     var birthDateInfo: String,

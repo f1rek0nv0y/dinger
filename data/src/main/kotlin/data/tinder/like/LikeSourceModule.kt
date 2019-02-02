@@ -30,7 +30,7 @@ internal class LikeSourceModule {
   fun store(jsonObjectOrFalseAdapterFactory: JsonObjectOrFalseAdapter.Factory,
             moshiBuilder: Moshi.Builder,
             api: TinderApi) =
-      FluentStoreBuilder.parsedWithKey<String, BufferedSource, LikeResponse>(
+      FluentStoreBuilder.parsedWithKey<LikeRequestParameters, BufferedSource, LikeResponse>(
           Fetcher { fetch(it, api) }) {
         parsers = listOf(MoshiParserFactory.createSourceParser(
             moshiBuilder
@@ -42,9 +42,10 @@ internal class LikeSourceModule {
 
   @Provides
   @Singleton
-  fun source(store: Lazy<Store<LikeResponse, String>>,
+  fun source(store: Lazy<Store<LikeResponse, LikeRequestParameters>>,
              crashReporter: CrashReporter) = LikeSource(store, crashReporter)
 
-  private fun fetch(requestParameters: String, api: TinderApi) =
-      api.like(requestParameters).map { it.source() }
+  private fun fetch(requestParameters: LikeRequestParameters, api: TinderApi) = with(requestParameters) {
+    api.like(targetId, likeRatingRequest).map { it.source() }
+  }
 }

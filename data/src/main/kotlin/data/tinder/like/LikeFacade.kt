@@ -7,7 +7,7 @@ import domain.recommendation.DomainRecommendationUser
 
 internal class LikeFacade(
     source: LikeSource,
-    requestMapper: ObjectMapper<DomainRecommendationUser, String>,
+    requestMapper: ObjectMapper<DomainRecommendationUser, LikeRequestParameters>,
     responseMapper: ObjectMapper<LikeResponse, DomainLikedRecommendationAnswer>)
-  : RequestFacade<DomainRecommendationUser, String, LikeResponse, DomainLikedRecommendationAnswer>(
+  : RequestFacade<DomainRecommendationUser, LikeRequestParameters, LikeResponse, DomainLikedRecommendationAnswer>(
     source, requestMapper, responseMapper)

@@ -122,12 +122,12 @@ internal class AutoSwipeIntentService : IntentService("AutoSwipe") {
         execute(this@AutoSwipeIntentService,
             object : ProcessRecommendationAction.Callback {
               override fun onRecommendationProcessed(
-                  answer: DomainLikedRecommendationAnswer) =
+                  answer: DomainLikedRecommendationAnswer, liked: Boolean) =
                   saveRecommendationToDatabase(
                       recommendation = recommendation,
-                      liked = answer.rateLimitedUntilMillis != null,
+                      liked = liked,
                       matched = answer.matched).also {
-                    if (answer.rateLimitedUntilMillis != null) {
+                    if (liked) {
                       reportHandler.addLikeAnswer(answer)
                     }
                     ++processedThisRun

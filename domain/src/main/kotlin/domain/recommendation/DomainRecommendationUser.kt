@@ -19,7 +19,7 @@ data class DomainRecommendationUser(
     val birthDateInfo: String,
     val contentHash: String,
     val groupMatched: Boolean,
-    val sNumber: Int,
+    val sNumber: Long,
     val liked: Boolean = false, // Recommendations are not liked by default
     var matched: Boolean = false, // Nor matched by default
     val photos: Iterable<DomainRecommendationPhoto>,

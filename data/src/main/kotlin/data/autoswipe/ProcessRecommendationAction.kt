@@ -49,7 +49,7 @@ internal class ProcessRecommendationAction(
             owner, object : DislikeRecommendationAction.Callback {
           override fun onRecommendationDisliked(
               answer: DomainDislikedRecommendationAnswer) {
-            callback.onRecommendationProcessed(DomainLikedRecommendationAnswer.EMPTY)
+            callback.onRecommendationProcessed(DomainLikedRecommendationAnswer.EMPTY, false)
           }
 
           override fun onRecommendationDislikeFailed() {
@@ -65,7 +65,7 @@ internal class ProcessRecommendationAction(
             owner, object : LikeRecommendationAction.Callback {
           override fun onRecommendationLiked(answer: DomainLikedRecommendationAnswer) {
             commonDelegate.onComplete(owner)
-            callback.onRecommendationProcessed(answer)
+            callback.onRecommendationProcessed(answer, answer.rateLimitedUntilMillis == null)
           }
 
           override fun onRecommendationLikeFailed(error: Throwable) {
@@ -76,7 +76,7 @@ internal class ProcessRecommendationAction(
       }
 
   interface Callback {
-    fun onRecommendationProcessed(answer: DomainLikedRecommendationAnswer)
+    fun onRecommendationProcessed(answer: DomainLikedRecommendationAnswer, liked: Boolean)
 
     fun onRecommendationProcessingFailed()
   }
