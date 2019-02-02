@@ -58,6 +58,11 @@ internal class VersionCheckCoordinator(
 
   fun actionRun() {
     activityWeakRef.get()?.let {
+      // Skip the version check on metered internet connections since we don't want to force the download
+      if (!it.isOnNotMeteredInternet()) {
+        resultCallbackWeakRef.get()?.onVersionCheckPassed()
+        return
+      }
       useCase = VersionCheckUseCase(
           it.versionCode(), asyncExecutionScheduler, postExecutionScheduler)
       useCase?.execute(object : DisposableSingleObserver<DomainVersionCheckDescription>() {
