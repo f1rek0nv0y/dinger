@@ -106,6 +106,7 @@ internal class AutoSwipeIntentService : IntentService("AutoSwipe") {
 
   private fun processRecommendations(recommendations: List<DomainRecommendationUser>) {
     val latch = CountDownLatch(recommendations.size)
+    var likedThisRun = 0 // This will be used to avoid rescheduling immediately if no likes happened
     recommendations.forEach { recommendation ->
       likeBatchTracker.addLike()
       processRecommendationActionFactory.delegate(recommendation).apply {
@@ -124,6 +125,7 @@ internal class AutoSwipeIntentService : IntentService("AutoSwipe") {
                       liked = answer.rateLimitedUntilMillis != null,
                       matched = answer.matched).also {
                     reportHandler.addLikeAnswer(answer)
+                    ++likedThisRun
                     latch.countDown()
                     answer.rateLimitedUntilMillis?.let { limitedUntil ->
                       scheduleBecauseLimited(limitedUntil)
@@ -142,7 +144,7 @@ internal class AutoSwipeIntentService : IntentService("AutoSwipe") {
       }
     }
     latch.await()
-    if (likeBatchTracker.isBatchOpen()) {
+    if (likedThisRun > 0 && likeBatchTracker.isBatchOpen()) {
       scheduleBecauseMoreAvailable()
     } else {
       scheduleBecauseBatchClosed()
