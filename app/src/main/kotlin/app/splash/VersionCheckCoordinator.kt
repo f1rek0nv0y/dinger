@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Context.DOWNLOAD_SERVICE
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.isOnNotMeteredInternet
 import android.content.startIntent
 import android.content.versionCode
 import android.net.Uri
