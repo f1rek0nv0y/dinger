@@ -3,8 +3,6 @@ package app
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
 import android.util.AttributeSet
@@ -38,9 +36,13 @@ internal class RoundedImageView(context: Context, attributeSet: AttributeSet? = 
     }
   }
 
-  fun loadImage(url: String) {
-    queuedUrl = url
-    loadImageInternal()
+  fun loadImage(url: String?) {
+    if (url == null) {
+      cancelRequest()
+    } else {
+      queuedUrl = url
+      loadImageInternal()
+    }
   }
 
   override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) = loadImageInternal(w, h)
@@ -72,6 +74,10 @@ internal class RoundedImageView(context: Context, attributeSet: AttributeSet? = 
   }
 
   override fun onBitmapFailed(e: Exception, errorDrawable: Drawable) {
+    layoutParams.apply {
+      width = Math.min(width, height)
+      height = width
+    }
     drawable = errorDrawable
   }
 
@@ -85,7 +91,7 @@ internal class RoundedImageView(context: Context, attributeSet: AttributeSet? = 
           .noPlaceholder()
           .centerCrop()
           .resize(w, h)
-          .error(ColorDrawable(Color.RED))
+          .error(R.drawable.ic_launcher_adaptive)
           .into(this)
     }
   }

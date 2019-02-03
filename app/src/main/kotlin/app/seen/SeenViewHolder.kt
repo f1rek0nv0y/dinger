@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.item_view_recommendation.view.picture
 class SeenRecommendationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
   fun bindTo(item: DomainRecommendationUser) {
     itemView.name.text = item.name
-    itemView.picture.loadImage(item.photos.first().url)
+    itemView.picture.loadImage(item.photos.firstOrNull()?.url)
   }
 
   fun clear() {
