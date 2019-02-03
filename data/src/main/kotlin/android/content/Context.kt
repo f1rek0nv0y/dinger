@@ -27,7 +27,7 @@ fun Context.versionCode() = with(packageManager.getPackageInfo(packageName, 0)) 
   }
 }
 
-internal fun Context.isOnNotMeteredInternet() = getSystemService(ConnectivityManager::class.java)?.let {
+fun Context.isOnNotMeteredInternet() = getSystemService(ConnectivityManager::class.java)?.let {
   val activeNetworkCapabilities = it.getNetworkCapabilities(it.activeNetwork)
   when (activeNetworkCapabilities) {
     null -> false
