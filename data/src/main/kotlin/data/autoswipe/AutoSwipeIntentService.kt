@@ -247,6 +247,10 @@ internal class AutoSwipeIntentService : IntentService("AutoSwipe") {
   private fun silentReschedule() = scheduleBecauseError()
 
   private fun scheduleBecauseError(error: Throwable? = null) {
+    FromErrorPostAutoSwipeAction().apply {
+      ongoingActions += this
+      execute(this@AutoSwipeIntentService, Unit)
+    }
     if (error != null) {
       crashReporter.report(error)
       reportHandler.show(
@@ -254,18 +258,12 @@ internal class AutoSwipeIntentService : IntentService("AutoSwipe") {
           FromErrorPostAutoSwipeUseCase.interval(this),
           error.localizedMessage,
           AutoSwipeReportHandler.RESULT_ERROR)
-    }
-    FromErrorPostAutoSwipeAction().apply {
-      ongoingActions += this
-      execute(this@AutoSwipeIntentService, Unit)
+      releaseResourcesAndDetachNotification()
+    } else {
+      releaseResourcesAndRemoveNotification()
     }
     reScheduled = true
     likeBatchTracker.closeBatch()
-    if (error == null) {
-      releaseResourcesAndRemoveNotification()
-    } else {
-      releaseResourcesAndDetachNotification()
-    }
   }
 
   private fun releaseResourcesAndRemoveNotification() {
