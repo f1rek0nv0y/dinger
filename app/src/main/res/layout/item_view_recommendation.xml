@@ -18,6 +18,11 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/layout_grid_spacing"
     android:textIsSelectable="false"
+    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+    android:shadowColor="@color/primary_dark"
+    android:shadowDx="1"
+    android:shadowDy="1"
+    android:shadowRadius="1"
     app:layout_constraintBottom_toBottomOf="@id/picture"
     app:layout_constraintStart_toStartOf="@id/picture" />
 </android.support.constraint.ConstraintLayout>
