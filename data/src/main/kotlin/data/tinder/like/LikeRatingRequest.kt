@@ -14,7 +14,7 @@ internal class LikeRatingRequest(
     @field:Json(name = "fast_match")
     val isFastMatch: Boolean = true,
     @field:Json(name = "top_picks")
-    val isTopPicks: Boolean = true,
+    val isTopPicks: Boolean = false,
     @field:Json(name = "undo")
     val isUndo: Boolean = false,
     @field:Json(name = "photoId")
