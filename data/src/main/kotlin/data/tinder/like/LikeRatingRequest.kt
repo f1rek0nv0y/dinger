@@ -12,9 +12,9 @@ internal class LikeRatingRequest(
     @field:Json(name = "rec_traveling")
     val isCurrentUserPassporting: Boolean = true,
     @field:Json(name = "fast_match")
-    val isFastMatch: Boolean = true,
+    val isFastMatch: Boolean = false,
     @field:Json(name = "top_picks")
-    val isTopPicks: Boolean = false,
+    val isTopPicks: Boolean = true,
     @field:Json(name = "undo")
     val isUndo: Boolean = false,
     @field:Json(name = "photoId")
