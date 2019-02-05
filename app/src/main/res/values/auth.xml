@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="login_cancelled">Login cancelled</string>
-    <string name="login_failed">Login failed</string>
+    <string name="login_failed">Login failed; are you sure you are using the Facebook account with which you created your Tinder account?</string>
     <string name="facebook_app_id" translatable="false">464891386855067</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb464891386855067</string>
 </resources>

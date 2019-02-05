@@ -1,5 +1,6 @@
 package domain.login
 
+import domain.DomainException
 import domain.interactor.CompletableDisposableUseCase
 import io.reactivex.Completable
 import io.reactivex.Scheduler
@@ -14,6 +15,9 @@ class TinderLoginUseCase(
     return LoginHolder.login
         .login(DomainAuthRequestParameters(facebookId, facebookToken))
         .doOnSuccess {
+          if (it.apiKey == null) {
+            throw DomainException("Retrieved Tinder API key is null")
+          }
           if (!LoginHolder.addAccount.updateOrAddAccount(
                   facebookId = facebookId,
                   facebookToken = facebookToken,
