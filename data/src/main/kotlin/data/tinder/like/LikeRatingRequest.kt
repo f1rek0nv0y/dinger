@@ -10,7 +10,7 @@ internal class LikeRatingRequest(
     @field:Json(name = "is_boosting")
     val isCurrentUserBoosting: Boolean = true,
     @field:Json(name = "rec_traveling")
-    val isCurrentUserPassporting: Boolean = true,
+    val isCurrentUserPassporting: Boolean = false,
     @field:Json(name = "fast_match")
     val isFastMatch: Boolean = false,
     @field:Json(name = "top_picks")
