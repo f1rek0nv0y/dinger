@@ -4,9 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import app.MainApplication
+import app.android.content.safeApplication
 import app.home.HomeActivity
-import kotlinx.android.synthetic.main.activity_alarm_banner.continue_button
 import org.stoyicker.dinger.R
 import javax.inject.Inject
 
@@ -24,10 +23,10 @@ internal class AlarmBannerActivity : AppCompatActivity(), ContinueCoordinator.Re
     continueCoordinator.enable()
   }
 
-  private fun inject() = (application as MainApplication).applicationComponent
-      .newAlarmBannerComponent(
-          AutoSwipeTriggerModule(this),
-          ContinueModule(this, continue_button))
+  private fun inject() = safeApplication().applicationComponent.newAlarmBannerComponent()
+      .continueResultCallback(this)
+      .context(this)
+      .build()
       .inject(this)
 
   override fun onDestroy() {

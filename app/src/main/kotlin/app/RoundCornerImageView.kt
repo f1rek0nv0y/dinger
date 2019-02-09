@@ -11,7 +11,7 @@ import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 import org.stoyicker.dinger.R
 
-internal class RoundedImageView(context: Context, attributeSet: AttributeSet? = null)
+internal class RoundCornerImageView(context: Context, attributeSet: AttributeSet? = null)
   : View(context, attributeSet), Target {
   private val cornerRadiusPx: Float
   private val picasso = Picasso.get()
@@ -25,11 +25,11 @@ internal class RoundedImageView(context: Context, attributeSet: AttributeSet? = 
   init {
     context.theme.obtainStyledAttributes(
         attributeSet,
-        R.styleable.RoundedImageView,
+        R.styleable.RoundCornerImageView,
         0,
         0).apply {
       try {
-        cornerRadiusPx = getDimension(R.styleable.RoundedImageView_cornerRadius, DEFAULT_RADIUS_PX)
+        cornerRadiusPx = getDimension(R.styleable.RoundCornerImageView_cornerRadius, DEFAULT_RADIUS_PX)
       } finally {
         recycle()
       }

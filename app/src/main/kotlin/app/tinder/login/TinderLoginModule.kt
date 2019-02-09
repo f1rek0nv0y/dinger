@@ -1,7 +1,7 @@
 package app.tinder.login
 
 import android.support.v4.widget.ContentLoadingProgressBar
-import app.di.PerActivity
+import app.EntryScreenScope
 import com.facebook.login.widget.LoginButton
 import dagger.Module
 import dagger.Provides
@@ -10,29 +10,33 @@ import reporter.CrashReporter
 import javax.inject.Named
 
 @Module
-@PerActivity
-internal class TinderLoginModule(
-    private val activity: TinderLoginActivity,
-    private val loginButton: LoginButton,
-    private val contentLoadingProgressBar: ContentLoadingProgressBar,
-    private val tinderFacebookLoginResultCallback: TinderFacebookLoginFeature.ResultCallback,
-    private val tinderLoginCoordinatorResultCallback: TinderLoginCoordinator.ResultCallback) {
+internal class TinderLoginModule {
   @Provides
-  fun feature(crashReporter: CrashReporter) =
+  @EntryScreenScope
+  fun feature(
+      loginButton: LoginButton,
+      tinderFacebookLoginResultCallback: TinderFacebookLoginFeature.ResultCallback,
+      crashReporter: CrashReporter) =
       TinderFacebookLoginFeature(
           loginButton,
           tinderFacebookLoginResultCallback,
           crashReporter)
 
   @Provides
-  fun view(): TinderLoginView =
+  @EntryScreenScope
+  fun view(
+      activity: TinderLoginActivity,
+      loginButton: LoginButton,
+      contentLoadingProgressBar: ContentLoadingProgressBar): TinderLoginView =
       TinderLoginViewImpl(activity, loginButton, contentLoadingProgressBar)
 
   @Provides
+  @EntryScreenScope
   fun coordinator(
       view: TinderLoginView,
       @Named("io") asyncExecutionScheduler: Scheduler,
       @Named("main") postExecutionScheduler: Scheduler,
+      tinderLoginCoordinatorResultCallback: TinderLoginCoordinator.ResultCallback,
       crashReporter: CrashReporter) =
       TinderLoginCoordinator(
           view,

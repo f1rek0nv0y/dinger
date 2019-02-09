@@ -1,7 +1,7 @@
 package app.splash
 
 import android.app.Activity
-import app.di.PerActivity
+import app.EntryScreenScope
 import dagger.Module
 import dagger.Provides
 import io.reactivex.Scheduler
@@ -9,25 +9,26 @@ import reporter.CrashReporter
 import javax.inject.Named
 
 @Module
-@PerActivity
-internal class SplashModule(
-    private val activity: Activity,
-    private val loggedInCheckResultCallback: LoggedInCheckCoordinator.ResultCallback,
-    private val versionCheckCoordinatorResultCallback: VersionCheckCoordinator.ResultCallback) {
+internal class SplashModule {
   @Provides
+  @EntryScreenScope
   fun loggedInCheckCoordinator(
       @Named("io") asyncExecutionScheduler: Scheduler,
       @Named("main") postExecutionScheduler: Scheduler,
-      crashReporter: CrashReporter) = LoggedInCheckCoordinator(
+      crashReporter: CrashReporter,
+      loggedInCheckResultCallback: LoggedInCheckCoordinator.ResultCallback) = LoggedInCheckCoordinator(
       asyncExecutionScheduler,
       postExecutionScheduler,
       loggedInCheckResultCallback,
       crashReporter)
 
   @Provides
+  @EntryScreenScope
   fun versionCheckCoordinator(
+      activity: Activity,
       @Named("io") asyncExecutionScheduler: Scheduler,
-      @Named("main") postExecutionScheduler: Scheduler) = VersionCheckCoordinator(
+      @Named("main") postExecutionScheduler: Scheduler,
+      versionCheckCoordinatorResultCallback: VersionCheckCoordinator.ResultCallback) = VersionCheckCoordinator(
       activity,
       asyncExecutionScheduler,
       postExecutionScheduler,

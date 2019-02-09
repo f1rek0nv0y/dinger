@@ -1,13 +1,16 @@
 package app.alarmbanner
 
-import app.di.PerActivity
+import android.content.Context
+import app.EntryScreenScope
 import dagger.Module
 import dagger.Provides
 import reporter.CrashReporter
 
 @Module
-@PerActivity
-internal class AutoSwipeTriggerModule(private val activity: AlarmBannerActivity) {
+internal class AutoSwipeTriggerModule {
   @Provides
-  fun coordinator(crashReporter: CrashReporter) = AlarmBannerCoordinator(activity, crashReporter)
+  @EntryScreenScope
+  fun coordinator(
+      context: Context,
+      crashReporter: CrashReporter) = AlarmBannerCoordinator(context, crashReporter)
 }

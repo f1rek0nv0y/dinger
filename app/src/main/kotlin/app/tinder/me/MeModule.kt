@@ -1,16 +1,18 @@
 package app.tinder.me
 
 import android.content.Context
-import app.di.PerActivity
+import app.home.HomeScreenScope
 import dagger.Module
 import dagger.Provides
 import io.reactivex.Scheduler
 import javax.inject.Named
 
 @Module
-@PerActivity
-internal class MeModule(private val context: Context) {
+internal class MeModule {
   @Provides
-  fun logoutCoordinator(@Named("main") postExecutionScheduler: Scheduler) =
+  @HomeScreenScope
+  fun logoutCoordinator(
+      context: Context,
+      @Named("main") postExecutionScheduler: Scheduler) =
       LogoutCoordinator(context, postExecutionScheduler)
 }

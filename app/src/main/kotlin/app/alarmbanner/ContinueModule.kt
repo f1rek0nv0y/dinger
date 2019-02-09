@@ -1,16 +1,18 @@
 package app.alarmbanner
 
 import android.view.View
-import app.di.PerActivity
+import app.EntryScreenScope
 import dagger.Module
 import dagger.Provides
 
 @Module
-@PerActivity
-internal class ContinueModule(private val activity: AlarmBannerActivity, private val view: View) {
+internal class ContinueModule {
   @Provides
-  fun view(): ContinueView = ContinueViewImpl(view)
+  @EntryScreenScope
+  fun view(view: View): ContinueView = ContinueViewImpl(view)
 
   @Provides
-  fun coordinator(view: ContinueView) = ContinueCoordinator(activity, view)
+  @EntryScreenScope
+  fun coordinator(callback: ContinueCoordinator.ResultCallback, view: ContinueView) =
+      ContinueCoordinator(callback, view)
 }

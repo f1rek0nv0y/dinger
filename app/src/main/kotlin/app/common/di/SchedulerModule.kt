@@ -1,4 +1,4 @@
-package app.di
+package app.common.di
 
 import dagger.Module
 import dagger.Provides
@@ -9,7 +9,6 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
-@Singleton
 internal class SchedulerModule {
   @Provides
   @Named("io")

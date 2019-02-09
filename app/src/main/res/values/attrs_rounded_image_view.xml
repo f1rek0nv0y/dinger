@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <declare-styleable name="RoundedImageView">
+  <declare-styleable name="RoundCornerImageView">
     <attr name="cornerRadius" format="dimension" />
   </declare-styleable>
 </resources>

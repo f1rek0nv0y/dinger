@@ -2,8 +2,6 @@ package app
 
 import android.annotation.SuppressLint
 import android.app.Application
-import app.di.ApplicationComponent
-import app.di.DaggerApplicationComponent
 import reporter.CrashReporter
 import javax.inject.Inject
 

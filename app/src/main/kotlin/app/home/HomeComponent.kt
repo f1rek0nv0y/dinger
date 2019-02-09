@@ -1,13 +1,22 @@
 package app.home
 
-import app.di.SchedulerModule
+import android.content.Context
+import app.common.di.SchedulerModule
+import app.seen.SeenComponent
 import app.tinder.me.MeComponent
-import app.tinder.me.MeModule
+import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
 
-@Component(modules = [MeModule::class, SchedulerModule::class])
+@Component(modules = [SchedulerModule::class])
 @Singleton
 internal interface HomeComponent {
+  fun newSeenComponent(): SeenComponent
   fun newMeComponent(): MeComponent
+  @Component.Builder
+  interface Builder {
+    @BindsInstance
+    fun context(context: Context): Builder
+    fun build(): HomeComponent
+  }
 }

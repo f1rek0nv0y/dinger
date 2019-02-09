@@ -1,10 +1,10 @@
 package app.tinder.me
 
-import app.di.PerActivity
+import app.home.HomeScreenScope
 import dagger.Subcomponent
 
 @Subcomponent(modules = [MeModule::class])
-@PerActivity
+@HomeScreenScope
 internal interface MeComponent {
   fun inject(target: MeFragment)
 }

@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import app.MainApplication
 import app.alarmbanner.AlarmBannerActivity
+import app.android.content.safeApplication
 import kotlinx.android.synthetic.main.activity_login.login_button
 import kotlinx.android.synthetic.main.activity_login.progress
 import org.stoyicker.dinger.R
@@ -49,13 +49,13 @@ internal class TinderLoginActivity
     supportFinishAfterTransition()
   }
 
-  private fun inject() = (application as MainApplication).applicationComponent
-      .newTinderLoginComponent(TinderLoginModule(
-          activity = this,
-          loginButton = login_button,
-          contentLoadingProgressBar = progress,
-          tinderLoginCoordinatorResultCallback = this,
-          tinderFacebookLoginResultCallback = this))
+  private fun inject() = safeApplication().applicationComponent.newTinderLoginComponent()
+      .activity(this)
+      .contentLoadingProgressBar(progress)
+      .loginButton(login_button)
+      .tinderFacebookLoginResultCallback(this)
+      .tinderLoginCoordinatorResultCallback(this)
+      .build()
       .inject(this)
 
   companion object {

@@ -7,22 +7,16 @@ import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import app.di.SchedulerModule
 import app.settings.SettingsActivity
-import app.tinder.me.MeModule
 import kotlinx.android.synthetic.main.include_home_pager.home_pager
 import kotlinx.android.synthetic.main.include_navigation_bar.navigation_bar
 import kotlinx.android.synthetic.main.include_toolbar.toolbar
 import org.stoyicker.dinger.R
 
 internal class HomeActivity : AppCompatActivity() {
-  val homeComponent: HomeComponent by lazy {
-    DaggerHomeComponent
-        .builder()
-        .meModule(MeModule(this))
-        .schedulerModule(SchedulerModule())
-        .build()
-  }
+  val homeComponent: HomeComponent by lazy { DaggerHomeComponent.builder()
+      .context(this)
+      .build() }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
