@@ -9,4 +9,6 @@
     <issue id="SwitchIntDef">
         <ignore regexp="AutoSwipeReportHandler" /> <!-- False positive -->
     </issue>
+    <!-- Not a real problem -->
+    <issue id="DuplicateStrings" severity="ignore" />
 </lint>
