@@ -15,7 +15,7 @@ import domain.recommendation.DomainRecommendationUser
 import org.stoyicker.dinger.data.R
 import reporter.CrashReporter
 import retrofit2.HttpException
-import java.util.Date
+import java.util.*
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject

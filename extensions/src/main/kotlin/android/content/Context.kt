@@ -4,7 +4,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.widget.Toast
-import org.stoyicker.dinger.data.R
+import org.stoyicker.dinger.extensions.R
 
 fun Context.startIntent(intent: Intent, noHandlersFallback: (Intent) -> Unit = {
   Toast.makeText(

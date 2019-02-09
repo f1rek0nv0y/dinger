@@ -71,11 +71,10 @@ android {
     testOptions project.ext.testOptions
 }
 dependencies {
-    implementation project(":data")
-    // This is only for the ContentProvider. Don"t import data in src!
+    implementation project(":proxy-data")
     implementation project(":domain")
     implementation project(":crash-reporter")
-    implementation project(":event-tracker") // Required by the ContentProvider
+    implementation project(":extensions")
     implementation project.ext.implementationDependencies
     kapt project.ext.annotationProcessorAppDependencies
     implementation project.ext.implementationAppDependencies
