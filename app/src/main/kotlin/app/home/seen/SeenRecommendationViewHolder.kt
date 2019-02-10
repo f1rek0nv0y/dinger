@@ -1,4 +1,4 @@
-package app.seen
+package app.home.seen
 
 import android.support.v7.widget.RecyclerView
 import android.view.View

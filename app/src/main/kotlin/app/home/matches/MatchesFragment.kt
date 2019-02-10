@@ -1,4 +1,4 @@
-package app.tinder.matches
+package app.home.matches
 
 import android.os.Bundle
 import android.support.v4.app.Fragment

@@ -1,4 +1,4 @@
-package app.tinder.me
+package app.home.me
 
 import android.content.Context
 import app.home.HomeScreenScope

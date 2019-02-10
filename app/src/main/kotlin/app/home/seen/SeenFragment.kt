@@ -1,4 +1,4 @@
-package app.seen
+package app.home.seen
 
 import android.arch.lifecycle.Observer
 import android.arch.paging.PagedList
@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import app.home.HomeActivity
 import domain.recommendation.DomainRecommendationUser
 import domain.seen.SeenRecommendationsViewModel
 import org.stoyicker.dinger.R
@@ -33,7 +32,7 @@ internal class SeenFragment : Fragment() {
 
   override fun onAttach(context: Context?) {
     super.onAttach(context)
-    if (context is HomeActivity) {
+    if (context != null) {
       inject(context)
     }
   }
@@ -47,9 +46,10 @@ internal class SeenFragment : Fragment() {
     }
   }
 
-  private fun inject(homeActivity: HomeActivity) =
-      homeActivity.homeComponent.newSeenComponentBuilder()
+  private fun inject(context: Context) =
+      DaggerSeenComponent.builder()
           .fragment(this)
+          .context(context)
           .build()
           .inject(this)
 

@@ -2,9 +2,9 @@ package app.home
 
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
-import app.seen.SeenFragment
-import app.tinder.matches.MatchesFragment
-import app.tinder.me.MeFragment
+import app.home.seen.SeenFragment
+import app.home.matches.MatchesFragment
+import app.home.me.MeFragment
 
 internal class HomeFragmentPagerAdapter(supportFragmentManager: FragmentManager)
   : FragmentStatePagerAdapter(supportFragmentManager) {

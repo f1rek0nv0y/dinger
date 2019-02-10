@@ -1,4 +1,4 @@
-package app.seen
+package app.home.seen
 
 import android.arch.paging.PagedListAdapter
 import android.support.v7.util.DiffUtil

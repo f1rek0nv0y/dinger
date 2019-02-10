@@ -1,4 +1,4 @@
-package app.seen
+package app.home.seen
 
 import android.arch.lifecycle.Observer
 import android.arch.paging.PagedList
