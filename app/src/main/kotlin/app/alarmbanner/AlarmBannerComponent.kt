@@ -6,7 +6,7 @@ import app.EntryScreenScope
 import dagger.BindsInstance
 import dagger.Subcomponent
 
-@Subcomponent(modules = [AutoSwipeTriggerModule::class, ContinueModule::class])
+@Subcomponent(modules = [AlarmBannerModule::class])
 @EntryScreenScope
 internal interface AlarmBannerComponent {
   fun inject(target: AlarmBannerActivity)
