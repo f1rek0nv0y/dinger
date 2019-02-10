@@ -1,17 +1,18 @@
-package app
+package views
 
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
+import android.support.annotation.DrawableRes
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
 import android.util.AttributeSet
 import android.view.View
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
-import org.stoyicker.dinger.R
+import org.stoyicker.dinger.views.R
 
-internal class RoundCornerImageView(context: Context, attributeSet: AttributeSet? = null)
+class RoundCornerImageView(context: Context, attributeSet: AttributeSet? = null)
   : View(context, attributeSet), Target {
   private val cornerRadiusPx: Float
   private val picasso = Picasso.get()
@@ -21,6 +22,7 @@ internal class RoundCornerImageView(context: Context, attributeSet: AttributeSet
       postInvalidate()
     }
   private var queuedUrl: String? = null
+  private var errorDrawable: Drawable? = null
 
   init {
     context.theme.obtainStyledAttributes(
@@ -36,11 +38,12 @@ internal class RoundCornerImageView(context: Context, attributeSet: AttributeSet
     }
   }
 
-  fun loadImage(url: String?) {
+  fun loadImage(url: String?, @DrawableRes errorRes: Int) {
     if (url == null) {
       cancelRequest()
     } else {
       queuedUrl = url
+      errorDrawable = context.getDrawable(errorRes)
       loadImageInternal()
     }
   }
@@ -49,6 +52,7 @@ internal class RoundCornerImageView(context: Context, attributeSet: AttributeSet
 
   fun cancelRequest() {
     picasso.cancelRequest(this)
+    cleanup()
   }
 
   override fun onDraw(canvas: Canvas) {
@@ -71,14 +75,16 @@ internal class RoundCornerImageView(context: Context, attributeSet: AttributeSet
     layoutParams = layoutParams
     roundedDrawable.cornerRadius = cornerRadiusPx
     drawable = roundedDrawable
+    cleanup()
   }
 
-  override fun onBitmapFailed(e: Exception, errorDrawable: Drawable) {
+  override fun onBitmapFailed(e: Exception, ignoredErrorDrawable: Drawable) {
     layoutParams.apply {
       width = Math.min(width, height)
       height = width
     }
     drawable = errorDrawable
+    cleanup()
   }
 
   private fun loadImageInternal(w: Int = width, h: Int = height) {
@@ -91,9 +97,13 @@ internal class RoundCornerImageView(context: Context, attributeSet: AttributeSet
           .noPlaceholder()
           .centerCrop()
           .resize(w, h)
-          .error(R.drawable.ic_launcher_adaptive)
           .into(this)
     }
+  }
+
+  private fun cleanup() {
+    queuedUrl = null
+    errorDrawable = null
   }
 
   private companion object {

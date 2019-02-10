@@ -7,9 +7,10 @@ final def moshiVersion = "1.5.0" // Frozen
 final def multidexVersion = "1.0.2"
 final def retrofitVersion = "2.3.0"
 final def rxAndroid2Version = "2.1.0"
-final def storeVersion = "3.0.0" // Frozen
+final def storeVersion = "3.1.0" // Frozen
 final def architectureLifecycleVersion = "1.1.1"
 final def picassoVersion = "2.71828"
+final def supportCompatVersion = "28.0.0"
 ext {
     implementationDependencies = [
             "org.jetbrains.kotlin:kotlin-stdlib:$project.ext.kotlinVersion"
@@ -27,8 +28,7 @@ ext {
             "com.android.support.constraint:constraint-layout:$constraintLayoutVersion",
             "com.android.support:multidex:$multidexVersion",
             "android.arch.paging:runtime:$project.ext.architecturePagingVersion",
-            "android.arch.lifecycle:extensions:$architectureLifecycleVersion",
-            "com.squareup.picasso:picasso:$picassoVersion"
+            "android.arch.lifecycle:extensions:$architectureLifecycleVersion"
     ]
     annotationProcessorDomainDependencies = [
             "javax.annotation:jsr250-api:$jsr250Version"
@@ -50,6 +50,7 @@ ext {
             "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion",
             "com.squareup.retrofit2:converter-moshi:$retrofitVersion",
             "com.nytimes.android:store-kotlin3:$storeVersion",
+            "com.nytimes.android:store3:$storeVersion",
             "com.nytimes.android:middleware-moshi3:$storeVersion",
             "com.google.dagger:dagger:$daggerVersion",
             "com.android.support:support-v4:$supportLibraryVersion",
@@ -67,6 +68,10 @@ ext {
             "com.bugsnag:bugsnag-android:4.8.2"
     ]
     implementationEventTrackerDependencies = [
+    ]
+    implementationViewsDependencies = [
+            "com.squareup.picasso:picasso:$picassoVersion",
+            "com.android.support:support-compat:$supportCompatVersion"
     ]
     testImplementationDependencies = [
             "junit:junit:4.12",

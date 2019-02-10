@@ -75,6 +75,7 @@ dependencies {
     implementation project(":domain")
     implementation project(":crash-reporter")
     implementation project(":extensions")
+    implementation project(":views")
     implementation project.ext.implementationDependencies
     kapt project.ext.annotationProcessorAppDependencies
     implementation project.ext.implementationAppDependencies

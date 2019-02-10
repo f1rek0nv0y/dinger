@@ -2,6 +2,8 @@ package app
 
 import android.annotation.SuppressLint
 import android.app.Application
+import app.entryscreen.DaggerEntryScreenComponent
+import app.entryscreen.EntryScreenComponent
 import reporter.CrashReporter
 import javax.inject.Inject
 
@@ -10,7 +12,7 @@ import javax.inject.Inject
  */
 @SuppressLint("Registered") // It is registered in the buildtype-specific manifests
 internal open class MainApplication : Application() {
-  val entryScreenComponent by lazy { DaggerEntryScreenComponent.create() }
+  val entryScreenComponent: EntryScreenComponent by lazy { DaggerEntryScreenComponent.create() }
   @Inject
   lateinit var crashReporter: CrashReporter
 
