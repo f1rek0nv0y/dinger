@@ -1,10 +1,10 @@
-package app.tinder.login
+package app.entryscreen.login
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import app.alarmbanner.AlarmBannerActivity
+import app.entryscreen.alarmbanner.AlarmBannerActivity
 import app.android.content.safeApplication
 import kotlinx.android.synthetic.main.activity_login.login_button
 import kotlinx.android.synthetic.main.activity_login.progress
@@ -49,7 +49,7 @@ internal class TinderLoginActivity
     supportFinishAfterTransition()
   }
 
-  private fun inject() = safeApplication().applicationComponent.newTinderLoginComponent()
+  private fun inject() = safeApplication().entryScreenComponent.newTinderLoginComponent()
       .activity(this)
       .contentLoadingProgressBar(progress)
       .loginButton(login_button)

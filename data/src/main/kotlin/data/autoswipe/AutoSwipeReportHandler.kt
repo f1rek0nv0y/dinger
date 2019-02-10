@@ -63,7 +63,7 @@ internal class AutoSwipeReportHandler(
               context,
               0,
               Intent().setComponent(
-                  ComponentName(context, "app.splash.SplashActivity")),
+                  ComponentName(context, "app.entryscreen.splash.SplashActivity")),
               FLAG_UPDATE_CURRENT),
           actions = if (result !in arrayOf(RESULT_MORE_AVAILABLE, RESULT_PLACEHOLDER)) {
             arrayOf(Notification.Action.Builder(

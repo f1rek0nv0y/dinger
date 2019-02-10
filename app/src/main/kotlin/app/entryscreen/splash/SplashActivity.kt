@@ -1,4 +1,4 @@
-package app.splash
+package app.entryscreen.splash
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import app.android.content.safeApplication
 import app.home.HomeActivity
-import app.tinder.login.TinderLoginActivity
+import app.entryscreen.login.TinderLoginActivity
 import kotlinx.android.synthetic.main.activity_splash.progress
 import org.stoyicker.dinger.R
 import javax.inject.Inject
@@ -77,7 +77,7 @@ internal class SplashActivity :
     handler.postDelayed({ versionCheckCoordinator.actionRun() }, SHOW_TIME_MILLIS)
   }
 
-  private fun inject() = safeApplication().applicationComponent.newSplashComponent()
+  private fun inject() = safeApplication().entryScreenComponent.newSplashComponent()
       .loggedInCheckResultCallback(this)
       .versionCheckCoordinatorResultCallback(this)
       .activity(this)

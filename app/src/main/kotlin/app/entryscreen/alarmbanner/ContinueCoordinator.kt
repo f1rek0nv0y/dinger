@@ -1,4 +1,4 @@
-package app.alarmbanner
+package app.entryscreen.alarmbanner
 
 internal class ContinueCoordinator(
     private val resultCallback: ResultCallback,

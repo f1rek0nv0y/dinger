@@ -1,4 +1,4 @@
-package app.splash
+package app.entryscreen.splash
 
 import android.app.Activity
 import android.app.DownloadManager

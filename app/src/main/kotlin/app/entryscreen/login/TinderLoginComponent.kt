@@ -1,7 +1,7 @@
-package app.tinder.login
+package app.entryscreen.login
 
 import android.support.v4.widget.ContentLoadingProgressBar
-import app.EntryScreenScope
+import app.entryscreen.EntryScreenScope
 import com.facebook.login.widget.LoginButton
 import dagger.BindsInstance
 import dagger.Subcomponent

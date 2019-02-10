@@ -149,6 +149,6 @@ private fun finishAccount(
           context,
           0,
           Intent().setComponent(
-              ComponentName(context, "app.splash.SplashActivity")),
+              ComponentName(context, "app.entryscreen.splash.SplashActivity")),
           PendingIntent.FLAG_UPDATE_CURRENT))
 }

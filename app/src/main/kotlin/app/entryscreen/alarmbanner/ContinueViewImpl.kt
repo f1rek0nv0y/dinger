@@ -1,4 +1,4 @@
-package app.alarmbanner
+package app.entryscreen.alarmbanner
 
 import android.view.View
 

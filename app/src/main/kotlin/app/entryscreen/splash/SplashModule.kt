@@ -1,7 +1,7 @@
-package app.splash
+package app.entryscreen.splash
 
 import android.app.Activity
-import app.EntryScreenScope
+import app.entryscreen.EntryScreenScope
 import dagger.Module
 import dagger.Provides
 import io.reactivex.Scheduler

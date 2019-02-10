@@ -1,4 +1,4 @@
-package app.tinder.login
+package app.entryscreen.login
 
 import android.content.Intent
 import android.widget.Toast

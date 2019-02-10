@@ -1,4 +1,4 @@
-package app.splash
+package app.entryscreen.splash
 
 import domain.loggedincheck.LoggedInUserCheckUseCase
 import io.reactivex.Scheduler

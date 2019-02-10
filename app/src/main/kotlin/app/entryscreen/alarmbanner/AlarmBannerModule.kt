@@ -1,8 +1,8 @@
-package app.alarmbanner
+package app.entryscreen.alarmbanner
 
 import android.content.Context
 import android.view.View
-import app.EntryScreenScope
+import app.entryscreen.EntryScreenScope
 import dagger.Module
 import dagger.Provides
 import reporter.CrashReporter

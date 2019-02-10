@@ -10,13 +10,13 @@ import javax.inject.Inject
  */
 @SuppressLint("Registered") // It is registered in the buildtype-specific manifests
 internal open class MainApplication : Application() {
-  val applicationComponent: ApplicationComponent by lazy { DaggerApplicationComponent.create() }
+  val entryScreenComponent by lazy { DaggerEntryScreenComponent.create() }
   @Inject
   lateinit var crashReporter: CrashReporter
 
   override fun onCreate() {
     super.onCreate()
-    applicationComponent.inject(this)
+    DaggerMainApplicationComponent.create().inject(this)
     crashReporter.init(this)
   }
 }

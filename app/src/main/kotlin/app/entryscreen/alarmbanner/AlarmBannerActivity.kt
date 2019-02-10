@@ -1,4 +1,4 @@
-package app.alarmbanner
+package app.entryscreen.alarmbanner
 
 import android.content.Context
 import android.content.Intent
@@ -23,7 +23,7 @@ internal class AlarmBannerActivity : AppCompatActivity(), ContinueCoordinator.Re
     continueCoordinator.enable()
   }
 
-  private fun inject() = safeApplication().applicationComponent.newAlarmBannerComponent()
+  private fun inject() = safeApplication().entryScreenComponent.newAlarmBannerComponent()
       .continueResultCallback(this)
       .context(this)
       .build()

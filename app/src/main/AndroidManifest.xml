@@ -16,7 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_adaptive_round"
         tools:ignore="UnusedAttribute"> <!-- resizeableActivity -->
         <activity
-            android:name="app.splash.SplashActivity"
+            android:name="app.entryscreen.splash.SplashActivity"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.SplashTheme"
             android:windowSoftInputMode="stateHidden">
@@ -26,12 +26,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="app.tinder.login.TinderLoginActivity"
+            android:name="app.entryscreen.login.TinderLoginActivity"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="app.alarmbanner.AlarmBannerActivity"
+            android:name="app.entryscreen.alarmbanner.AlarmBannerActivity"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden" />
