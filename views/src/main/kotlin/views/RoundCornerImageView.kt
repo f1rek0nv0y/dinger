@@ -78,7 +78,7 @@ class RoundCornerImageView(context: Context, attributeSet: AttributeSet? = null)
     cleanup()
   }
 
-  override fun onBitmapFailed(e: Exception, ignoredErrorDrawable: Drawable) {
+  override fun onBitmapFailed(e: Exception, ignoredErrorDrawable: Drawable?) {
     layoutParams.apply {
       width = Math.min(width, height)
       height = width
@@ -104,6 +104,7 @@ class RoundCornerImageView(context: Context, attributeSet: AttributeSet? = null)
   private fun cleanup() {
     queuedUrl = null
     errorDrawable = null
+    drawable = null
   }
 
   private companion object {
