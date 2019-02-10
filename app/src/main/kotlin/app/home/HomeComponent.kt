@@ -11,7 +11,7 @@ import javax.inject.Singleton
 @Component(modules = [SchedulerModule::class])
 @Singleton
 internal interface HomeComponent {
-  fun newSeenComponent(): SeenComponent
+  fun newSeenComponentBuilder(): SeenComponent.Builder
   fun newMeComponent(): MeComponent
   @Component.Builder
   interface Builder {

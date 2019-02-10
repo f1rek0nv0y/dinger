@@ -49,7 +49,7 @@ internal class TinderLoginActivity
     supportFinishAfterTransition()
   }
 
-  private fun inject() = safeApplication().entryScreenComponent.newTinderLoginComponent()
+  private fun inject() = safeApplication().entryScreenComponent.newTinderLoginComponentBuilder()
       .activity(this)
       .contentLoadingProgressBar(progress)
       .loginButton(login_button)

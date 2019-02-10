@@ -1,7 +1,6 @@
 package app.seen
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.arch.paging.PagedList
 import android.arch.paging.PagedListAdapter
 import android.content.Context
@@ -18,6 +17,10 @@ import org.stoyicker.dinger.R
 import javax.inject.Inject
 
 internal class SeenFragment : Fragment() {
+  @Inject
+  lateinit var viewModel: SeenRecommendationsViewModel
+  @Inject
+  lateinit var observer: Observer<PagedList<DomainRecommendationUser>>
   @Inject
   lateinit var seenAdapter: PagedListAdapter<DomainRecommendationUser, SeenRecommendationViewHolder>
   @Inject
@@ -36,10 +39,8 @@ internal class SeenFragment : Fragment() {
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    ViewModelProviders.of(this).get(SeenRecommendationsViewModel::class.java).filter().observe(
-        this@SeenFragment, Observer<PagedList<DomainRecommendationUser>> {
-      seenAdapter.submitList(it)
-    })
+    viewModel.filter()
+        .observe(this@SeenFragment, observer)
     (view as RecyclerView).apply {
       adapter = seenAdapter
       layoutManager = this@SeenFragment.layoutManager
@@ -47,7 +48,10 @@ internal class SeenFragment : Fragment() {
   }
 
   private fun inject(homeActivity: HomeActivity) =
-      homeActivity.homeComponent.newSeenComponent().inject(this)
+      homeActivity.homeComponent.newSeenComponentBuilder()
+          .fragment(this)
+          .build()
+          .inject(this)
 
   companion object {
     fun newInstance() = SeenFragment()

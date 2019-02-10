@@ -23,7 +23,7 @@ internal class AlarmBannerActivity : AppCompatActivity(), ContinueCoordinator.Re
     continueCoordinator.enable()
   }
 
-  private fun inject() = safeApplication().entryScreenComponent.newAlarmBannerComponent()
+  private fun inject() = safeApplication().entryScreenComponent.newAlarmBannerComponentBuilder()
       .continueResultCallback(this)
       .context(this)
       .build()

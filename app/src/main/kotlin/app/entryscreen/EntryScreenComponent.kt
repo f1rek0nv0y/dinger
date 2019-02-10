@@ -1,17 +1,17 @@
 package app.entryscreen
 
-import app.entryscreen.alarmbanner.AlarmBannerComponent
 import app.common.di.SchedulerModule
 import app.crash.CrashReporterModule
-import app.entryscreen.splash.SplashComponent
+import app.entryscreen.alarmbanner.AlarmBannerComponent
 import app.entryscreen.login.TinderLoginComponent
+import app.entryscreen.splash.SplashComponent
 import dagger.Component
 import javax.inject.Singleton
 
 @Component(modules = [CrashReporterModule::class, SchedulerModule::class])
 @Singleton
 internal interface EntryScreenComponent {
-  fun newSplashComponent(): SplashComponent.Builder
-  fun newTinderLoginComponent(): TinderLoginComponent.Builder
-  fun newAlarmBannerComponent(): AlarmBannerComponent.Builder
+  fun newSplashComponentBuilder(): SplashComponent.Builder
+  fun newTinderLoginComponentBuilder(): TinderLoginComponent.Builder
+  fun newAlarmBannerComponentBuilder(): AlarmBannerComponent.Builder
 }

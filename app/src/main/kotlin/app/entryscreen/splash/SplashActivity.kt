@@ -77,7 +77,7 @@ internal class SplashActivity :
     handler.postDelayed({ versionCheckCoordinator.actionRun() }, SHOW_TIME_MILLIS)
   }
 
-  private fun inject() = safeApplication().entryScreenComponent.newSplashComponent()
+  private fun inject() = safeApplication().entryScreenComponent.newSplashComponentBuilder()
       .loggedInCheckResultCallback(this)
       .versionCheckCoordinatorResultCallback(this)
       .activity(this)
