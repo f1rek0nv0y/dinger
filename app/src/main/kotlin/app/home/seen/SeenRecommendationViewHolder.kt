@@ -6,7 +6,6 @@ import domain.recommendation.DomainRecommendationUser
 import kotlinx.android.synthetic.main.item_view_recommendation.view.name
 import kotlinx.android.synthetic.main.item_view_recommendation.view.picture
 import kotlinx.android.synthetic.main.item_view_recommendation.view.teaser
-import org.stoyicker.dinger.R
 
 class SeenRecommendationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
   fun bindTo(item: DomainRecommendationUser) {
@@ -20,10 +19,6 @@ class SeenRecommendationViewHolder(itemView: View) : RecyclerView.ViewHolder(ite
         text = desc
       }
     }
-    itemView.picture.loadImage(item.photos.firstOrNull()?.url, R.drawable.ic_launcher_adaptive)
-  }
-
-  fun clear() {
-    itemView.picture.cancelRequest()
+    item.photos.firstOrNull()?.url?.let { itemView.picture.loadImage(it) }
   }
 }

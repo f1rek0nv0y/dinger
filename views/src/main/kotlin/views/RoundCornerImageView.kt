@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
-import android.support.annotation.DrawableRes
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
 import android.util.AttributeSet
 import android.view.View
@@ -22,7 +21,6 @@ class RoundCornerImageView(context: Context, attributeSet: AttributeSet? = null)
       postInvalidate()
     }
   private var queuedUrl: String? = null
-  private var errorDrawable: Drawable? = null
 
   init {
     context.theme.obtainStyledAttributes(
@@ -38,22 +36,12 @@ class RoundCornerImageView(context: Context, attributeSet: AttributeSet? = null)
     }
   }
 
-  fun loadImage(url: String?, @DrawableRes errorRes: Int) {
-    if (url == null) {
-      cancelRequest()
-    } else {
-      queuedUrl = url
-      errorDrawable = context.getDrawable(errorRes)
-      loadImageInternal()
-    }
+  fun loadImage(url: String) {
+    queuedUrl = url
+    loadImageInternal()
   }
 
   override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) = loadImageInternal(w, h)
-
-  fun cancelRequest() {
-    picasso.cancelRequest(this)
-    cleanup()
-  }
 
   override fun onDraw(canvas: Canvas) {
     drawable?.apply {
@@ -75,16 +63,14 @@ class RoundCornerImageView(context: Context, attributeSet: AttributeSet? = null)
     layoutParams = layoutParams
     roundedDrawable.cornerRadius = cornerRadiusPx
     drawable = roundedDrawable
-    cleanup()
   }
 
-  override fun onBitmapFailed(e: Exception, ignoredErrorDrawable: Drawable?) {
+  override fun onBitmapFailed(e: Exception, errorDrawable: Drawable?) {
     layoutParams.apply {
       width = Math.min(width, height)
       height = width
     }
     drawable = errorDrawable
-    cleanup()
   }
 
   private fun loadImageInternal(w: Int = width, h: Int = height) {
@@ -99,12 +85,6 @@ class RoundCornerImageView(context: Context, attributeSet: AttributeSet? = null)
           .resize(w, h)
           .into(this)
     }
-  }
-
-  private fun cleanup() {
-    queuedUrl = null
-    errorDrawable = null
-    drawable = null
   }
 
   private companion object {

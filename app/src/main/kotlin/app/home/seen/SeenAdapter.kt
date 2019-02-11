@@ -16,11 +16,6 @@ class SeenAdapter : PagedListAdapter<DomainRecommendationUser, SeenRecommendatio
     val item = getItem(position)
     if (item != null) {
       holder.bindTo(item)
-    } else {
-      // Null defines a placeholder item - PagedListAdapter automatically
-      // invalidates this row when the actual object is loaded from the
-      // database.
-      holder.clear()
     }
   }
 
