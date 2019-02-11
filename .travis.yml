@@ -26,13 +26,13 @@ before_install:
 env:
   matrix:
   - TASK="\"./gradlew :app:build --no-daemon\""
-  - TASK="\"./gradlew :domain:build --no-daemon\""
   - TASK="\"./gradlew :data:build --no-daemon\""
+  - TASK="\"./gradlew :proxy-data:build --no-daemon\""
+  - TASK="\"./gradlew :domain:build --no-daemon\""
+  - TASK="\"./gradlew :views:build --no-daemon\""
+  - TASK="\"./gradlew :extensions:build --no-daemon\""
   - TASK="\"./gradlew :crash-reporter:build --no-daemon\""
   - TASK="\"./gradlew :event-tracker:build --no-daemon\""
-  - TASK="\"./gradlew :proxy-data:build --no-daemon\""
-  - TASK="\"./gradlew :extensions:build --no-daemon\""
-  - TASK="\"./gradlew :views:build --no-daemon\""
 script:
   - docker exec -it $CONTAINER /bin/sh -c "cd root/${TRAVIS_REPO_SLUG}; ./_ci/script.sh ${TASK}"
 after_success:
