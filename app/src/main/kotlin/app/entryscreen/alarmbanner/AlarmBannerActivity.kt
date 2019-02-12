@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import app.android.content.safeApplication
 import app.home.HomeActivity
+import kotlinx.android.synthetic.main.activity_alarm_banner.continue_button
 import org.stoyicker.dinger.R
 import javax.inject.Inject
 
@@ -26,6 +27,7 @@ internal class AlarmBannerActivity : AppCompatActivity(), ContinueCoordinator.Re
   private fun inject() = safeApplication().entryScreenComponent.newAlarmBannerComponentBuilder()
       .continueResultCallback(this)
       .context(this)
+      .continueView(continue_button)
       .build()
       .inject(this)
 

@@ -15,7 +15,7 @@ internal interface AlarmBannerComponent {
     @BindsInstance
     fun context(context: Context): Builder
     @BindsInstance
-    fun view(view: View): Builder
+    fun continueView(view: View): Builder
     @BindsInstance
     fun continueResultCallback(callback: ContinueCoordinator.ResultCallback): Builder
     fun build(): AlarmBannerComponent

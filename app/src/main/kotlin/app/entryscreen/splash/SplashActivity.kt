@@ -6,8 +6,8 @@ import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import app.android.content.safeApplication
-import app.home.HomeActivity
 import app.entryscreen.login.TinderLoginActivity
+import app.home.HomeActivity
 import kotlinx.android.synthetic.main.activity_splash.progress
 import org.stoyicker.dinger.R
 import javax.inject.Inject
