@@ -11,6 +11,7 @@ import android.content.isOnNotMeteredInternet
 import android.content.startIntent
 import android.content.versionCode
 import android.net.Uri
+import android.os.Environment.DIRECTORY_DOWNLOADS
 import android.provider.Browser
 import android.support.v7.app.AlertDialog
 import android.view.WindowManager
@@ -18,6 +19,7 @@ import domain.versioncheck.DomainVersionCheckDescription
 import domain.versioncheck.VersionCheckUseCase
 import io.reactivex.Scheduler
 import io.reactivex.observers.DisposableSingleObserver
+import java.io.File
 import java.lang.ref.WeakReference
 
 
@@ -70,12 +72,26 @@ internal class VersionCheckCoordinator(
         override fun onSuccess(versionCheckDescription: DomainVersionCheckDescription) {
           when (versionCheckDescription.isUpToDate) {
             true -> resultCallbackWeakRef.get()?.onVersionCheckPassed()
-            false -> showDialog(versionCheckDescription)
+            false -> {
+              deletePreviousApk(it)
+              showDialog(versionCheckDescription)
+            }
           }
         }
 
         override fun onError(e: Throwable) {
           resultCallbackWeakRef.get()?.onVersionCheckPassed()
+        }
+
+        private fun deletePreviousApk(context: Context) {
+          Thread(Runnable {
+            File(
+                Uri.withAppendedPath(
+                    Uri.fromFile(
+                        context.getExternalFilesDir(DIRECTORY_DOWNLOADS)), DOWNLOAD_SUBPATH)
+                    .path)
+                .delete()
+          }).start()
         }
       })
     }
@@ -120,6 +136,10 @@ internal class VersionCheckCoordinator(
                   getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                     (activity.getSystemService(DOWNLOAD_SERVICE) as DownloadManager?)
                         ?.enqueue(DownloadManager.Request(Uri.parse(checkDescription.downloadUrl)).apply {
+                          setDestinationInExternalFilesDir(
+                              context,
+                              DIRECTORY_DOWNLOADS,
+                              DOWNLOAD_SUBPATH)
                           setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN)
                         })
                     dismiss()
@@ -136,6 +156,10 @@ internal class VersionCheckCoordinator(
               }
         }
       }
+
+  private companion object {
+    private val DOWNLOAD_SUBPATH = "${File.separator}updates${File.separator}update.apk"
+  }
 
   interface ResultCallback {
     fun onVersionCheckPassed()
