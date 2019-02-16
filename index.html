@@ -65,109 +65,6 @@
               <p>This app exists to show that these and other pain points are easily addressed nowadays if things are done correctly. And for my and every other Tinder user's joy too, of course :)</p>
             </section>
 
-            <section id="architecture-overview">
-              <h3>Architecture overview</h3>
-              <p>This project features Clean Architecture with split-by-layer, packaged-by-feature modules.</p>
-              <p>When required, library modules attach to the application lifecycle via a ContentProvider, resulting in reduced coupling and easier maintainability when compared to manual event propagation.</p>
-              <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQ2aOStOwMmASWBQ-JJPG5Enc0GnVFl8VhksN3AUimZD9fFiT9Mg5sayySvbfKjxf2N72P2nUgEPGZx/embed?start=false&loop=true&delayms=30000" frameborder="0" width="835" height="499" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
-              <h4>crash-reporter</h4>
-              <p>This module contains an interface definition of the requirements for a crash reporter and implementation(s).</p>
-              <pre class="prettyprint"><p>internal sealed class CrashReporterImpl : CrashReporter {
-    /**
-     * Firebase is a singleton, but other crash reporters which can be instantiated with different
-     * ids would not be.
-     */
-     object Firebase : CrashReporterImpl() {
-        override fun report(throwable: Throwable) = FirebaseCrash.report(throwable)
-     }
-}</p></pre>
-              <h4>event-tracker</h4>
-              <p>This module contains an interface definition of the requirements for an event tracker and implementation(s).</p>
-              <pre class="prettyprint"><p>internal sealed class EventTrackerImpl : EventTracker {
-    /**
-     * Firebase is a singleton, but other event trackers which can be instantiated with different
-     * ids would not be.
-     */
-    object Firebase : EventTrackerImpl() {
-        private lateinit var delegate: FirebaseAnalytics
-
-        override fun init(context: Context) {
-            delegate = FirebaseAnalytics.getInstance(context)
-        }
-
-        override fun trackRecommendationResponse(data: Bundle) =
-                delegate.logEvent(Event.RESPONSE_RECOMMENDATION.key, data)
-
-        override fun trackLikeResponse(data: Bundle) =
-                delegate.logEvent(Event.RESPONSE_LIKE.key, data)
-
-        override fun trackUserProvidedAccount() =
-                delegate.logEvent(Event.USER_ACCOUNT_PROVIDED.key, null)
-
-        override fun setUserProvidedAccount(value: String?) =
-                delegate.setUserProperty(Property.USER_PROVIDED_ACCOUNT.key, value)
-    }
-}</p></pre>
-              <h4>domain</h4>
-              <p>This module contains a set of use cases that can be used to trigger an action that needs to execute either sync- or asynchronously and optionally define as result, as defined by transfer objects that make the result agnostic from its source.</p>
-              <pre class="prettyprint"><p>abstract class DisposableUseCase protected constructor() {
-    protected var assembledSubscriber: Disposable = Disposables.empty()
-
-    /**
-     * Tears down the use case if required.
-     */
-    fun dispose() {
-        if (!assembledSubscriber.isDisposed) {
-            assembledSubscriber.dispose()
-        }
-    }
-}</p></pre>
-              <pre class="prettyprint"><p>abstract class SingleDisposableUseCase<T> protected constructor(
-        /**
-         * Send null for in-place synchronous execution
-         */
-        private val asyncExecutionScheduler: Scheduler? = null,
-        private val postExecutionScheduler: Scheduler)
-    : DisposableUseCase(), UseCase<Single<T>> {
-    fun execute(subscriber: DisposableSingleObserver<T>) {
-        assembledSubscriber = buildUseCase().let {
-            val completeSetup = { x: Single<T> ->
-                x.observeOn(postExecutionScheduler).subscribeWith(subscriber)
-            }
-            if (asyncExecutionScheduler != null) {
-                completeSetup(it.subscribeOn(asyncExecutionScheduler))
-            } else {
-                completeSetup(it)
-            }
-        }
-    }
-}</p></pre>
-              <pre class="prettyprint"><p>abstract class CompletableDisposableUseCase protected constructor(
-        /**
-         * Send null for in-place synchronous execution
-         */
-        private val asyncExecutionScheduler: Scheduler? = null,
-        private val postExecutionScheduler: Scheduler)
-    : DisposableUseCase(), UseCase<Completable> {
-    fun execute(subscriber: DisposableCompletableObserver) {
-        assembledSubscriber = buildUseCase().let {
-            val completeSetup = { x: Completable ->
-                x.observeOn(postExecutionScheduler).subscribeWith(subscriber)
-            }
-            if (asyncExecutionScheduler != null) {
-                completeSetup(it.subscribeOn(asyncExecutionScheduler))
-            } else {
-                completeSetup(it)
-            }
-        }
-    }
-}</p></pre>
-              <h4>data</h4>
-              <p>This module contains implementations of actions defined in the domain, usually dealing with databases and/or network, plus use case triggers that do not require user interactions (such as background services).</p>
-              <h4>app</h4>
-              <p>This module contains the UI of the application, which maps actions to use cases triggers.</p>
-            </section>
-
             <section id="download">
               <h3>Download</h3>
               <p><a href="https://github.com/stoyicker/dinger/releases/latest" class="dl version-href">&darr; <span>Latest</span> APK</a></p>
@@ -191,7 +88,6 @@
             <div class="content-nav" data-spy="affix" data-offset-top="80">
               <ul class="nav nav-tabs nav-stacked primary">
                 <li><a href="#introduction">Introduction</a></li>
-                <li><a href="#architecture-overview">Architecture overview</a></li>
                 <li><a href="#download">Download</a></li>
                 <li><a href="#contributing">Contributing</a></li>
                 <li><a href="#license">License</a></li>
