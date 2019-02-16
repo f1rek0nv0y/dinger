@@ -1,0 +1,13 @@
+.gradle/
+.idea/
+app/
+build/
+crash-reporter/
+data/
+dinger.iml
+domain/
+event-tracker/
+extensions/
+local.properties
+proxy-data/
+views/
