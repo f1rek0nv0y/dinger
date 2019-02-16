@@ -31,10 +31,6 @@ The first time, you need to install the apk manually. In addition, whenever you 
 
 Something not working as expected? Missing something you'd like to be able to do? [Open an issue!](https://github.com/stoyicker/dinger/issues/new "New issue - stoyicker/dinger")
 
-## Architectural overview
-
-[Click here](_assets/overview.pdf "Architecture overview").
-
 ## API overview
 
 [Click here instead](https://app.swaggerhub.com/apis/stoyicker/app.tinder-dinger/ "Tinger by Dinger (unofficial) on SwaggerHub"). Source [here](https://github.com/stoyicker/dinger-swagger "stoyicker/dinger-swagger")
