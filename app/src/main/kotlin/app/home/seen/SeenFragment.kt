@@ -42,6 +42,7 @@ internal class SeenFragment : Fragment() {
         .observe(this@SeenFragment, observer)
     (view as RecyclerView).apply {
       adapter = seenAdapter
+      itemAnimator = null
       layoutManager = this@SeenFragment.layoutManager
     }
   }

@@ -41,7 +41,11 @@ class RoundCornerImageView(context: Context, attributeSet: AttributeSet? = null)
     loadImageInternal()
   }
 
-  override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) = loadImageInternal(w, h)
+  override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+    queuedUrl?.let { picasso.invalidate(it) }
+    picasso.cancelRequest(this)
+    loadImageInternal(w, h)
+  }
 
   override fun onDraw(canvas: Canvas) {
     drawable?.apply {
@@ -57,7 +61,7 @@ class RoundCornerImageView(context: Context, attributeSet: AttributeSet? = null)
   override fun onBitmapLoaded(bitmap: Bitmap, from: Picasso.LoadedFrom) {
     val roundedDrawable = RoundedBitmapDrawableFactory.create(resources, bitmap)
     layoutParams.apply {
-      width = bitmap.width
+      width = Math.min((parent as View).width, bitmap.width)
       height = bitmap.height
     }
     layoutParams = layoutParams
@@ -73,16 +77,16 @@ class RoundCornerImageView(context: Context, attributeSet: AttributeSet? = null)
     drawable = errorDrawable
   }
 
-  private fun loadImageInternal(w: Int = width, h: Int = height) {
+  private fun loadImageInternal(w: Int = Math.min((parent as View).width, width), h: Int = height) {
     if (w < 1 && h < 1) {
       return
     }
-    if (queuedUrl != null) {
-      picasso.load(queuedUrl)
-          .noFade()
+    queuedUrl?.let {
+      picasso.load(it)
           .noPlaceholder()
           .centerCrop()
           .resize(w, h)
+          .stableKey(it)
           .into(this)
     }
   }

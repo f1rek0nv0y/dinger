@@ -4,42 +4,56 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:layout_margin="@dimen/layout_grid_spacing">
+
+  <android.support.v4.widget.ContentLoadingProgressBar
+    android:id="@+id/progress"
+    style="?android:attr/android:progressBarStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:indeterminate="true"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
   <views.RoundCornerImageView
     android:id="@+id/picture"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent" />
+    app:layout_constraintTop_toTopOf="parent" />
+
   <TextView
     android:id="@+id/name"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:textIsSelectable="false"
-    android:textAppearance="@style/TextAppearance.AppCompat.Title"
-    android:textStyle="bold"
+    android:layout_marginStart="@dimen/layout_grid_spacing"
+    android:layout_marginBottom="@dimen/layout_grid_spacing"
     android:shadowColor="@color/primary_dark"
     android:shadowDx="1"
     android:shadowDy="1"
     android:shadowRadius="1"
-    android:layout_marginStart="@dimen/layout_grid_spacing"
-    android:layout_marginBottom="@dimen/layout_grid_spacing"
+    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+    android:textIsSelectable="false"
+    android:textStyle="bold"
     app:layout_constraintBottom_toTopOf="@id/teaser"
     app:layout_constraintStart_toStartOf="@id/picture" />
+
   <TextView
     android:id="@+id/teaser"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:textIsSelectable="false"
-    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-    android:textStyle="bold"
+    android:layout_marginStart="@dimen/layout_grid_spacing"
+    android:layout_marginBottom="@dimen/layout_grid_spacing"
     android:shadowColor="@color/primary_dark"
     android:shadowDx="1"
     android:shadowDy="1"
     android:shadowRadius="1"
-    android:layout_marginStart="@dimen/layout_grid_spacing"
-    android:layout_marginBottom="@dimen/layout_grid_spacing"
+    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+    android:textIsSelectable="false"
+    android:textStyle="bold"
     app:layout_constraintBottom_toBottomOf="@id/picture"
     app:layout_constraintStart_toStartOf="@id/picture" />
 </android.support.constraint.ConstraintLayout>
