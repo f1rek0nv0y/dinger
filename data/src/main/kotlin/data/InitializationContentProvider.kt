@@ -15,6 +15,8 @@ import domain.autoswipe.AutoSwipeHolder
 import domain.autoswipe.AutoSwipeLauncherFactory
 import domain.dislike.DislikeRecommendation
 import domain.dislike.DislikeRecommendationHolder
+import domain.profile.GetProfile
+import domain.profile.GetProfileHolder
 import domain.like.LikeRecommendation
 import domain.like.LikeRecommendationHolder
 import domain.loggedincheck.LoggedInCheckHolder
@@ -58,6 +60,8 @@ internal class InitializationContentProvider : ContentProvider() {
   lateinit var autoswipeServiceDestructor: AutoSwipeServiceDestructor
   @Inject
   lateinit var seenRecommendations: SeenRecommendations
+  @Inject
+  lateinit var getProfileImpl: GetProfile
 
   override fun onCreate(): Boolean {
     val rootModule = RootModule(context!!)
@@ -88,6 +92,7 @@ internal class InitializationContentProvider : ContentProvider() {
     LogoutHolder.removeAccount(accountManagerImpl)
     LogoutHolder.storageClear(storageClearImpl)
     SeenRecommendationsHolder.seenRecommendations(seenRecommendations)
+    GetProfileHolder.getProfile(getProfileImpl)
     return true
   }
 

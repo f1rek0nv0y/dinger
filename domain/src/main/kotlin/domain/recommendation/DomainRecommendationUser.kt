@@ -15,7 +15,7 @@ data class DomainRecommendationUser(
     val instagram: DomainRecommendationInstagram?,
     val teaser: DomainRecommendationTeaser,
     val spotifyThemeTrack: DomainRecommendationSpotifyThemeTrack?,
-    val gender: Int,
+    val gender: DomainRecommendationGender,
     val birthDateInfo: String,
     val contentHash: String,
     val groupMatched: Boolean,

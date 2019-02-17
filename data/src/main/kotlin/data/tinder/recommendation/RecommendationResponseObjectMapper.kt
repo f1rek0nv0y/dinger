@@ -2,12 +2,14 @@ package data.tinder.recommendation
 
 import data.ObjectMapper
 import domain.DomainException
+import domain.recommendation.DomainRecommendationGender
 import domain.recommendation.DomainRecommendationCommonFriend
 import domain.recommendation.DomainRecommendationCommonFriendPhoto
-import domain.recommendation.DomainRecommendationCompany
 import domain.recommendation.DomainRecommendationInstagram
 import domain.recommendation.DomainRecommendationInstagramPhoto
 import domain.recommendation.DomainRecommendationJob
+import domain.recommendation.DomainRecommendationJobCompany
+import domain.recommendation.DomainRecommendationJobTitle
 import domain.recommendation.DomainRecommendationLike
 import domain.recommendation.DomainRecommendationPhoto
 import domain.recommendation.DomainRecommendationProcessedFile
@@ -16,7 +18,6 @@ import domain.recommendation.DomainRecommendationSpotifyAlbum
 import domain.recommendation.DomainRecommendationSpotifyArtist
 import domain.recommendation.DomainRecommendationSpotifyThemeTrack
 import domain.recommendation.DomainRecommendationTeaser
-import domain.recommendation.DomainRecommendationTitle
 import domain.recommendation.DomainRecommendationUser
 
 internal class RecommendationResponseObjectMapper(
@@ -71,7 +72,7 @@ internal class RecommendationResponseObjectMapper(
       instagram = instagramDelegate.from(source.instagram),
       teaser = teaserDelegate.from(source.teaser),
       spotifyThemeTrack = spotifyThemeTrackDelegate.from(source.spotifyThemeTrack),
-      gender = source.gender,
+      gender = DomainRecommendationGender.fromGenderInt(source.gender),
       birthDateInfo = source.birthDateInfo,
       contentHash = source.contentHash,
       groupMatched = source.groupMatched,
@@ -199,8 +200,8 @@ internal class RecommendationPhotoObjectMapper(
 }
 
 internal class RecommendationJobObjectMapper(
-    private val companyDelegate: ObjectMapper<RecommendationUserJobCompany, DomainRecommendationCompany>,
-    private val titleDelegate: ObjectMapper<RecommendationUserJobTitle, DomainRecommendationTitle>)
+    private val companyDelegate: ObjectMapper<RecommendationUserJobCompany, DomainRecommendationJobCompany>,
+    private val titleDelegate: ObjectMapper<RecommendationUserJobTitle, DomainRecommendationJobTitle>)
   : ObjectMapper<RecommendationUserJob, DomainRecommendationJob> {
   override fun from(source: RecommendationUserJob) = DomainRecommendationJob(
       id = RecommendationUserJob.createId(source.company, source.title),
@@ -209,15 +210,15 @@ internal class RecommendationJobObjectMapper(
 }
 
 internal class RecommendationJobCompanyObjectMapper
-  : ObjectMapper<RecommendationUserJobCompany, DomainRecommendationCompany> {
-  override fun from(source: RecommendationUserJobCompany) = DomainRecommendationCompany(
+  : ObjectMapper<RecommendationUserJobCompany, DomainRecommendationJobCompany> {
+  override fun from(source: RecommendationUserJobCompany) = DomainRecommendationJobCompany(
       name = source.name
   )
 }
 
 internal class RecommendationJobTitleObjectMapper
-  : ObjectMapper<RecommendationUserJobTitle, DomainRecommendationTitle> {
-  override fun from(source: RecommendationUserJobTitle) = DomainRecommendationTitle(
+  : ObjectMapper<RecommendationUserJobTitle, DomainRecommendationJobTitle> {
+  override fun from(source: RecommendationUserJobTitle) = DomainRecommendationJobTitle(
       name = source.name
   )
 }

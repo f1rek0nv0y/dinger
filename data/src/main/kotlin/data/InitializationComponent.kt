@@ -10,6 +10,7 @@ import data.seen.SeenRecommendationsModule
 import data.storage.StorageClearModule
 import data.stoyicker.versioncheck.VersionCheckModule
 import data.tinder.dislike.DislikeRecommendationModule
+import data.tinder.profile.GetProfileModule
 import data.tinder.like.LikeRecommendationModule
 import data.tinder.login.LoginModule
 import data.tinder.recommendation.GetRecommendationModule
@@ -19,7 +20,6 @@ import javax.inject.Singleton
   NetworkModule::class,
   LoginModule::class,
   GetRecommendationModule::class,
-  SeenRecommendationsModule::class,
   LikeRecommendationModule::class,
   DislikeRecommendationModule::class,
   AccountModule::class,
@@ -27,7 +27,9 @@ import javax.inject.Singleton
   AutoSwipeModule::class,
   VersionCheckModule::class,
   StorageClearModule::class,
-  AutoSwipeServiceDestructorModule::class])
+  AutoSwipeServiceDestructorModule::class,
+  SeenRecommendationsModule::class,
+  GetProfileModule::class])
 @Singleton
 internal interface InitializationComponent {
   fun inject(initializationContentProvider: InitializationContentProvider)

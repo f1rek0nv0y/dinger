@@ -1,9 +1,9 @@
 package data.tinder.recommendation
 
 import data.database.CollectibleDaoDelegate
-import domain.recommendation.DomainRecommendationCompany
+import domain.recommendation.DomainRecommendationJobCompany
 import domain.recommendation.DomainRecommendationJob
-import domain.recommendation.DomainRecommendationTitle
+import domain.recommendation.DomainRecommendationJobTitle
 
 internal class RecommendationJobDaoDelegate(
     private val jobDao: RecommendationUserJobDao,
@@ -13,8 +13,8 @@ internal class RecommendationJobDaoDelegate(
       jobDao.selectJobById(primaryKey).firstOrNull()?.let {
         return@let DomainRecommendationJob(
             id = it.id,
-            company = it.company?.let { DomainRecommendationCompany(it.name) },
-            title = it.title?.let { DomainRecommendationTitle(it.name) })
+            company = it.company?.let { DomainRecommendationJobCompany(it.name) },
+            title = it.title?.let { DomainRecommendationJobTitle(it.name) })
       } ?: DomainRecommendationJob.NONE
 
   override fun insertResolved(source: DomainRecommendationJob) = jobDao.insertJob(

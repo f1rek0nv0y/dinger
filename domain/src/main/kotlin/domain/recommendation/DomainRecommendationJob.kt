@@ -2,8 +2,8 @@ package domain.recommendation
 
 data class DomainRecommendationJob(
     val id: String,
-    val company: DomainRecommendationCompany?,
-    val title: DomainRecommendationTitle?) {
+    val company: DomainRecommendationJobCompany?,
+    val title: DomainRecommendationJobTitle?) {
   companion object {
     val NONE = DomainRecommendationJob(
         id = "",
