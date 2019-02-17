@@ -2,6 +2,7 @@ package app
 
 import android.os.Build
 import android.os.StrictMode
+import com.squareup.picasso.Picasso
 
 /**
  * Debug application, for (guess what?!) debugging purposes.
@@ -9,9 +10,15 @@ import android.os.StrictMode
 internal class DebugApplication : MainApplication() {
   override fun onCreate() {
     super.onCreate()
+    configurePicasso()
     enforceThreadStrictMode()
     enforceVMStrictMode()
   }
+
+  private fun configurePicasso() = Picasso.setSingletonInstance(Picasso.Builder(this)
+      .indicatorsEnabled(true)
+      .loggingEnabled(true)
+      .build())
 
   /**
    * Enforces StrictMode for the current thread.
@@ -52,6 +59,9 @@ internal class DebugApplication : MainApplication() {
           detectFileUriExposure()
           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             detectContentUriWithoutPermission()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+              detectNonSdkApiUsage()
+            }
           }
         }
       }
