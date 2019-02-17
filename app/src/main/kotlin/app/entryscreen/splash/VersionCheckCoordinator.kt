@@ -13,6 +13,7 @@ import android.content.versionCode
 import android.net.Uri
 import android.os.Environment.DIRECTORY_DOWNLOADS
 import android.provider.Browser
+import android.support.v4.content.FileProvider
 import android.support.v7.app.AlertDialog
 import android.view.WindowManager
 import domain.versioncheck.DomainVersionCheckDescription
@@ -42,8 +43,14 @@ internal class VersionCheckCoordinator(
                 setFilterById(downloadId)
               })
           if (cursor.moveToFirst()) {
-            val uri = Uri.parse(cursor.getString(
-                cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI)))
+            val uri = FileProvider.getUriForFile(
+                context,
+                "fileproviders.updates",
+                File(
+                    Uri.withAppendedPath(
+                        Uri.fromFile(
+                            context.getExternalFilesDir(DIRECTORY_DOWNLOADS)), DOWNLOAD_SUBPATH)
+                        .path))
             context.grantUriPermission(
                 context.packageName, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
             activity.startIntent(Intent(Intent.ACTION_VIEW)
