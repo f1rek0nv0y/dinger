@@ -3,7 +3,7 @@
   "body": "There is an update available for the app. Older versions are now unsupported.",
   "positive_button": "Download",
   "negative_button": "Changelog",
-  "download_url": "https://github.com/stoyicker/dinger/releases/download/823/dinger-823.apk",
+  "download_url": "https://github.com/stoyicker/dinger/releases/download/824/dinger-824.apk",
   "changelog_url": "https://stoyicker.github.io/dinger/changelog.html",
-  "version": "823"
+  "version": "824"
 }
