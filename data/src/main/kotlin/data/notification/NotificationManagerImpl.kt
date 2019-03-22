@@ -67,7 +67,6 @@ internal class NotificationManagerImpl(
         .setContentTitle(title)
         .setDefaults(NotificationCompat.DEFAULT_ALL)
         .setOngoing(false)
-        .setColor(Color.parseColor("#FFAB40")) // textPrimary, not available in data
         .setOnlyAlertOnce(true)
         .setPriority(priority)
         .setSmallIcon(R.drawable.ic_notification)
@@ -80,6 +79,7 @@ internal class NotificationManagerImpl(
             setLocalOnly(false)
             setSortKey("${Date().time}")
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+              setColor(Color.parseColor("#FFAB40")) // textPrimary, not available in data
               setCategory(NotificationCompat.CATEGORY_SERVICE)
               if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 setBadgeIconType(NotificationCompat.BADGE_ICON_NONE)
