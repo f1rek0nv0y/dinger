@@ -24,5 +24,7 @@
         <item name="fontFamily">@font/proxima_nova</item>
         <item name="android:windowBackground">@color/window_background</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <!-- https://github.com/stoyicker/dinger/issues/391 -->
+        <item name="android:textColorLink">@color/accent</item>
     </style>
 </resources>
