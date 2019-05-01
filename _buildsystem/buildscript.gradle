@@ -1,5 +1,5 @@
 final def androidPluginVersion = "3.3.1"
-project.ext.kotlinVersion = "1.3.0"
+project.ext.kotlinVersion = "1.3.31"
 final def kotlinterPluginVersion = "1.20.1"
 final def bugsnagPluginVersion = "4.0.0"
 project.ext.classpathRepositories = {
