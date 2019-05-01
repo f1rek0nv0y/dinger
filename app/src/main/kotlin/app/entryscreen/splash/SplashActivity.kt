@@ -27,12 +27,14 @@ internal class SplashActivity :
   lateinit var loggedInCheckCoordinator: LoggedInCheckCoordinator
   @Inject
   lateinit var versionCheckCoordinator: VersionCheckCoordinator
+  private lateinit var versionCheckCoordinatorRunnable: Runnable
   private lateinit var handler: Handler
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_splash)
     inject()
+    versionCheckCoordinatorRunnable = Runnable { versionCheckCoordinator.actionRun() }
     scheduleContentOpening()
   }
 
@@ -74,7 +76,7 @@ internal class SplashActivity :
    */
   private fun scheduleContentOpening() {
     handler = Handler()
-    handler.postDelayed({ versionCheckCoordinator.actionRun() }, SHOW_TIME_MILLIS)
+    handler.postDelayed(versionCheckCoordinatorRunnable, SHOW_TIME_MILLIS)
   }
 
   private fun inject() = safeApplication().entryScreenComponent.newSplashComponentBuilder()
