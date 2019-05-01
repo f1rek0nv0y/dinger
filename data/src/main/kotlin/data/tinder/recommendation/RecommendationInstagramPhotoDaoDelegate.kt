@@ -16,21 +16,22 @@ internal class RecommendationInstagramPhotoDaoDelegate(
             ts = it.ts)
       } ?: DomainRecommendationInstagramPhoto.NONE
 
-  override fun insertResolved(source: DomainRecommendationInstagramPhoto) =
-      instagramDao.insertInstagramPhoto(RecommendationUserInstagramPhotoEntity(
-          link = source.link,
-          imageUrl = source.imageUrl,
-          thumbnailUrl = source.thumbnailUrl,
-          ts = source.ts))
+  override fun insertResolved(source: DomainRecommendationInstagramPhoto) = source.link?.let {
+    instagramDao.insertInstagramPhoto(RecommendationUserInstagramPhotoEntity(
+        link = it,
+        imageUrl = source.imageUrl,
+        thumbnailUrl = source.thumbnailUrl,
+        ts = source.ts))
+  } ?: Unit
 
   fun insertResolvedForInstagramUsername(
       instagramUsername: String,
       instagramPhotos: Iterable<DomainRecommendationInstagramPhoto>) =
-      instagramPhotos.forEach {
+      instagramPhotos.filter { it.link != null }.forEach {
         insertResolved(it)
         userInstagramDao.insertInstagram_Photo(
             RecommendationUserInstagramEntity_RecommendationUserInstagramPhotoEntity(
                 recommendationUserInstagramEntityUsername = instagramUsername,
-                recommendationUserInstagramPhotoEntityLink = it.link))
+                recommendationUserInstagramPhotoEntityLink = it.link!!))
       }
 }
